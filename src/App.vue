@@ -1,0 +1,34 @@
+
+<template lang="pug">
+router-view(v-show="isReady")
+jq-tarbar(v-if="showTarbar")
+</template>
+
+
+<script setup lang="ts">
+import JqTarbar from '@/components/jq-tarbar/index.vue'
+import { watch, onMounted, ref } from 'vue'
+import Util from '@/utils'
+import { useRoute } from 'vue-router'
+
+const showTarbar = ref(false)
+
+const route = useRoute()
+
+watch(route, (val) => {
+  showTarbar.value = val.path.endsWith('/index')
+})
+
+const isReady = ref(false) // 页面加载完全才显示
+onMounted(() => {
+  Util.setStyle()
+  isReady.value = true
+})
+</script>
+
+<style lang="sass">
+html, body, #app
+  width: 100%
+  height: 100%
+  background: #dfe5e9
+</style>

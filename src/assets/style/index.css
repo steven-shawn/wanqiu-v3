@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: Black;
+    src: url('../fonts/HelveticaLTPro-Black.otf');
+}
+@font-face {
+    font-family: Bold;
+    src: url('../fonts/HelveticaLTPro-Bold.otf');
+}
+
+@font-face {
+    font-family: Light;
+    src: url('../fonts/HelveticaLTPro-Light.otf');
+}
+@font-face {
+    font-family: Roman;
+    src: url('../fonts/HelveticaLTPro-Roman.otf');
+}

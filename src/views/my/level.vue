@@ -1,0 +1,37 @@
+<template lang="pug">
+div.pb-20.pt-11.bg-gray-100.h-full 
+  jq-header.fixed 会员等级
+  div.px-4
+    jq-avatar.my-2(:showEdit="false" :LevelIcon="1")
+    div.text-xs.bg-white.rounded-lg.px-4.py-3.shadow-lg  尊敬的14级会员，您只需要再消费93个球钻即可升到15级，您在直播间的等级标记将换成15级骁勇先锋。
+    my-level.my-3.rounded-lg
+    div.bg-white.shadow-lg.rounded-lg.text-xs.pb-4
+      h2.p-4 如何快速升级
+      ul.flex.text-xs.flex-wrap.justify-between
+        li.flex.flex-col.justify-center.items-center(v-for="item in upGradeList" :key="item.id" :class="'w-1/3'")
+          div.w-10.h-10.rounded-full.bg-red-600.mb-2
+          p {{item.title}}
+          p.text-gray-600.mb-2 {{item.content}}  
+</template>
+
+<script setup lang="ts">
+import JqHeader from '@/components/jq-header/index.vue'
+import JqAvatar from '@/components/jq-avatar/index.vue'
+import MyLevel from '@/components/my-level/index.vue'
+
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+// 底部列表数据
+const upGradeList = ref([
+  { id: 1, icon: '', title: '发送红包', content: '狂刷红包 飙升经验' },
+  { id: 2, icon: '', title: '赠送礼物', content: '狂刷礼物 飙升经验' },
+  { id: 3, icon: '', title: '充值球钻', content: '充值不停 快乐不止' },
+  { id: 4, icon: '', title: '购买贵族', content: '贵族尊享 经验加倍' },
+  { id: 5, icon: '', title: '购买方案', content: '贵族专属 无与伦比' },
+  { id: 6, icon: '', title: '方案套餐', content: '拉风炫酷 闪亮登场' }
+])
+
+
+</script>
