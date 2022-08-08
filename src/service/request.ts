@@ -1,4 +1,5 @@
 import axios from 'axios'
+import qs from 'qs'
 // import store from '@/store'
 import { Toast,Dialog, Notify } from 'vant'
 // import {getToken} from './auth'
@@ -10,13 +11,22 @@ import store from '@/store'
 // let returnType = 'data' // 返回类型
 
 const service = axios.create({
-  baseURL: REQUEST_URL,    //process.env.VUE_APP_BASE_API, url = base url + request url
+  baseURL: '', // REQUEST_URL,    //process.env.VUE_APP_BASE_API, url = base url + request url
   withCredentials: false, // send cookies when cross-domain requests
-  timeout: REQUEST_TIMEOUT // 请求超时时间
+  timeout: REQUEST_TIMEOUT, // 请求超时时间
+  headers: {
+    'Content-Type': 'application/json' // x-www-form-urlencoded
+  }
 })
 
 // 请求拦截
 service.interceptors.request.use(config => {
+  console.log(config)
+  if (config.method === 'post') {
+    if (config.data) {
+      config.data = JSON.stringify(config.data)
+    }
+  }
   if (!config) {
     config = {}
   }
@@ -48,8 +58,8 @@ service.interceptors.response.use(res => {
       data.token = token
     }
     // if (res && res.config && res.config.returnType)
-    switch(code) {
-      case 200: // 正确响应
+    switch(code / 1) {
+      case 0: // 正确响应
         return Promise.resolve(data)
         break
       case 401:

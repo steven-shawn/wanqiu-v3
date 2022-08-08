@@ -1,5 +1,6 @@
 <template lang="pug">
-div.pb-16.pt-11
+div#home 这里是一张图
+//div.pb-16.pt-11
   jq-header.fixed 首页
   jq-banner
   div.hot.px-2.bg-white.mt-2
@@ -25,13 +26,13 @@ const liveList = ref([])
 
 onMounted(() => {
   // 热门
-  _hotList().then(list => {
-    hotList.value = list
-  })
-  // 正在
-  _liveList().then(list => {
-    liveList.value = list
-  })
+  // _hotList().then(list => {
+  //   hotList.value = list
+  // })
+  // // 正在
+  // _liveList().then(list => {
+  //   liveList.value = list
+  // })
 })
 
 

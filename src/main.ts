@@ -1,7 +1,8 @@
 import { createApp } from 'vue'
 
 // tailwind
-import '@/assets/style/index.css'
+import '@/assets/style/index.scss'
+import '@/assets/style/tailwind-extends.scss' // TODO: 抽取到index.scss中
 
 // store
 import store from '@/store'

@@ -22,7 +22,7 @@ const props = defineProps({
 const list = ref([
     { id: 1, text: '首页', active: props.activeId === 1, router: '/home/index', bg: 'home' },
     { id: 2, text: '比分', active: props.activeId === 2, router: '/score/index', bg: 'score' },
-    { id: 3, text: '直播', active: props.activeId === 3, router: '/home/index', bg: 'live' }, // live/index
+    { id: 3, text: '直播', active: props.activeId === 3, router: '/live/index', bg: 'live' }, // live/index
     { id: 4, text: '赛程', active: props.activeId === 4, router: '/schedule/index', bg: 'schedule' },
     { id: 5, text: '我的', active: props.activeId === 5, router: '/my/index', bg: 'my' }
 ])

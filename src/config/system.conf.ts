@@ -1,4 +1,4 @@
-export const REQUEST_URL = 'https://api.jqiu66.com'   // 请求地址 TODO: 区分环境
+export const REQUEST_URL = 'http://xqadminapi.tyltxt.com'   // 请求地址 TODO: 区分环境
 export const REQUEST_TIMEOUT = 20000    // 网络请求超时时间,默认10秒
 
 export const RESEND_CODE_TIME = 60 // 重新发送验证码的时间

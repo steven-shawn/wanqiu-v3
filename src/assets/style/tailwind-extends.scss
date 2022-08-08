@@ -1,0 +1,10 @@
+// 像素
+$unit: 'px';
+
+/* width, height, padding, margin */
+@for $i from 0 through 1920 {
+    // width
+    .w-#{$i}-px { width: #{$i}#{$unit} }
+    // height
+    .h-#{$i}-px { height: #{$i}#{$unit} }
+}

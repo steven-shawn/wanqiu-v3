@@ -17,5 +17,14 @@ export default defineConfig({
     styleImport({
       resolves: [VantResolve()],
     })
-  ]
+  ],
+  server: {
+    proxy: {
+      "/pc": {
+        target: "http://xqadminapi.tyltxt.com",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
+  }
 })

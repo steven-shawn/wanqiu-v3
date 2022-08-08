@@ -1,13 +1,13 @@
 <template lang="pug">
 div.score-item.flex.flex-col.bg-white.px-2.mt-1.text-xs
-    div.flex.justify-between.w-full.text-xs.my-2
+    div.flex.justify-between.w-full.text-xs.my-2.border-b
         div.flex.flex-1
             span.text-red-600 亚洲世预
             span.text-gray-400.ml-2 03:45
         div.flex-1.flex.justify-center.flex-shrink-0.text-red-600 72'
         div.flex-1.flex.justify-end
             van-image.w-3.h-3(:src="Util.$require('components/score-item/imgs/icon_view@2x.png')")
-            span.text-gray-400.ml-1 9999+        
+            span.text-gray-400.ml-1 9999+
     div.flex.justify-between.items-center.w-full
         div.flex.items-center.w-12
            van-image.w-5.h-5.ml-1(:src="Util.$require(`components/score-item/imgs/icon_collect_active@2x.png`)") 
@@ -18,7 +18,7 @@ div.score-item.flex.flex-col.bg-white.px-2.mt-1.text-xs
                 span.text-gray-400.mr-1 [25]
                 strong.font-normal.mr-2 澳大利亚
                 strong.font-medium 2
-            div :    
+            div :
             div.flex.flex-1.justify-start
                 strong.font-medium 2
                 strong.font-normal.ml-2 因果

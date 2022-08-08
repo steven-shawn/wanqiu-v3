@@ -15,7 +15,7 @@ const showTarbar = ref(false)
 
 const route = useRoute()
 
-watch(route, (val) => {
+watch(route, (val) => { // t监视tab页面
   showTarbar.value = val.path.endsWith('/index')
 })
 
@@ -26,9 +26,10 @@ onMounted(() => {
 })
 </script>
 
-<style lang="sass">
-html, body, #app
-  width: 100%
-  height: 100%
-  background: #dfe5e9
+<style lang="scss">
+html, body, #app {
+  width: 100%;
+  height: 100%;
+  background: #dfe5e9;
+}
 </style>

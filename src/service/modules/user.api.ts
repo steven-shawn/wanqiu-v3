@@ -2,6 +2,9 @@ import request from '@/service/request'
 import { loginUser } from '@/types/login.type'
 import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'
 
+/***============== 个人中心及登录/注册 ====================== */
+
+
 /**
  * 格式化用户信息字段
  * @param result 返回的原字段
@@ -46,11 +49,11 @@ const formatUserInfo = (result: any) => {
  */
 export const _sendCode = (mobile: string | number) => {
     return request({
-        url: '/live/sms/sendSms',
-        method: 'POST',
-        data: {
+        url: '/pc/smsCode/sendLogonCode',
+        method: 'GET',
+        params: {
             mobile, // 手机号码
-            type: 1 // 登录方式：1手机登录,2密码登录
+            // type: 1 // 登录方式：1手机登录,2密码登录
         }
     })
 }
@@ -100,8 +103,8 @@ export const _logout = () => {
  */
 export const _banners = (type: string = 'h1', pageNum:number = 1, pageSize: number = DEFAULT_PAGE_SIZE) => {
     return request({
-        url: '/live/advertisement/lists',
-        method: 'POST',
+        url: 'pc/opeadvertising/page',
+        method: 'GET',
         data: {
             pageNum, // 页码
             pageSize, // 每页多少条

@@ -4,7 +4,7 @@
 const setRem = () => {
     const ww = window.innerWidth
     const zoom = ww / 375 // set the rate to window and design width
-    const body = document.body
+    const body = document.body || document.documentElement.body
     body.style.zoom = zoom
 }
 
