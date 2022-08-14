@@ -2,46 +2,71 @@
 div.score-item.flex.flex-col.bg-white.px-2.mt-1.text-xs
     div.flex.justify-between.w-full.text-xs.my-2.border-b
         div.flex.flex-1
-            span.text-red-600 亚洲世预
-            span.text-gray-400.ml-2 03:45
+            span.text-red-600 {{scoreInfo.leagueChsShort}}
+            span.text-gray-400.ml-2 {{formatTime(scoreInfo.matchTime)}}
         div.flex-1.flex.justify-center.flex-shrink-0.text-red-600 72'
         div.flex-1.flex.justify-end
             van-image.w-3.h-3(:src="Util.$require('components/score-item/imgs/icon_view@2x.png')")
-            span.text-gray-400.ml-1 9999+
+            span.text-gray-400.ml-1 {{scoreInfo.stdNum}} {{scoreInfo.stdNum > 9999 ? '+' : ''}}
     div.flex.justify-between.items-center.w-full
-        div.flex.items-center.w-12
-           van-image.w-5.h-5.ml-1(:src="Util.$require(`components/score-item/imgs/icon_collect_active@2x.png`)") 
+        div.flex.items-center.w-6(@click="focus")
+           van-image.w-5.h-5.ml-1(:src="Util.$require(`components/score-item/imgs/icon_collect${scoreInfo.isfocus ? '_active' : ''}@2x.png`)") 
         div.flex.justify-center.flex-1.flex-shrink-0
             div.flex-1.flex.justify-end
-                span.bg-red-600.px-1.text-white.rounded-sm.mr-1 1
-                span.bg-yellow-300.px-1.mr-1.text-white.rounded-sm 1
-                span.text-gray-400.mr-1 [25]
-                strong.font-normal.mr-2 澳大利亚
-                strong.font-medium 2
-            div :
-            div.flex.flex-1.justify-start
-                strong.font-medium 2
-                strong.font-normal.ml-2 因果
-                span.text-gray-400.ml-1 [25]
-                span.bg-yellow-300.px-1.ml-1.text-white.rounded-sm 2
-                span.bg-red-600.px-1.text-white.rounded-sm.ml-1 2
-        div.flex.items-center.w-12
-            van-image.w-5.ml-1.invisible(:src="Util.$require('components/score-item/imgs/icon_play@2x.png')" :class="'h-3.5'")
-            van-image.w-5.ml-1(:src="Util.$require('components/score-item/imgs/icon_lineup@2x.png')" :class="'h-3.5'")
+                span.bg-red-600.px-1.text-white.rounded-sm.mr-1.h-16-px.block {{scoreInfo.homeRed}}
+                span.bg-yellow-300.px-1.mr-1.text-white.rounded-sm.h-16-px.block {{scoreInfo.homeYellow}}
+                span.text-gray-400.mr-1 [{{scoreInfo.homeRankCn}}]
+                strong.font-normal.mr-2 {{scoreInfo.homeChs}}
+                strong.font-medium.text-red {{scoreInfo.homeScore}}
+            div.text-red :
+            div.flex.flex-1.justify-start.flex-shirnk-0
+                strong.font-medium.text-red {{scoreInfo.awayScore}}
+                strong.font-normal.ml-2 {{scoreInfo.awayChs}}
+                span.text-gray-400.ml-1 [{{scoreInfo.awayRankCn}}]
+                span.bg-yellow-300.px-1.ml-1.text-white.rounded-sm.h-16-px.block {{scoreInfo.awayYellow}}
+                span.bg-red-600.px-1.text-white.rounded-sm.ml-1.h-16-px.block {{scoreInfo.awayRed}}
+        div.flex.items-center.w-6.justify-start
+            van-image.w-5.ml-1(:src="Util.$require('components/score-item/imgs/icon_play@2x.png')" :class="'h-3.5'" v-if="scoreInfo.ifAnc === 1")
+            van-image.w-5.ml-1(:src="Util.$require('components/score-item/imgs/icon_lineup@2x.png')" :class="'h-3.5'" v-if="scoreInfo.ifAnc === 0")
     div.flex.justify-center.my-1
        div.flex-1
-       div.flex.justify-center.flex-1.flex-shrink-0 
-            p.text-gray-400.mr-2 半: 1-1
-            p.text-gray-400.ml-2 角: 3-7
-       div.flex-1.flex.justify-end.text-xs.text-red-600 阵容
+       div.flex.justify-center.flex-1
+            p.text-gray-400.mr-2 半: {{scoreInfo.homeHalfScore || 0}}-{{scoreInfo.awayHalfScore}}
+            p.text-gray-400.ml-2 角: {{scoreInfo.homeCorner || 0 }}-{{scoreInfo.awayCorner || 0}}
+       div.flex-1.flex.justify-center.text-xs.text-red-600 阵容
 </template>
 
 <script lang="ts" setup>
 import Util from '@/utils'
+import { _focus } from '@/service/modules/score.api'
+import { Toast } from 'vant';
+const props = defineProps({
+    scoreInfo: Object
+})
+
+// 关注
+const focus = () => {
+    let method = 'POST'
+    if (props.scoreInfo.isfocus) { // 取消关注
+        method = 'PUT'
+    }
+    _focus(props.scoreInfo.matchId, method).then(data => {
+        props.scoreInfo.isfocus = !props.scoreInfo.isfocus
+        Toast.success(method === 'POST' ? '已关注' : '已取消')
+        // console.log(data)
+    })
+}
+// 格式化时间
+const formatTime = (val) => {
+    return val && val.split(' ')[1]
+}
 </script>
 
 
 <style scoped lang="sass">
 div.score-item
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2)
+.text-red
+    color: #ce1313
+    font-weight: bold
 </style>

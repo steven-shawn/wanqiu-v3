@@ -14,7 +14,7 @@ div#login.container.relative.h-full
           li.form-item.flex.flex-col.border-b.py-1(v-if="loginType === 1")
               p.text-xs.py-4 短信验证码
               div.flex.items-center
-                  input.bg-transparent.text-xs.flex-1(placeholder="请输入短信验证码" type="number" v-model="user.code" @input="onCheckInputLength('code', 4)")
+                  input.bg-transparent.text-xs.flex-1(placeholder="请输入短信验证码" type="number" v-model="user.code" @input="onCheckInputLength('code', 6)")
                   button.w-20.h-6.bg-red-500.text-xs.rounded(@click="onSendCode" :disabled="seconds < 60") {{sendTxt}}
           li.form-item.flex.flex-col.border-b.py-1(v-else)
               p.text-xs.py-4 密码
@@ -26,7 +26,7 @@ div#login.container.relative.h-full
           p 收不到验证码可尝试以下方案:
           p 1.通信网络异常请重启手机
           p 2.查看手机设置-信息-黑名单
-          p 3.检查是否有安全软件拦截了验证码   
+          p 3.检查是否有安全软件拦截了验证码
     div.w-full.h-11.bg-red-600.text-center.mt-14.rounded.align-middle.text-white.leading-10(@click="onSubmit") 登 录
     div.text-xs.text-white.mt-4 未注册手机在验证后将自动登录
     div.text-xs.mt-36.text-white.flex.flex-row.items-center
@@ -45,7 +45,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
 import Util from '@/utils'
-import { _sendCode, _login } from '@/service/modules/user.api'
+import { _sendCode, _login, _userinfo } from '@/service/modules/user.api'
 
 
 const initBtnText = '发送验证码'
@@ -104,9 +104,10 @@ const onSendCode = async () => {
         sendTxt.value = initBtnText
       }
     }, 1000)
-    if (await _sendCode(user.phone)) { // 如果有数据
-      Util.$notify('success', '发送成功')
-    }
+    await _sendCode(user.phone)
+    Util.$notify('success', '发送成功')
+    // if (await _sendCode(user.phone)) { // 如果有数据
+    // }
   }
 }
 
@@ -115,9 +116,12 @@ const onSubmit = async () => {
   if ($checkData()) {
     const data = await _login(loginType.value, user)
     if (data) {
-      store.commit(SET_INFO, data)
-      const hasPassword = store.getters.info.hasPassword
-      if(hasPassword) { // 已经设置过密码
+      // console.log(data)
+      const token = data.token_type + ' ' + data.access_token
+      const info = await _userinfo(token)
+      store.commit(SET_INFO, {...data, ...info})
+      const notSetLongonPwd = store.getters.info.notSetLongonPwd === 'true'
+      if(!notSetLongonPwd) { // 已经设置过密码
         Util.$notify('success', '登录成功')
         router.replace('/home/index')
       } else { // 没有设置密码
@@ -128,7 +132,6 @@ const onSubmit = async () => {
           router.replace('/home/index')
         })
       }
-       
     }
   }
 }
@@ -144,7 +147,7 @@ const $checkData = () => {
     return false
   }
   if (loginType.value === 1) { // 验证码登录
-    if (!user.code || user.code.toString().length !== 4) { // 校验验证码格式
+    if (!user.code || user.code.toString().length !== 6) { // 校验验证码格式
       Util.$notify('danger', '验证码格式不正确')
       return false
     }

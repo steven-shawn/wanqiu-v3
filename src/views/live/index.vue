@@ -17,7 +17,7 @@ import JqHeader from '@/components/jq-header/index.vue'
 import JqBanner from '@/components/jq-banner/index.vue'
 import VideoListTitle from '@/components/video-list-title/index.vue'
 import VideoListItem from '@/components/video-list-item/index.vue'
-import { _hotList, _liveList } from '@/service/modules/home.api'
+import { _hotList, _liveList } from '@/service/modules/live.api'
 import { onMounted, ref } from '@vue/runtime-core'
 
 const hotList = ref([])
@@ -25,9 +25,9 @@ const liveList = ref([])
 
 onMounted(() => {
   // 热门
-  // _hotList().then(list => {
-  //   hotList.value = list
-  // })
+  _hotList().then(list => {
+    hotList.value = list
+  })
   // // 正在
   // _liveList().then(list => {
   //   liveList.value = list

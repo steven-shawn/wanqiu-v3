@@ -19,7 +19,7 @@ const userStore = {
         }
     },
     actions: {
-        async [SET_BANNER]({ commit, state }) { // 设置banner
+        async [SET_BANNER]({ commit, state }) { // 设置banner  没有用到
             let data = state.banners
             if (!data || !data.length) {
                 data = await _banners()

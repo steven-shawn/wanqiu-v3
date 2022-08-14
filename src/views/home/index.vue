@@ -1,5 +1,6 @@
 <template lang="pug">
-div#home 这里是一张图
+div#home
+  img(src="@/assets/imgs/login_bg@2x.png")
 //div.pb-16.pt-11
   jq-header.fixed 首页
   jq-banner
@@ -14,15 +15,15 @@ div#home 这里是一张图
 </template>
 
 <script setup lang="ts">
-import JqHeader from '@/components/jq-header/index.vue'
-import JqBanner from '@/components/jq-banner/index.vue'
-import VideoListTitle from '@/components/video-list-title/index.vue'
-import VideoListItem from '@/components/video-list-item/index.vue'
-import { _hotList, _liveList } from '@/service/modules/home.api'
+// import JqHeader from '@/components/jq-header/index.vue'
+// import JqBanner from '@/components/jq-banner/index.vue'
+// import VideoListTitle from '@/components/video-list-title/index.vue'
+// import VideoListItem from '@/components/video-list-item/index.vue'
+// import { _hotList, _liveList } from '@/service/modules/home.api'
 import { onMounted, ref } from '@vue/runtime-core'
 
-const hotList = ref([])
-const liveList = ref([])
+// const hotList = ref([])
+// const liveList = ref([])
 
 onMounted(() => {
   // 热门

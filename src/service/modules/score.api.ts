@@ -7,19 +7,53 @@ import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'
  * 获取比分列表
  * @returns
  */
- export const _getScoreList = (queryStr: string = '0') => {
+ export const _getScoreList = (data = {}) => {
     return new Promise((resolve, reject) => {
         return request({
-            url: '/pc/score/pageSchedulDTOList',
+            url: '/pc/score/queryScoreInfoList',
             method: 'POST',
-            Host: 'http://xqadminapi.tyltxt.com',
+            headers: {
+                'Content-Type': 'application/json'
+            },
             data: {
-                queryStr
+                ifFirstLevel: data.ifFirstLevel || 1, // 1筛选1级，0 所有
+                leagueIds: data.leagueIds || '',
+                dataType: data.dataType || 'f',
+                matchStateStr: data.matchStateStr || 0
             }
         }).then(data => {
-            console.log(data)
-            const { list } = data
-            resolve(list || [])
+            resolve(data || [])
         })
+    })
+}
+
+export const _focusList = (dataType = 'f') => {
+    return new Promise((resolve, reject) => {
+        request({
+            url: '/pc/score/pageFoucusScheduleList',
+            method: 'GET',
+            params: {
+                dataType
+            }
+        }).then(data => {
+            resolve(data.records)
+        })
+    })
+}
+
+/**
+ * 关注 / 取消关注
+ * @returns 
+ */
+export const _focus = (competitionId: number, method: string = 'POST') => { // 1关注，0取消关注
+    return request({
+        url: '/pc/usrfucosmatch',
+        method,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: {
+            competitionId
+        }
     })
 }

@@ -12,6 +12,7 @@ div
 import JqHeader from '@/components/jq-header/index.vue'
 import VideoListItem from '@/components/video-list-item/index.vue'
 import { ref } from 'vue'
+import { _hotList } from '@/service/modules/live.api'
 
 const list = ref([])
 const refreshing = ref(false)
@@ -32,6 +33,9 @@ const onRefresh = () => {
 
 // 上拉加载
 const onLoad = () => {
+  _hotList().then(data => {
+    console.log(data)
+  })
     setTimeout(() => {
         if (refreshing.value) {
           list.value = [];

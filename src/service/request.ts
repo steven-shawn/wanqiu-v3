@@ -15,16 +15,17 @@ const service = axios.create({
   withCredentials: false, // send cookies when cross-domain requests
   timeout: REQUEST_TIMEOUT, // 请求超时时间
   headers: {
-    'Content-Type': 'application/json' // x-www-form-urlencoded
+    'Content-Type': 'application/x-www-form-urlencoded' // x-www-form-urlencoded
   }
 })
 
 // 请求拦截
 service.interceptors.request.use(config => {
-  console.log(config)
+  // console.log(config)
   if (config.method === 'post') {
     if (config.data) {
-      config.data = JSON.stringify(config.data)
+      // config.data = data
+      // config.data = qs.stringify(config.data)
     }
   }
   if (!config) {
@@ -33,12 +34,14 @@ service.interceptors.request.use(config => {
   if (!config.headers) {
     config.headers = {}
   }
-  const token = store.state.user.userInfo.token
+  const token = store.state.user.userInfo.access_token
   if (token) { // 携带token
     // config.headers['ts'] = new Date().getTime() // 时间戳
-    config.headers['Authorization'] = `bearer ${token}`
+    if(!config.headers['Authorization']) {
+      config.headers['Authorization'] = `${store.state.user.userInfo.token_type} ${token}`
+    }
   }
-  if (config.showLoading === undefined) {
+  if (config.loading) {
     Toast.loading({
       forbidClick: true,
       duration: 0
@@ -54,9 +57,12 @@ service.interceptors.response.use(res => {
     Toast.clear()
     // console.log(res.config.returnType)
     const { data: { code, data, msg, token } } = res
-    if (token) { // 处理登录接口token在外面的情况
-      data.token = token
+    if (res.config['returnType'] === 'origin') { // 原样返回
+      return Promise.resolve(res.data)
     }
+    // if (token) { // 处理登录接口token在外面的情况
+    //   data.token = token
+    // }
     // if (res && res.config && res.config.returnType)
     switch(code / 1) {
       case 0: // 正确响应
@@ -65,7 +71,7 @@ service.interceptors.response.use(res => {
       case 401:
       case 402:
       case 407: // 登录状态已过期，您可以继续留在该页面，或者重新登录 
-        console.log('4开头的')
+        // console.log('4开头的')
         // Dialog.alert({
         //   title: '提示',
         //   width: 280,
@@ -83,7 +89,7 @@ service.interceptors.response.use(res => {
     }
   },
   error => {
-    console.log(error, error.response)
+    // console.log(error, error.response)
     if (error && error.request) {
       const status = error.request['status']
       switch (status) {
@@ -120,6 +126,14 @@ service.interceptors.response.use(res => {
           // default:
           //   Toast({ message: '服务错误', type: 'fail', duration: 2000 })
           //   break
+        default:
+          // console.log(error)
+          Toast({
+            message: error.message || '服务错误',
+            type: 'fail',
+            duration: 2000
+          })
+
       }
     } else {
       Toast({

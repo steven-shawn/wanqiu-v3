@@ -1,58 +1,58 @@
 <template lang="pug">
 div.pb-24.bg-grey.h-full.text-primary
+  van-calendar(v-model:show="state.show" @confirm="onConfirm")
   van-sticky
     div.flex.bg-white.text-sm.px-4.box-border.justify-between.items-center.pt-4.pb-2
       div.flex.items-center
         p.flex
-          img(src="@/assets/logo.png" class="w-18-px h-18px")
+          img(src="@/assets/imgs/icon_filter@2x.png" class="w-18-px h-18px")
           span.ml-1 选
-        p.bg-grey.flex.w-151-px.h-24-px.rounded-full.ml-2.border-1.justify-between.px-2
+        p.bg-grey.flex.w-151-px.h-24-px.rounded-full.ml-2.border-1.justify-between.px-2.items-center
           input.bg-transparent.w-110-px(placeholder="搜索")
-          img.bg-transparent(src="@/assets/logo.png" class="w-18-px h-18px")
+          img.bg-transparent(src="@/assets/imgs/icon_search@2x.png" class="w-12-px h-12-px")
       div.flex.w-120-px.h-24-px.bg-grey.items-center.rounded.overflow-hidden
-        p.text-sm.w-120-px.h-24-px.flex.justify-center.items-center.rounded(v-for="item in ballTabs" :key="item.id" 
-          :class="item.id === form.ball ? 'bg-primary text-white': ''"  @click="onBallChange(item)") {{item.text}}
-  van-tabs(color="#072b48" sticky v-model:active="active")
-    van-tab(v-for="item in tabList" :title="item.text") 
-      div.overflow-y-auto.mt-1.h-full.border
-        van-pull-refresh(v-model="refreshing" @refresh="onRefresh")
-          van-list(v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad")
-            score-item(v-for="i in list" :key="i")
+        p.text-sm.w-120-px.h-24-px.flex.justify-center.items-center.rounded(v-for="item in dataTypes" :key="item.id" 
+          :class="item.id === state.form.dataType ? 'bg-primary text-white': ''"  @click="onBallChange(item)") {{item.text}}
+      img(src="@/assets/imgs/icon_set@2x.png" class="w-18-px h-18px")  
+  van-tabs(color="#072b48" sticky animated v-model:active="state.active")
+    van-tab(v-for="(item, index) in state.tabList" :title="item.text") 
+      div.overflow-y-auto.mt-1.h-full.border(style="min-height: 70vh")
+        van-sticky(:offset-top="50" v-if="index === 3")
+          score-quick-date(@showCalendar="state.show = true" :chooseDay="state.chooseDay")
+        van-pull-refresh(v-model="item.refreshing" @refresh="onRefresh(index)")
+          van-list(v-model:loading="item.loading" :finished="item.finished" finished-text="没有更多了" @load="onLoad(index)")
+            score-item(v-for="(_item,_index) in item.data" :key="_index" :score-info="_item")
 </template>
 
 <script setup lang="ts">
-import { Tab, Tabs, Sticky } from 'vant';
+import { Tab, Tabs, Sticky, Calendar } from 'vant';
 import ScoreItem from '@/components/score-item/index.vue'
-import { _getScoreList } from '@/service/modules/score.api'
+import ScoreQuickDate from '@/components/score-quick-date/index.vue'
+import { _getScoreList, _focusList } from '@/service/modules/score.api'
 
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, reactive } from 'vue'
 
-const list = ref([])
-const refreshing = ref(false)
-const loading = ref(false)
-const finished = ref(false)
+const state = reactive({
+  tabList: [ // tabs
+    { id: 1, text: '全部', data: [], refreshing: false, finished: false, loading: false,func: '_getScoreList', param: '' },
+    { id: 2, text: '进行中', data: [], refreshing: false, finished: false, loading: false,func: '_getScoreList', param: 0 },
+    { id: 3, text: '已结束', data: [], refreshing: false, finished: false, loading: false ,func: '_getScoreList', param: 2 },
+    { id: 4, text: '赛程', data: [], refreshing: false, finished: false, loading: false },
+    { id: 5, text: '关注', data: [], refreshing: false, finished: false, loading: false, func: '_focusList' }
+  ],
+  active: 0, // 当前tab
+  chooseDay: new Date().getTime(), // 选择的那一天
+  show: false,
+  form: {
+    dataType: 'f' // 'f' - 足球 'b' - 篮球
+  }
+})
 
 // 足球or篮球
-const ballTabs = ref([ // 顶部tab
-  {id: 'football', text: '足球' },
-  {id: 'basketball', text: '篮球'}
-])
-
-// tab
-const tabList = ref([
-  { id: 1, text: '全部' },
-  { id: 2, text: '进行中' },
-  { id: 3, text: '已结束' },
-  { id: 4, text: '赛程' },
-  { id: 5, text: '关注' },
-])
-
-// tab active
-const active = ref(0)
-
-const form = ref({
-  ball: 'football', // 
-})
+const dataTypes = [ // 顶部tab
+  {id: 'f', text: '足球' },
+  {id: 'b', text: '篮球'}
+]
 
 const onBallChange = item => { // 足球和篮球切换
   form.value.ball = item.id
@@ -60,43 +60,36 @@ const onBallChange = item => { // 足球和篮球切换
 }
 
 // 下拉刷新
-const onRefresh = () => {
-   // 清空列表数据
-      finished.value = false;
-
-      // 重新加载数据
-      // 将 loading 设置为 true，表示处于加载状态
-      loading.value = true;
-      onLoad();
+const onRefresh = (index: number) => {
+      state.tabList[index].finished = false;
+      state.tabList[index].data = []
+      state.tabList[index].loading = true;
+      onLoad(index);
 }
 
-// 上拉加载
-const onLoad = () => {
-  // _getScoreList('').then(data => {
-  //   console.log(data)
-  // })
-    setTimeout(() => {
-        if (refreshing.value) {
-          list.value = [];
-          refreshing.value = false;
+// 获取数据
+const onLoad = (index: number) => {
+    const currentTag = state.tabList[index]
+    let func = _getScoreList
+    let data = {matchStateStr: state.tabList[index].param}
+    if (index === 4) {
+      func = _focusList
+      data = state.form.dataType
+    }
+    func(data).then(data => {
+      if (state.tabList[index].refreshing) {
+          state.tabList[index].refreshing = false;
         }
-
-        for (let i = 0; i < 10; i++) {
-          list.value.push(list.value.length + 1);
-        }
-        loading.value = false;
-
-        if (list.value.length >= 40) {
-          finished.value = true;
-        }
-      }, 1000)
+      state.tabList[index].loading = false
+      state.tabList[index].data = data
+      state.tabList[index].finished = true
+    })
 }
 
-const liveList = ref([])
-
-onMounted(() => {
- 
-})
+const onConfirm = (e: Date) => { // 选择日期
+  state.chooseDay = new Date(e).getTime()
+  state.show = false
+}
 
 
 </script>
