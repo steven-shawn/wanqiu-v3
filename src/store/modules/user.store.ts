@@ -1,5 +1,6 @@
+import { _getBalance } from '@/service/modules/user.api';
 import { USER_INFO } from "@/config/system.conf"
-import { SET_INFO, SET_BANNER } from "@/store/types.store"
+import { SET_INFO, SET_BANNER, SET_BALANCE } from "@/store/types.store"
 import { _banners } from '@/service/modules/user.api'
 /**
  * 用户模块,存放用户信息等
@@ -11,8 +12,9 @@ const userStore = {
     },
     mutations: {
         [SET_INFO](state:any, info: any) {
-            state.userInfo = info
-            localStorage.setItem(USER_INFO, JSON.stringify(info))
+            state.userInfo = {...state.userInfo, ...info}
+            console.log(state.userInfo)
+            localStorage.setItem(USER_INFO, JSON.stringify(state.userInfo))
         },
         [SET_BANNER](state: any, banners: any) {
             state.banners = banners
@@ -29,6 +31,11 @@ const userStore = {
                 }
             }
             commit(SET_BANNER, data)
+        },
+        async [SET_BALANCE]({commit}) { // 设置余额
+            const data = await _getBalance()
+            const { diamond } = data
+            commit(SET_INFO, {diamond})
         }
     }
 }

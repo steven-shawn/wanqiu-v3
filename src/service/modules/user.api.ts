@@ -137,3 +137,10 @@ export const _banners = (type: string = 'h1', pageNum:number = 1, pageSize: numb
         }
     })
 }
+
+export const _getBalance = () => {
+    return request({
+        url: '/pc/memmemberrelated/findMemMemberDiamond',
+        method: 'GET'
+    })
+}

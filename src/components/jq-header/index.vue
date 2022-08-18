@@ -14,6 +14,7 @@ import { defineProps } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+
 const props = defineProps({
     leftIcon: { // 左侧图标
         type: String,

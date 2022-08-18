@@ -1,5 +1,5 @@
 <template lang="pug">
-div.pb-20.pt-11.bg-gray-100.h-full 
+div.pb-20.pt-11.bg-gray-100.h-full
   jq-header.fixed 会员等级
   div.px-4
     jq-avatar.my-2(:showEdit="false" :LevelIcon="1")
@@ -9,9 +9,9 @@ div.pb-20.pt-11.bg-gray-100.h-full
       h2.p-4 如何快速升级
       ul.flex.text-xs.flex-wrap.justify-between
         li.flex.flex-col.justify-center.items-center(v-for="item in upGradeList" :key="item.id" :class="'w-1/3'")
-          div.w-10.h-10.rounded-full.bg-red-600.mb-2
-          p {{item.title}}
-          p.text-gray-600.mb-2 {{item.content}}  
+          div.w-10.h-10.rounded-full.mb-2(:class="'up_' + item.id")
+          p.text-primary {{item.title}}
+          p.text-gray-600.mb-2 {{item.content}}
 </template>
 
 <script setup lang="ts">
@@ -35,3 +35,34 @@ const upGradeList = ref([
 
 
 </script>
+
+<style scoped lang="scss">
+
+// @for $i from 1 to 6 {
+//   .up_#{i}{ background: url('@/assets/imgs/my/level/up_${i}.png') no-repeat center center; }
+// }
+.up_1 {
+  background: url('@/assets/imgs/my/level/up_1.png') no-repeat center center;
+  background-size: contain;
+}
+.up_2 {
+  background: url('@/assets/imgs/my/level/up_2.png') no-repeat center center;
+  background-size: contain;
+}
+.up_3 {
+  background: url('@/assets/imgs/my/level/up_3.png') no-repeat center center;
+  background-size: contain;
+}
+.up_4 {
+  background: url('@/assets/imgs/my/level/up_4.png') no-repeat center center;
+  background-size: contain;
+}
+.up_5 {
+  background: url('@/assets/imgs/my/level/up_5.png') no-repeat center center;
+  background-size: contain;
+}
+.up_6 {
+  background: url('@/assets/imgs/my/level/up_6.png') no-repeat center center;
+  background-size: contain;
+}
+</style>
