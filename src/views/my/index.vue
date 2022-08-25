@@ -6,13 +6,13 @@ div.pb-20.pt-11.bg-gray-100.h-full
     div.diamond-box.w-full.h-24.rounded.flex.justify-between
         div.flex.flex-col.text-white.justify-center.pl-4.text-primary.w-full
             div.flex.w-full.justify-between
-                div.text-sm 我的球钻
-                div.text-sm.mr-4 充值明细 >
+                div.text-sm.text-primary 我的球钻
+                div.text-xs.mr-4.text-primary 充值明细 >
             div.flex.justify-between.w-full.items-end
                 div.flex.items-end
                     span.diamond.block.h-7.w-7
                     strong.text-3xl.font-medium.mx-1.translate-y {{store.state.user.userInfo.diamond}}
-                    span.text-xs 个
+                    span.text-xs.text-primary 个
                 div.flex.items-center.mr-4
                     button.w-16.h-6.bg-red-600.rounded.text-white.text-xs.charge
     ul.flex.bg-white.rounded.my-2.px-4.py-3.justify-between

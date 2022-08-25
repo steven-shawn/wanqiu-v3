@@ -10,13 +10,13 @@ div.pb-24.bg-grey.h-full.text-primary
         p.flex(@click="onfilter")
           img(src="@/assets/imgs/icon_filter@2x.png" class="w-18-px h-18px")
           span.ml-1 选
-        p.bg-grey.flex.w-151-px.h-24-px.rounded-full.ml-2.border-1.justify-between.px-2.items-center
-          input.bg-transparent.w-110-px(placeholder="搜索")
+        p.bg-grey.flex.w-151-px.h-24-px.rounded-full.ml-2.border-1.justify-between.px-2.items-center(@click="route('/search')")
+          input.bg-transparent.w-110-px(disabled placeholder="搜索")
           img.bg-transparent(src="@/assets/imgs/icon_search@2x.png" class="w-12-px h-12-px")
       div.flex.w-120-px.h-24-px.bg-grey.items-center.rounded.overflow-hidden
         p.text-sm.w-120-px.h-24-px.flex.justify-center.items-center.rounded(v-for="item in dataTypes" :key="item.id" 
           :class="item.id === state.form.dataType ? 'bg-primary text-white': ''"  @click="onBallChange(item)") {{item.text}}
-      img(src="@/assets/imgs/icon_set@2x.png" class="w-18-px h-18px")
+      img(src="@/assets/imgs/icon_set@2x.png" class="w-18-px h-18px" @click="route('/score/setting')")
   van-tabs(color="#072b48" sticky animated v-model:active="state.active")
     van-tab(v-for="(item, index) in state.tabList" :title="item.text") 
       div.overflow-y-auto.mt-1.h-full.border(style="min-height: 70vh")
@@ -63,6 +63,10 @@ const state = reactive({
   }
 })
 
+
+const route = (path: string) => {
+  router.push(path)
+}
 
 // 足球or篮球
 const dataTypes = [ // 顶部tab

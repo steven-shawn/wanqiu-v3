@@ -2,7 +2,8 @@
 div.leagues
     van-sticky
         div.flex.items-center.bg-white.h-44-px.justify-center.box-shadow
-            img.w-30-px.h-30-px.absolute.left-2.top-2(src="@/assets/logo.png" @click="onBack")
+            //- img.w-30-px.h-30-px.absolute.left-2.top-2(src="@/assets/logo.png" )
+            van-icon.absolute.left-2.top-3.flex.justify-center.items-center(:name="'arrow-left'" size="20px" @click="onBack" style="position: absolute;")
             ul.flex.w-258-px.h-24-px.bg-grey.items-center.rounded.bg-opacity-90
                 li.flex-1.text-xs.h-full.flex.items-center.justify-center.text-primary(v-for="item in state.tabList" @click="onTab(item)"
                     :key="item.id + ''" :class="{'active': item.id === state.activeTab}") {{item.text}}
@@ -30,7 +31,7 @@ div.leagues
 </template>
 
 <script lang="ts" setup>
-import { IndexBar, IndexAnchor, Sticky, Cell } from 'vant';
+import { IndexBar, IndexAnchor, Sticky, Cell, Icon } from 'vant';
 import { reactive } from 'vue';
 import router from '../../router';
 
