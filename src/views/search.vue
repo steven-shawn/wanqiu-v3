@@ -39,7 +39,6 @@ import VideoListItem from '@/components/video-list-item/index.vue'
 import ScheduleItem from '@/components/schedule-item/index.vue'
 import ScoreItem from '@/components/score-item/index.vue'
 import { useRouter } from "vue-router";
-import { throwStatement } from "@babel/types";
 
 const router = useRouter()
 
