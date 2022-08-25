@@ -3,14 +3,15 @@ div#search
     van-sticky
         div.flex.justify-between.items-center.bg-white.px-4.text-primary
             van-icon(:name="'arrow-left'" size="20px" @click="route")
-            van-search.flex-1(v-model="state.keyword" placeholder="请输入搜索关键词" shape="round" right-icon="search" left-icon="''")
-            div 搜索
+            van-search.flex-1(v-model="state.keyword" placeholder="请输入搜索关键词" 
+                shape="round" right-icon="search" left-icon="''" @update:model-value="state.showResult = false")
+            div(@click="onSearch") 搜索
     div.quick.bg-white.p-4(v-if="!state.keyword")
         div(v-for="item in 3" :key="3")
             p.text-xm.mt-2 热门赛事
             ul.flex.flex-wrap
                 li.text-md.text-grey-light.mt-1(v-for="item in 4" :key="item" style="width: 45%") 赛事名字
-    div.list.bg-white.p-4
+    div.list.bg-white.p-4(v-if="!state.showResult && state.keyword")
         ol.flex.flex-col
             li.flex.justify-between.py-2(v-for="(item, index) in 10" :key="item") 
                 p
@@ -18,7 +19,7 @@ div#search
                     span 赛事名称
                 img.w-3.h-3(src="@/assets/logo.png")
 
-    van-tabs(color="#072b48" sticky animated v-model:active="state.activeTab")
+    van-tabs(color="#072b48" sticky animated v-model:active="state.activeTab" v-if="state.showResult")
         van-tab(v-for="(item, index) in tabList" :title="item.text")
             div.flex.flex-wrap.justify-between.px-2.py-4(v-if="state.activeTab === 0")
                 video-list-item(v-for="item in 20" :key="item" :item="{}")
