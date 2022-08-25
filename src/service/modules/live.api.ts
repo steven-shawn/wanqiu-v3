@@ -17,8 +17,8 @@ import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'
             }
         }).then(data=> {
             console.log(data)
-            const { list } = data
-            resolve(list || [])
+            const { records } = data
+            resolve(records || [])
         })
     })
 }

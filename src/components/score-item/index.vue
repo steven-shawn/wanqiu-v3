@@ -4,10 +4,10 @@ div.score-item.flex.flex-col.bg-white.px-2.mt-1.text-xs
         div.flex.flex-1
             span.text-red-600 {{scoreInfo.leagueChsShort}}
             span.text-gray-400.ml-2 {{formatTime(scoreInfo.matchTime)}}
-        div.flex-1.flex.justify-center.flex-shrink-0.text-red-600 72'
+        div.flex-1.flex.justify-center.flex-shrink-0.text-red-600 {{getStatus()}}
         div.flex-1.flex.justify-end
             van-image.w-3.h-3(:src="Util.$require('components/score-item/imgs/icon_view@2x.png')")
-            span.text-gray-400.ml-1 {{scoreInfo.stdNum}} {{scoreInfo.stdNum > 9999 ? '+' : ''}}
+            span.text-gray-400.ml-1 {{scoreInfo.stdNum}} {{scoreInfo.stdNum / 1 > 9999 ? '+' : ''}}
     div.flex.justify-between.items-center.w-full
         div.flex.items-center.w-6(@click="focus")
            van-image.w-5.h-5.ml-1(:src="Util.$require(`components/score-item/imgs/icon_collect${scoreInfo.isfocus ? '_active' : ''}@2x.png`)") 
@@ -55,6 +55,44 @@ const focus = () => {
         Toast.success(method === 'POST' ? '已关注' : '已取消')
         // console.log(data)
     })
+}
+const calcTime = (matchTime, startTime) => {
+    if (matchTime && startTime) {
+        matchTime = matchTime.split(' ')[1].split(':')
+        startTime = startTime.split(' ')[1].split(':')
+        return -((matchTime[0] / 1 -startTime[0] / 1) * 60 + (matchTime[1] / 1 -startTime[1] / 1))
+    }
+}
+const getStatus = () => {
+    let {matchTime, startTime } = props.scoreInfo
+    switch(props.scoreInfo.state / 1) {
+        case -1: // 已结束
+        return '完'
+        case 1: // 上半场
+            // let {matchTime, startTime } = props.scoreInfo
+            return calcTime(matchTime, startTime) + '\''
+        case 2: // 中场
+            return '中场'
+        case 3: // 下半场
+             return calcTime(matchTime, startTime) + 45 + '\''
+        case 4: // 加时
+            return
+        case 5: // 点球
+            return '点球'
+        case 10: //
+            return '取消'
+        case 11:
+            return '待定'
+        case 12:
+            return '腰斩'
+        case 13:
+            return '中断'
+        case 14:
+            return '推迟'
+        default:
+            return '未知'
+
+    }
 }
 // 格式化时间
 const formatTime = (val) => {

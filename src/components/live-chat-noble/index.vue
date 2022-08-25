@@ -1,34 +1,36 @@
 <template lang="pug">
-div.pb-20.pt-11.bg-black.w-screen.h-full.absolute.z-10
-    jq-header.fixed.border-b.z-20(style="border-color: rgba(235, 237, 240,.5)" leftIcon="arrow-left" @e-left-click="onLeftClick") 贵族详情
-    van-tabs(swipeable animated v-model:active="active" background="#0d0e15" color="#0d0e15" title-active-color="#ffdf89" title-inactive-color="#81744e")
+div#noble.pb-20.pt-11.w-screen.h-full.absolute.z-10
+    jq-header.fixed.border-b.z-20.text-primary(style="border-color: rgba(235, 237, 240,.5)" leftIcon="arrow-left" @e-left-click="onLeftClick") 成为贵族 万众瞩目
+    van-tabs(swipeable animated v-model:active="active" background="#fff" color="#667885" title-active-color="#072b48" title-inactive-color="#072b48")
       van-tab(:title="item.text" v-for="item in list" :key="item.id")
         div.content.text-white.flex.flex-col.px-4.justify-between.h-screen.overflow-y-auto
-          div  
-            div.w-40.h-40.rounded-full.border.mx-auto
-            ul.flex.justify-start.flex-wrap.px-4.py-3.border.rounded-lg.mt-3(style="border-color: rgb(69, 68, 65)")
+          div
+            div.w-40.h-40.mx-auto.mt-4
+              img(:src="Util.$require(`components/live-chat-noble/level-${item.id}@2x.png`)")
+            ul.flex.justify-start.flex-wrap.px-4.py-3.box-shadow.rounded-lg.mt-3.bg-white(style="border-color: rgb(69, 68, 65)")
               li.text-yellow-600.flex.flex-col.items-center.px-1.mb-4(v-for="_item in privileges" :key="item.id" :class="'w-1/3'" v-show="item.privileges.includes(_item.id)")
                 div.w-10.h-10.rounded-full.border.mb-1
-                h1.text-sm.high-color {{ _item.title }}
-                p.text-xs.t-color {{ _item.content }}
-          div.flex.justify-between.items-center.my-4
-            div.text-sm
-              p 开通{{item.text}}: 
-                span.high-color {{item.buy}}个球钻/月    
-              p 续费{{item.text}}: 
-                span.high-color {{item.extends}}个球钻/月
-              p 
-                span 
-                span 球钻余额: 
-                span.high-color 100
-              p {{item.status === 0 ? '开通' : '续费'}}{{item.text}}等级
-            button.w-24.h-9.rounded.text-xs.bg-red-600.text-white 立即{{item.status === 0 ? '开通' : '续费'}}            
+                h1.text-sm.text-primary {{ _item.title }}
+                p.text-xs.text-grey-light.text-center {{ _item.content }}
+        div.flex.justify-between.items-center.py-4.box-shadow.bg-white.absolute.bottom-0.w-full.px-4
+          div.text-sm
+            p.text-grey-light 开通{{item.text}}:
+              span.text-primary {{item.buy}}个球钻/月
+            p.text-grey-light 续费{{item.text}}:
+              span.text-primary {{item.extends}}个球钻/月
+            p.flex.items-center
+              img.w-4.h-4.mr-1(src="@/assets/imgs/my/icon_diamond.png")
+              span.text-grey-light 球钻余额:
+              span.text-primary 100
+            p.text-grey-light 由主播“猛哥说球”为你开通
+          button.w-24.h-9.rounded.text-xs.bg-red-600.text-white 立即{{item.status === 0 ? '开通' : '续费'}}
 </template>
 
 <script setup lang="ts">
 import JqHeader from '@/components/jq-header/index.vue'
 import { ref } from '@vue/reactivity'
 import { inject } from '@vue/runtime-core'
+import Util from '@/utils'
 
 const active = ref('')
 
@@ -63,6 +65,8 @@ const onLeftClick = () => {
 </script>
 
 <style scoped lang="sass">
+#noble
+  background-color: #e8e8e8
 $text-color: #81744e
 $text-active-color: #ffdf89
 .content

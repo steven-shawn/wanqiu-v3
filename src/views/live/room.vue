@@ -37,7 +37,7 @@ import { provide, reactive, ref } from 'vue'
 
 // 状态传递器
 const popCtrl = reactive({
-    showNoble: false, // 显示贵族页面
+    showNoble: true, // 显示贵族页面
     showGift: false // 显示礼物界面
 })
 

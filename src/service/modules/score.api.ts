@@ -19,7 +19,8 @@ import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'
                 ifFirstLevel: data.ifFirstLevel || 1, // 1筛选1级，0 所有
                 leagueIds: data.leagueIds || '',
                 dataType: data.dataType || 'f',
-                matchStateStr: data.matchStateStr || 0
+                matchStateStr: data.matchStateStr,
+                uuid: new Date().getTime() + Math.floor(Math.random() * 1000000)
             }
         }).then(data => {
             resolve(data || [])
