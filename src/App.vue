@@ -21,7 +21,7 @@ watch(route, (val) => { // t监视tab页面
 
 const isReady = ref(false) // 页面加载完全才显示
 onMounted(() => {
-  Util.setStyle()
+  // Util.setStyle()
   isReady.value = true
 })
 </script>

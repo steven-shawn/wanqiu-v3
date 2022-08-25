@@ -1,10 +1,13 @@
 <template lang="pug">
 div.pb-24.bg-grey.h-full.text-primary
-  van-calendar(v-model:show="state.show" @confirm="onConfirm")
+  //- van-calendar(v-model:show="state.show" @confirm="onConfirm")
+  van-popup.w-full(v-model:show="state.show" position="bottom")
+    van-datetime-picker.w-full(v-model="state.currentDate" type="date" 
+      title="选择年月日" :min-date="state.minDate" :max-date="state.maxDate" @confirm="onDateConfirm" @cancel="state.show = false")
   van-sticky
     div.flex.bg-white.text-sm.px-4.box-border.justify-between.items-center.pt-4.pb-2
       div.flex.items-center
-        p.flex
+        p.flex(@click="onfilter")
           img(src="@/assets/imgs/icon_filter@2x.png" class="w-18-px h-18px")
           span.ml-1 选
         p.bg-grey.flex.w-151-px.h-24-px.rounded-full.ml-2.border-1.justify-between.px-2.items-center
@@ -13,7 +16,7 @@ div.pb-24.bg-grey.h-full.text-primary
       div.flex.w-120-px.h-24-px.bg-grey.items-center.rounded.overflow-hidden
         p.text-sm.w-120-px.h-24-px.flex.justify-center.items-center.rounded(v-for="item in dataTypes" :key="item.id" 
           :class="item.id === state.form.dataType ? 'bg-primary text-white': ''"  @click="onBallChange(item)") {{item.text}}
-      img(src="@/assets/imgs/icon_set@2x.png" class="w-18-px h-18px")  
+      img(src="@/assets/imgs/icon_set@2x.png" class="w-18-px h-18px")
   van-tabs(color="#072b48" sticky animated v-model:active="state.active")
     van-tab(v-for="(item, index) in state.tabList" :title="item.text") 
       div.overflow-y-auto.mt-1.h-full.border(style="min-height: 70vh")
@@ -25,13 +28,22 @@ div.pb-24.bg-grey.h-full.text-primary
 </template>
 
 <script setup lang="ts">
-import { Tab, Tabs, Sticky, Calendar } from 'vant';
+import { Tab, Tabs, Sticky, Popup, DatetimePicker } from 'vant';
 import ScoreItem from '@/components/score-item/index.vue'
 import ScoreQuickDate from '@/components/score-quick-date/index.vue'
 import { _getScoreList, _focusList } from '@/service/modules/score.api'
 
 import { onMounted, ref, reactive } from 'vue'
+import { useRouter } from 'vue-router';
+const router = useRouter()
 
+/********* 接口声明区 **********/
+interface IDataType {
+  id: String,
+  text: String
+}
+
+/******* 数据区 *****/ 
 const state = reactive({
   tabList: [ // tabs
     { id: 1, text: '全部', data: [], refreshing: false, finished: false, loading: false,func: '_getScoreList', param: '' },
@@ -41,6 +53,9 @@ const state = reactive({
     { id: 5, text: '关注', data: [], refreshing: false, finished: false, loading: false, func: '_focusList' }
   ],
   active: 0, // 当前tab
+  currentDate: new Date(),
+  minDate: new Date(2022, 0, 1),
+  maxDate: new Date(2023, 0, 1),
   chooseDay: new Date().getTime(), // 选择的那一天
   show: false,
   form: {
@@ -48,13 +63,20 @@ const state = reactive({
   }
 })
 
+
 // 足球or篮球
 const dataTypes = [ // 顶部tab
   {id: 'f', text: '足球' },
   {id: 'b', text: '篮球'}
 ]
 
-const onBallChange = item => { // 足球和篮球切换
+// 选择日期
+const onDateConfirm = () => {
+  console.log(1111)
+  state.show = false
+}
+
+const onBallChange = (item:IDataType) => { // 足球和篮球切换
   form.value.ball = item.id
   // TODO: 初始化数据
 }
@@ -91,5 +113,9 @@ const onConfirm = (e: Date) => { // 选择日期
   state.show = false
 }
 
+// 联赛过滤
+const onfilter = () => {
+  router.push('/score/leagues')
+}
 
 </script>

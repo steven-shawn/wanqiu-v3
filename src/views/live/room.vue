@@ -1,10 +1,10 @@
 <template lang="pug">
-div.pb-20.pt-11.bg-gray-100.h-full.relative
+div.pb-20.pt-11.bg-gray-100.h-full.relative.box-border
   jq-header.fixed 正在直播
   live-player
   van-tabs(swipeable animated v-model:active="active" background="#111" color="#fff" title-active-color="#fff" title-inactive-color="#646566")
-    van-tab(title="聊天" name="a")
-        live-chat
+    van-tab.box-border.px-45-px(title="聊天" name="a")
+        live-chat.box-border
     van-tab(title="主播" name="b")
         live-archor
     van-tab(title="赛况" name="c")
