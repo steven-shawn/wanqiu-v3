@@ -15,8 +15,8 @@ div.pb-20.pt-11.bg-gray-100.h-full.relative.box-border
         live-line
     van-tab(title="相关直播" name="f")
         live-relate
-  live-chat-noble.fixed.top-0(v-if="popCtrl.showNoble")
-  live-chat-gift.fixed.bottom-0(v-if="popCtrl.showGift")
+  live-chat-noble.fixed.top-0(v-if="state.showNoble")
+  live-chat-gift.fixed.bottom-0(v-if="state.showGift")
 </template>
 
 <script setup lang="ts">
@@ -36,12 +36,12 @@ import LiveChatGift from '@/components/live-chat-gift/index.vue'
 import { provide, reactive, ref } from 'vue'
 
 // 状态传递器
-const popCtrl = reactive({
-    showNoble: true, // 显示贵族页面
+const state = reactive({
+    showNoble: false, // 显示贵族页面
     showGift: false // 显示礼物界面
 })
 
-provide('popCtrl', popCtrl)
+provide('popCtrl', state)
 const active = ref('a')
 // active.value = 'c'
 

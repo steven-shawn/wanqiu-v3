@@ -11,7 +11,7 @@ div.pb-20.pt-11.bg-gray-100.h-full
             div.flex.justify-between.w-full.items-end
                 div.flex.items-end
                     span.diamond.block.h-7.w-7
-                    strong.text-3xl.font-medium.mx-1.translate-y {{store.state.user.userInfo.diamond}}
+                    strong.text-3xl.font-medium.mx-1.translate-y {{store.state.user.userInfo.diamond}} || '0'
                     span.text-xs.text-primary 个
                 div.flex.items-center.mr-4
                     button.w-16.h-6.bg-red-600.rounded.text-white.text-xs.charge
