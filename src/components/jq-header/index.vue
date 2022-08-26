@@ -1,5 +1,5 @@
 <template lang="pug">
-div.w-full.h-11.flex.justify-between.items-center.bg-white.text-primary.z-10.top-0.text-base
+div.w-full.h-11.flex.justify-between.items-center.bg-white.text-primary.z-10.top-0.text-base.shadow-md
     div.w-11.h-11.flex.justify-center.items-center(@click="onBack")
         van-icon(:name="leftIcon || 'arrow-left'" size="20px")
     div.items-center.flex-1.text-center

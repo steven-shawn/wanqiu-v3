@@ -2,7 +2,7 @@
 div.pb-20.pt-11.bg-gray-100.h-full.relative.box-border
   jq-header.fixed 正在直播
   live-player
-  van-tabs(swipeable animated v-model:active="active" background="#111" color="#fff" title-active-color="#fff" title-inactive-color="#646566")
+  van-tabs(swipeable animated v-model:active="active" background="#fff" color="#667885" title-active-color="#072b48" title-inactive-color="#072b48")
     van-tab.box-border.px-45-px(title="聊天" name="a")
         live-chat.box-border
     van-tab(title="主播" name="b")

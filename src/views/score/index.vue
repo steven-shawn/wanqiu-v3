@@ -81,7 +81,7 @@ const onDateConfirm = () => {
 }
 
 const onBallChange = (item:IDataType) => { // 足球和篮球切换
-  form.value.ball = item.id
+  state.form.dataType = item.id
   // TODO: 初始化数据
 }
 

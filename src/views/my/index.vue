@@ -7,11 +7,13 @@ div.pb-20.pt-11.bg-gray-100.h-full
         div.flex.flex-col.text-white.justify-center.pl-4.text-primary.w-full
             div.flex.w-full.justify-between
                 div.text-sm.text-primary 我的球钻
-                div.text-xs.mr-4.text-primary 充值明细 >
+                div.text-xs.mr-4.text-primary.flex.items-center(@click="onRoute({router: '/my/charge'})")
+                  span 充值明细
+                  van-icon.rotate-180(name="arrow-left" size="12px")
             div.flex.justify-between.w-full.items-end
                 div.flex.items-end
                     span.diamond.block.h-7.w-7
-                    strong.text-3xl.font-medium.mx-1.translate-y {{store.state.user.userInfo.diamond}} || '0'
+                    strong.text-3xl.font-medium.mx-1.translate-y.text-primary {{store.state.user.userInfo.diamond  || '0'}}
                     span.text-xs.text-primary 个
                 div.flex.items-center.mr-4
                     button.w-16.h-6.bg-red-600.rounded.text-white.text-xs.charge
