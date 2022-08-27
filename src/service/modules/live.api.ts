@@ -7,18 +7,25 @@ import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'
  * 热门
  * @returns
  */
- export const _hotList = (size: number = 6) => {
+ export const _hotList = (current: number = 1, size: number = DEFAULT_PAGE_SIZE, all: boolean = false) => {
     return new Promise((resolve, reject) => {
         return request({
             url: '/pc/league/pageHotLeagueInfo',
             method: 'GET',
             params: {
+                current,
                 size
             }
         }).then(data=> {
-            console.log(data)
-            const { records } = data
-            resolve(records || [])
+            const { records = [], total = 0 } = data
+            if (all) {
+                resolve({
+                    total,
+                    records
+                })
+            } else {
+                resolve(records)
+            }
         })
     })
 }
@@ -37,9 +44,8 @@ import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'
                 size
             }
         }).then(data=> {
-            console.log(data)
-            const { list } = data
-            resolve(list || [])
+            const { list = [] } = data
+            resolve(list )
         })
     })
 }

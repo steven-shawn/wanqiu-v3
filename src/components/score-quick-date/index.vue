@@ -1,5 +1,5 @@
 <template lang="pug">
-div#quick-date.flex.box-border.items-center.w-full.h-46-px.bg-white.box-shadow
+div#quick-date.flex.box-border.items-center.w-full.h-46-px.bg-white.shadow
   ul.flex.justify-between.pl-2
     li.flex.flex-col.w-56-px.h-30-px.mr-2.justify-center.items-center.py-2.rounded(v-for="(item, index) in list"
       :key="index" :class="index === 2 ? 'bg-dark text-grey' : 'bg-grey .text-primary'")

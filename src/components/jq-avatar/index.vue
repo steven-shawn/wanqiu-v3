@@ -1,7 +1,7 @@
 <template lang="pug">
 div.flex.text-xs.justify-between
     div.w-14.h-14.rounded-full.flex-shrink-0.mr-2.overflow-hidden
-        van-image(:src="Util.$require(`components/jq-avatar/default_avatar.png`)")
+        van-image(:src="Util.require(`components/jq-avatar/default_avatar.png`)")
     div.flex.flex-col.justify-around.flex-1
         div.flex.items-end
             span.text-sm.mr-2.font-medium {{store.state.user.userInfo.nickName}}
@@ -25,6 +25,5 @@ defineProps({
         default: ''
     }
 })
-
 const store = useStore()
 </script>

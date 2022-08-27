@@ -46,7 +46,7 @@ export const _focusList = (dataType = 'f') => {
  * 关注 / 取消关注
  * @returns 
  */
-export const _focus = (competitionId: number, method: string = 'POST') => { // 1关注，0取消关注
+export const _focus = (matchId: number, method: string = 'POST') => { // 1关注，0取消关注
     return request({
         url: '/pc/usrfucosmatch',
         method,
@@ -54,7 +54,18 @@ export const _focus = (competitionId: number, method: string = 'POST') => { // 1
             'Content-Type': 'application/json'
         },
         data: {
-            competitionId
+            matchId
+        }
+    })
+}
+
+export const _league = (leagueType: string = '0', queryType: string = '0') => {
+    return request({
+        url: '/pc/league/query',
+        method: 'GET',
+        params: {
+            leagueType,
+            queryType
         }
     })
 }

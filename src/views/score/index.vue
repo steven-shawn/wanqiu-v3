@@ -18,7 +18,7 @@ div.pb-24.bg-grey.h-full.text-primary
           :class="item.id === state.form.dataType ? 'bg-primary text-white': ''"  @click="onBallChange(item)") {{item.text}}
       img(src="@/assets/imgs/icon_set@2x.png" class="w-18-px h-18px" @click="route('/score/setting')")
   van-tabs(color="#072b48" sticky animated v-model:active="state.active")
-    van-tab(v-for="(item, index) in state.tabList" :title="item.text") 
+    van-tab(v-for="(item, index) in state.tabList" :title="item.text")
       div.overflow-y-auto.mt-1.h-full.border(style="min-height: 70vh")
         van-sticky(:offset-top="50" v-if="index === 3")
           score-quick-date(@showCalendar="state.show = true" :chooseDay="state.chooseDay")

@@ -8,7 +8,6 @@ jq-tarbar(v-if="showTarbar")
 <script setup lang="ts">
 import JqTarbar from '@/components/jq-tarbar/index.vue'
 import { watch, onMounted, ref } from 'vue'
-import Util from '@/utils'
 import { useRoute } from 'vue-router'
 
 const showTarbar = ref(false)
@@ -21,7 +20,6 @@ watch(route, (val) => { // t监视tab页面
 
 const isReady = ref(false) // 页面加载完全才显示
 onMounted(() => {
-  // Util.setStyle()
   isReady.value = true
 })
 </script>

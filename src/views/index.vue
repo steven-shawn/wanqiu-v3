@@ -1,15 +1,17 @@
 <template lang="pug">
 div.flex.flex-col.px-1.py-2.bg-white.rounded.border-box 
     ul.flex.border-b.pb-2
-        li.w-16.h-7.flex.justify-center.items-center.bg-gray-200.rounded.mr-2(v-for="item in ballList" :key="item.id" :class="{'active': item.active}" @click="onTopLiClick(item)" v-show="item.show")
+        li.w-16.h-7.flex.justify-center.items-center.bg-gray-200.rounded.mr-2(v-for="item in ballList" 
+        :key="item.id" :class="{'active': item.active}" @click="onTopLiClick(item)" v-show="item.show")
             component(:is="item.component" :color="item.active ? '#fff' : '#666'")
             span.text-sm.ml-1 {{item.text}}
     div.flex.justify-between.items-center.mt-2
         ol.flex.items-center
-            li.relative.text-sm.px-2(v-for="item in typeList" :key="item.id" @click="onBottomClick(item)" :class="{'text-red-600 font-bold': item.active}"  v-show="item.show") {{item.text}}
+            li.relative.text-sm.px-2(v-for="item in typeList" :key="item.id" 
+            @click="onBottomClick(item)" :class="{'text-red-600 font-bold': item.active}"  v-show="item.show") {{item.text}}
         div.text-sm(v-if="type === 'score'")
           span 隐藏 0
-          button.bg-gray-200.rounded-md.px-2.ml-1 完整
+          button.bg-gray-200.rounded-md.px-2.ml-1 @/utils
 </template>
 
 <script setup lang="ts">

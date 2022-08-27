@@ -24,12 +24,12 @@ export default defineConfig({
     port: 3001,
     proxy: {
       "/pc": {
-        target: "http://xqadminapi.tyltxt.com",
+        target: "http://xqadminapi.tyltxt.com:88",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
       "/auth": {
-        target: "http://xqadminapi.tyltxt.com",
+        target: "http://xqadminapi.tyltxt.com:88",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

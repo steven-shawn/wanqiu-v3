@@ -6,12 +6,12 @@ div#noble.pb-20.pt-11.w-screen.h-full.absolute.z-10
         div.content.text-white.flex.flex-col.px-4.justify-between.h-screen.overflow-y-auto
           div
             div.w-40.h-40.mx-auto.mt-4
-              img(:src="Util.$require(`components/live-chat-noble/level-${item.id}@2x.png`)")
+              img(:src="Util.require(`components/live-chat-noble/level-${item.id}@2x.png`)")
             ul.flex.justify-start.flex-wrap.px-4.py-3.box-shadow.rounded-lg.mt-3.bg-white(style="border-color: rgb(69, 68, 65)")
               li.text-yellow-600.flex.flex-col.items-center.px-1.mb-4(v-for="_item in privileges" 
                 :key="item.id" :class="'w-1/3'" v-show="item.privileges.includes(_item.id)")
                 div.w-10.h-10.rounded-full.mb-1
-                  img(:src="Util.$require(`components/live-chat-noble/${_item.id === 1 ? _item.icon + (index + 1) : _item.icon}@2x.png`)")
+                  img(:src="Util.require(`components/live-chat-noble/${_item.id === 1 ? _item.icon + (index + 1) : _item.icon}@2x.png`)")
                 h1.text-sm.text-primary {{ _item.title }}
                 p.text-xs.text-grey-light.text-center(v-html="typeof(_item.content) === 'string' ? _item.content : _item.content[index]")
         div.flex.justify-between.items-center.py-4.box-shadow.bg-white.absolute.bottom-0.w-full.px-4

@@ -45,13 +45,13 @@ div#login.container.relative.h-full
 <script setup lang="ts">
 import { RESEND_CODE_TIME, MOBILE_REG, PASSWORD_REG } from "@/config/system.conf"
 import { SET_INFO } from "@/store/types.store"
-import { NavBar } from 'vant';
+import { NavBar, Notify, Dialog } from 'vant';
 
 import { ref, reactive, onBeforeUnmount } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
-import Util from '@/utils'
+// import Util from '@/utils'
 import { _sendCode, _login, _userinfo } from '@/service/modules/user.api'
 
 
@@ -88,7 +88,6 @@ const onToggleTip = (flag: boolean | undefined | null) => {
   } else {
     showTip.value = !showTip.value
   }
-  
 }
 
 // 长度检查
@@ -110,7 +109,7 @@ const onChangeLoginType = () => {
 // 发送验证码
 const onSendCode = async () => {
   if (!MOBILE_REG.test(user.phone)) {
-    Util.$notify('danger', '手机号码格式不正确')
+    Notify({type: 'danger', message: '手机号码格式不正确'})
   } else { // 倒计时
     interval.value = setInterval(() => {
       sendTxt.value = `重新发送${seconds.value}s`
@@ -122,7 +121,7 @@ const onSendCode = async () => {
       }
     }, 1000)
     await _sendCode(user.phone)
-    Util.$notify('success', '发送成功')
+    Notify({type: 'success', message: '发送成功'})
     // if (await _sendCode(user.phone)) { // 如果有数据
     // }
   }
@@ -143,10 +142,10 @@ const onSubmit = async () => {
       store.commit(SET_INFO, {...data, ...info})
       const notSetLongonPwd = store.getters.info.notSetLongonPwd === 'true'
       if(!notSetLongonPwd) { // 已经设置过密码
-        Util.$notify('success', '登录成功')
+        Notify({type: 'success', message: '登录成功'})
         router.replace('/home/index')
       } else { // 没有设置密码
-        Util.$dialog('confirm', '', '恭喜你注册成功,是否立即设置【登陆密码】?').then(() => {
+        Dialog.confirm({title: '', message: '恭喜你注册成功,是否立即设置【登陆密码】?'}).then(() => {
           router.replace('/home/index')
           // router.replace('/my/change-password')
         }).catch(() => {
@@ -160,21 +159,21 @@ const onSubmit = async () => {
 // 工具函数，校验数据
 const $checkData = () => {
  if(!checked.value) { // 是否同意了条款
-    Util.$notify('danger', '请勾选服务协议')
+    Notify({type: 'danger', message: '请勾选服务协议'})
     return false
   }
   if (!MOBILE_REG.test(user.phone)){ // 校验手机
-    Util.$notify('danger', '手机号码格式不正确')
+    Notify({type: 'danger', message:'手机号码格式不正确'})
     return false
   }
   if (loginType.value === 1) { // 验证码登录
     if (!user.code || user.code.toString().length !== 6) { // 校验验证码格式
-      Util.$notify('danger', '验证码格式不正确')
+      Notify({type: 'danger', message:'验证码格式不正确'})
       return false
     }
   } else { // 密码登录
     if(!PASSWORD_REG.test(user.password)) { // 校验密码
-      Util.$notify('danger', '密码必须是8-16位字母数字组合')
+      Notify({type: 'danger', message: '密码必须是8-16位字母数字组合'})
       return false
     }
   }
