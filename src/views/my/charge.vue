@@ -1,6 +1,9 @@
 <template lang="pug">
 div#charge(@click="toggleShow('')")
   jq-header.relative 充值明细
+  van-popup.w-full(v-model:show="state.show" position="bottom")
+    van-datetime-picker.w-full(v-model="state.currentDate" type="date" 
+      title="选择年月日" :min-date="state.minDate" :max-date="state.maxDate" @confirm="onDateConfirm" @cancel="state.show = false")
   van-sticky.mt-2
     div.flex.bg-white.py-2.px-4.w-full
         div.drop-box.bg-grey.text-xs.mr-4.flex.items-center.rounded.relative
@@ -18,7 +21,7 @@ div#charge(@click="toggleShow('')")
             ul.bg-white.shadow-md.absolute.w-full.py-2(style="top: 100%" v-if="state.showCate")
                 li.py-2.px-2.text-sm(v-for="item in state.cateActions" :key="item.id" @click="onSelect('cate', item)") {{item.text}}
         div.w-8.h-8.bg-primary.absolute.right-4.rounded.flex.justify-center.items-center
-          img.w-4.h-4(src="@/assets/imgs/icon_calender@2x.png")
+          img.w-4.h-4(src="@/assets/imgs/icon_calender@2x.png" @click="state.show = true")
   van-list(v-model:loading="state.loading" :finished="state.finished" @load="onLoad" finished-text="没有更多了")
     div.flex.flex-col.bg-white.pt-4.pb-2.mt-2(v-for="item in 4" :key="item")
         div.flex.justify-between.items-center.px-4
@@ -49,6 +52,11 @@ interface IAction {
 }
 
 const state = reactive({
+    show: false,
+    currentDate: new Date(),
+    minDate: new Date(2000, 1,1),
+    maxDate: new Date(2025,1,1),
+
     showDirect: false,
     directActions: [
       { id: 1, text: '全部' },
@@ -71,6 +79,10 @@ const state = reactive({
 
 const onLoad = () => {
     console.log(111)
+}
+
+const onDateConfirm = () => {
+    state.show = false
 }
 
 // 切换
