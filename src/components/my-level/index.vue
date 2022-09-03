@@ -1,5 +1,5 @@
 <template lang="pug">
-div.w-full.h-150.relative.bg-no-repeat(:style="{'backgroundImage': 'url(' + Util.require('components/my-level/bg_21.png') + ')'}")
+div.w-full.h-150.relative.bg-no-repeat(:style="{'backgroundImage': `url(${getImageUrl('bg_21.png')}`}")
     h1.text-2xl.text-white.p-4 Lv14骁勇先锋
     div.w-full.h-90.absolute.top-8
         div.w-full.h-90.aboslute.border
@@ -11,9 +11,11 @@ div.w-full.h-150.relative.bg-no-repeat(:style="{'backgroundImage': 'url(' + Util
 </template>
 
 <script lang="ts" setup>
-import Util from '@/utils'
-</script>
 
+const getImageUrl = (name: string) => {
+    return new URL(`./${name}`, import.meta.url).href;
+}
+</script>
 
 <style scoped lang="sass">
 .w-343

@@ -6,12 +6,23 @@ import { Toast,Dialog, Notify } from 'vant'
 // import router from '@/router'
 import { REQUEST_URL, REQUEST_TIMEOUT } from '@/config/system.conf'
 
+
+
 import store from '@/store'
+import router from '@/router'
+
+
+// 清理数据
+const logout = () => {
+  Dialog.alert({ title: '提示', width: 280, message: '登录状态已过期，您可以继续留在该页面，或者重新登录'}).then(() => {
+    store.commit('user/SET_LOGOUT')
+    router.push('/login')
+  })
+}
 
 // let returnType = 'data' // 返回类型
-
 const service = axios.create({
-  baseURL: '', // REQUEST_URL,    //process.env.VUE_APP_BASE_API, url = base url + request url
+  baseURL: REQUEST_URL,
   withCredentials: false, // send cookies when cross-domain requests
   timeout: REQUEST_TIMEOUT, // 请求超时时间
   headers: {
@@ -68,21 +79,11 @@ service.interceptors.response.use(res => {
       case 0: // 正确响应
         return Promise.resolve(data)
         break
-      case 401:
-      case 402:
-      case 407: // 登录状态已过期，您可以继续留在该页面，或者重新登录 
-        // console.log('4开头的')
-        // Dialog.alert({
-        //   title: '提示',
-        //   width: 280,
-        //   message: '登录状态已过期，您可以继续留在该页面，或者重新登录'
-        // }).then(() => {
-        //   store.dispatch('user/resetToken').then(() => {
-        //     router.push({
-        //       name: 'login'
-        //     })
-        //   })
-        // })
+      // case 401:
+      // case 402:
+      // case 407:
+      // case 424:   // 登录状态已过期，您可以继续留在该页面，或者重新登录 
+      //   logout()
         break
       default: // 直接弹出消息
         Notify({ type: 'warning', message: msg })
@@ -93,32 +94,17 @@ service.interceptors.response.use(res => {
     if (error && error.request) {
       const status = error.request['status']
       switch (status) {
-        case 401:
-          Dialog.alert({
-            title: '提示',
-            width: 280,
-            message: '登录状态已过期，您可以继续留在该页面，或者重新登录'
-          }).then(() => {
-            // store.dispatch('user/resetToken').then(() => {
-            //   router.push({
-            //     name: 'login'
-            //   })
-            // })
-          })
+        case 424:
+          logout()
           break
         case 404:
-          Toast({
-            message: '接口未找到',
-            type: 'fail',
-            duration: 2000
-          })
+          Toast({ message: '接口未找到', type: 'fail', duration: 2000 })
           break
         case 415:
-          Toast({
-            message: 'HTTP协议不匹配，请确认',
-            type: 'fail',
-            duration: 2000
-          })
+          Toast({ message: 'HTTP协议不匹配，请确认', type: 'fail', duration: 2000 })
+          break
+        case 428:
+          Toast({ message: '验证码不合法', type: 'fail', duration: 2000 })
           break
           // case 500:
           //   Toast({ message: '服务未启动', type: 'fail', duration: 2000 })
@@ -128,19 +114,11 @@ service.interceptors.response.use(res => {
           //   break
         default:
           // console.log(error)
-          Toast({
-            message: error.message || '服务错误',
-            type: 'fail',
-            duration: 2000
-          })
+          Toast({ message: error.message || '服务错误', type: 'fail', duration: 2000 })
 
       }
     } else {
-      Toast({
-        message: error.message || '服务错误',
-        type: 'fail',
-        duration: 2000
-      })
+      Toast({ message: error.message || '服务错误', type: 'fail', duration: 2000 })
     }
 
     return Promise.reject(error)

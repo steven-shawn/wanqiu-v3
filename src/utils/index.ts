@@ -9,6 +9,7 @@
 
 const require = (url: string) => {
     return  `src/${url}`
+    // return new URL(`src/${url}`, import.meta.url).href
 }
 
 export default {

@@ -1,4 +1,4 @@
-export const REQUEST_URL = 'http://xqadminapi.tyltxt.com'   // 请求地址 TODO: 区分环境
+export const REQUEST_URL = import.meta.env.VITE_APP_BASE_URL   // 请求地址 TODO: 区分环境
 
 export const IMG_URL = 'http://xqadminimage.tyltxt.com:88/' // 图片服务器地址
 export const REQUEST_TIMEOUT = 20000    // 网络请求超时时间,默认10秒

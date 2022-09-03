@@ -9,6 +9,11 @@ import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'
  */
  export const _getScoreList = (data = {}) => {
     return new Promise((resolve, reject) => {
+        let startTime:any = ''
+        if (data.startTime) {
+            startTime = new Date(data.startTime)
+            startTime = [startTime.getFullYear(), startTime.getMonth() + 1, startTime.getDate()].join('-')
+        }
         return request({
             url: '/pc/score/queryScoreInfoList',
             method: 'POST',
@@ -17,9 +22,10 @@ import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'
             },
             data: {
                 ifFirstLevel: data.ifFirstLevel || 1, // 1筛选1级，0 所有
-                leagueIds: data.leagueIds || '',
-                dataType: data.dataType || 'f',
-                matchStateStr: data.matchStateStr,
+                leagueIds: data.leagueIds.join(','), // 联赛
+                dataType: data.dataType || 'f', // 球类
+                matchStateStr: data.matchStateStr, // 状态
+                startTime, // 日期
                 uuid: new Date().getTime() + Math.floor(Math.random() * 1000000)
             }
         }).then(data => {

@@ -6,11 +6,11 @@ div.score-item.flex.flex-col.bg-white.px-2.mt-1.text-xs.shadow-md
             span.text-gray-400.ml-2 {{formatTime(scoreInfo.matchTime)}}
         div.flex-1.flex.justify-center.flex-shrink-0.text-red-600 {{getStatus()}}
         div.flex-1.flex.justify-end
-            van-image.w-3.h-3(:src="Util.require('components/score-item/imgs/icon_view@2x.png')")
+            van-image.w-3.h-3(:src="getImageUrl(`icon_view@2x.png`)")
             span.text-gray-400.ml-1 {{scoreInfo.stdNum}} {{scoreInfo.stdNum / 1 > 9999 ? '+' : ''}}
     div.flex.justify-between.items-center.w-full
         div.flex.items-center.w-6(@click="focus")
-           van-image.w-5.h-5.ml-1(:src="Util.require(`components/score-item/imgs/icon_collect${scoreInfo.isfocus ? '_active' : ''}@2x.png`)") 
+           van-image.w-5.h-5.ml-1(:src="getImageUrl(`icon_collect${scoreInfo.isfocus ? '_active' : ''}@2x.png`)")
         div.flex.justify-center.flex-1.flex-shrink-0
             div.flex-1.flex.justify-end
                 span.bg-red-600.px-1.text-white.rounded-sm.mr-1.h-16-px.block {{scoreInfo.homeRed}}
@@ -26,8 +26,8 @@ div.score-item.flex.flex-col.bg-white.px-2.mt-1.text-xs.shadow-md
                 span.bg-yellow-300.px-1.ml-1.text-white.rounded-sm.h-16-px.block {{scoreInfo.awayYellow}}
                 span.bg-red-600.px-1.text-white.rounded-sm.ml-1.h-16-px.block {{scoreInfo.awayRed}}
         div.flex.items-center.w-6.justify-start
-            van-image.w-5.ml-1(:src="Util.require('components/score-item/imgs/icon_play@2x.png')" :class="'h-3.5'" v-if="scoreInfo.ifAnc === 1")
-            van-image.w-5.ml-1(:src="Util.require('components/score-item/imgs/icon_lineup@2x.png')" :class="'h-3.5'" v-if="scoreInfo.ifAnc === 0")
+            van-image.w-5.ml-1(:src="getImageUrl(`icon_play@2x.png`)" :class="'h-3.5'" v-if="scoreInfo.ifAnc === 1")
+            van-image.w-5.ml-1(:src="getImageUrl(`icon_lineup@2x.png`)" :class="'h-3.5'" v-if="scoreInfo.ifAnc === 0")
     div.flex.justify-center.my-1
        div.flex-1
        div.flex.justify-center.flex-1
@@ -37,12 +37,15 @@ div.score-item.flex.flex-col.bg-white.px-2.mt-1.text-xs.shadow-md
 </template>
 
 <script lang="ts" setup>
-import Util from '@/utils'
-import { _focus } from '@/service/modules/score.api'
+import { _focus } from '@/service/modules/score.api';
 import { Toast } from 'vant';
 const props = defineProps({
     scoreInfo: Object
 })
+
+const getImageUrl = (name: string) => {
+    return new URL(`./imgs/${name}`, import.meta.url).href;
+}
 
 // 关注
 const focus = () => {

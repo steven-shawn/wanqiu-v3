@@ -11,7 +11,7 @@ div.pb-16
       img.w-15.h-7(src="@/assets/imgs/icon_gifts@2x.png" @click="onGifts")
   live-swiper
   div.hot.px-2.mt-2(style="min-height: 192px;")
-    video-list-title(:count="state.hotTotal")
+    video-list-title(:count="state.hotTotal" title="热门直播")
     div.flex.flex-wrap.justify-between
       video-list-item(v-for="item in state.hotList" :key="item.matchId" :item="item")
     van-loading.text-center.pt-12(type="spinner" v-if="state.hotLoading")

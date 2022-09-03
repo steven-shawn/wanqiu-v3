@@ -36,10 +36,11 @@ div.leagues.pb-20
 </template>
 
 <script lang="ts" setup>
-import { IndexBar, IndexAnchor, Sticky, Cell, Icon } from 'vant';
 import { onMounted, reactive } from 'vue';
-import router from '../../router';
+import router from '@/router';
 import { _league } from '@/service/modules/score.api'
+import { SET_LEGUES, SET_CHECKED } from '@/store/modules/score.store';
+import { useStore } from 'vuex';
 
 interface tabItem {
     id: Number,
@@ -60,6 +61,8 @@ interface IState {
     loading: boolean
 }
 
+const store = useStore()
+
 // 数据模型
 const state: IState = reactive({
     loading: true,
@@ -75,10 +78,11 @@ const state: IState = reactive({
 })
 
 onMounted(async () => {
-    const data = await _league()
+    await store.dispatch(`score/${SET_LEGUES}`)
     state.loading = false
-    const { infoList } = data
+    const { infoList } = store.state.score.leagues
     state.infoList = infoList.sort((prev: IInfoItem, next: IInfoItem) => prev.name.localeCompare(next.name))
+    state.checked = store.state.score.checked
 })
 
 
@@ -115,7 +119,8 @@ const select = (type: String) => {
 
 // 确定
 const onConfirm = () => {
-    console.log(state.checked)
+    store.commit(`score/${SET_CHECKED}`, state.checked)
+    router.go(-1)
 }
 
 

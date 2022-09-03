@@ -7,9 +7,13 @@ import { processExpression } from '@vue/compiler-core';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: './',
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src"),
+      "~": path.resolve(__dirname, './'),
+      "@": path.resolve(__dirname, 'src'),
+      "assets": path.resolve(__dirname, "src/assets"),
+      "~assets": path.resolve(__dirname, "/src/assets"),
     },
   },
   // "process.env": process.env,

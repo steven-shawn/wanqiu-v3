@@ -20,12 +20,12 @@ div.pb-20.pt-11.bg-gray-100.h-full
     ul.flex.bg-white.rounded.my-2.px-4.py-3.justify-between
         li.flex.flex-col.items-center.flex-1(v-for="item in tabList" :key="item.id" @click="onRoute(item)")
             div.w-11.h-9.mb-2.img-bg.flex.justify-center.items-center
-                van-image.w-7.h-7(:src="Util.require(`assets/imgs/my/icon_${item.icon}.png`)")
+                van-image.w-7.h-7(:src="getImageUrl(`icon_${item.icon}.png`)")
             div.text-xs.text-primary {{item.text}}
     ul.flex.flex-col.my-3.bg-white.rounded.shadow-lg
         li.flex.justify-between.h-10.items-center.border-b(v-for="item in cellList" :key="item.id" @click="onRoute(item)")
             span.block.w-5.h-5.mx-4
-                van-image(:src="Util.require(`assets/imgs/my/icon_${item.icon}.png`)")
+                van-image(:src="getImageUrl(`icon_${item.icon}.png`)")
             span.flex-1.text-xs.text-primary {{item.text}}
             van-icon.text-gray-600.mr-4(name="arrow")
 </template>
@@ -41,6 +41,10 @@ import { _getBalance } from '@/service/modules/user.api'
 
 const store = useStore()
 const router = useRouter()
+
+const getImageUrl = (name: string) => {
+    return new URL(`../../assets/imgs/my/${name}`, import.meta.url).href;
+}
 
 // 我的关注...
 const tabList = ref([

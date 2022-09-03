@@ -1,16 +1,20 @@
 <template lang="pug">
 ul.flex.fixed.h-14.w-full.bottom-0.z-10.justify-around.items-end
   li.flex.flex-col.items-center(v-for="item in list" :key="item.id" @click="onTab(item)")
-    van-image.w-4.h-4(:src="Util.require(`components/jq-tarbar/imgs/icon_${item.bg}${item.active ? '_active': ''}@2x.png`)" :class="{'w-12 h-12 relative rounded-3xl live overflow-hidden': item.id === 3}")
+    van-image.w-4.h-4(:src="getImageUrl(`icon_${item.bg}${item.active ? '_active': ''}@2x.png`)" 
+    :class="{'w-12 h-12 relative rounded-3xl live overflow-hidden': item.id === 3}")
     span(:class=" item.active ? 'text-primary': 'text-grey-light'" style="font-size: 9px;") {{item.text}}
 </template>
 
 <script lang="ts" setup>
-import Util from '@/utils'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+
+const getImageUrl = (name: string) => {
+    return new URL(`./imgs/${name}`, import.meta.url).href;
+}
 
 const props = defineProps({
     activeId: {

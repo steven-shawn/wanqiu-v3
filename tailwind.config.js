@@ -15,7 +15,8 @@ module.exports = {
         'blue-light': '#2b70bd',
         'blue-lighter': '#4a6274',
         'red-light': '#ce1313',
-        'green-light': '#38c31c'
+        'green-light': '#38c31c',
+        'white-light': '#f2f4f6'
       }
     },
   },

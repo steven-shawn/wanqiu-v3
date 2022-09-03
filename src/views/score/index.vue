@@ -1,8 +1,7 @@
 <template lang="pug">
 div.pb-24.bg-grey.h-full.text-primary
-  //- van-calendar(v-model:show="state.show" @confirm="onConfirm")
   van-popup.w-full(v-model:show="state.show" position="bottom")
-    van-datetime-picker.w-full(v-model="state.currentDate" type="date" 
+    van-datetime-picker.w-full(v-model="state.currentDate" type="date"
       title="选择年月日" :min-date="state.minDate" :max-date="state.maxDate" @confirm="onDateConfirm" @cancel="state.show = false")
   van-sticky
     div.flex.bg-white.text-sm.px-4.box-border.justify-between.items-center.pt-4.pb-2
@@ -21,20 +20,20 @@ div.pb-24.bg-grey.h-full.text-primary
     van-tab(v-for="(item, index) in state.tabList" :title="item.text")
       div.overflow-y-auto.mt-1.h-full.border(style="min-height: 70vh")
         van-sticky(:offset-top="50" v-if="index === 3")
-          score-quick-date(@showCalendar="state.show = true" :chooseDay="state.chooseDay")
+          score-quick-date(@showCalendar="state.show = true" :chooseDay="state.currentDate" @choose="onChoose")
         van-pull-refresh(v-model="item.refreshing" @refresh="onRefresh(index)")
           van-list(v-model:loading="item.loading" :finished="item.finished" finished-text="没有更多了" @load="onLoad(index)")
             score-item(v-for="(_item,_index) in item.data" :key="_index" :score-info="_item")
 </template>
 
 <script setup lang="ts">
-import { Tab, Tabs, Sticky, Popup, DatetimePicker } from 'vant';
 import ScoreItem from '@/components/score-item/index.vue'
 import ScoreQuickDate from '@/components/score-quick-date/index.vue'
 import { _getScoreList, _focusList } from '@/service/modules/score.api'
 
 import { onMounted, ref, reactive } from 'vue'
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 const router = useRouter()
 
 /********* 接口声明区 **********/
@@ -43,7 +42,21 @@ interface IDataType {
   text: String
 }
 
-/******* 数据区 *****/ 
+const store = useStore()
+
+
+const getLimitDay = (today:number, days:number) => {
+  const newDay = new Date(today + days * 24 * 60 * 60 * 1000)
+  const result = [newDay.getFullYear(), newDay.getMonth() + 1, newDay.getDate()]
+  // console.log(result)
+  return result
+}
+
+const today = new Date().getTime()
+let min = getLimitDay(today,  -30)
+let max = getLimitDay(today,  30)
+
+/******* 数据区 *****/
 const state = reactive({
   tabList: [ // tabs
     { id: 1, text: '全部', data: [], refreshing: false, finished: false, loading: false,func: '_getScoreList', param: '' },
@@ -54,11 +67,13 @@ const state = reactive({
   ],
   active: 0, // 当前tab
   currentDate: new Date(),
-  minDate: new Date(2022, 0, 1),
-  maxDate: new Date(2023, 0, 1),
-  chooseDay: new Date().getTime(), // 选择的那一天
+  minDate: new Date(min),
+  maxDate: new Date(max),
+  // chooseDay: today, // 选择的那一天
   show: false,
   form: {
+    startTime: '',
+    leagueIds: [],
     dataType: 'f' // 'f' - 足球 'b' - 篮球
   }
 })
@@ -74,14 +89,31 @@ const dataTypes = [ // 顶部tab
   {id: 'b', text: '篮球'}
 ]
 
+
 // 选择日期
-const onDateConfirm = () => {
-  console.log(1111)
+const onDateConfirm = e => {
+  state.currentDate = new Date(e)
+   min = getLimitDay(state.currentDate.getTime(),  -30)
+   max = getLimitDay(state.currentDate.getTime(),  30)
+  state.minDate = new Date(min.join(','))
+  state.maxDate = new Date(max.join(','))
   state.show = false
+  const index = 3
+  state.tabList[index].data = []
+  state.tabList[index].finished = false
+  state.tabList[index].loading = true
+  onLoad(index)
+}
+
+// date
+const onChoose = (index: number) => {
+  const newDate =  getLimitDay(new Date(state.currentDate).getTime(),  index)
+  onDateConfirm(newDate)
 }
 
 const onBallChange = (item:IDataType) => { // 足球和篮球切换
   state.form.dataType = item.id
+  onLoad(state.active)
   // TODO: 初始化数据
 }
 
@@ -97,7 +129,13 @@ const onRefresh = (index: number) => {
 const onLoad = (index: number) => {
     const currentTag = state.tabList[index]
     let func = _getScoreList
-    let data = {matchStateStr: state.tabList[index].param}
+    state.form.leagueIds = store.state.score.checked
+    let data = {matchStateStr: state.tabList[index].param, ...state.form}
+    if (index === 3) {
+      data.startTime = state.currentDate
+    } else {
+      data.startTime = ''
+    }
     if (index === 4) {
       func = _focusList
       data = state.form.dataType
@@ -110,11 +148,6 @@ const onLoad = (index: number) => {
       state.tabList[index].data = data
       state.tabList[index].finished = true
     })
-}
-
-const onConfirm = (e: Date) => { // 选择日期
-  state.chooseDay = new Date(e).getTime()
-  state.show = false
 }
 
 // 联赛过滤

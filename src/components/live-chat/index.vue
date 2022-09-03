@@ -12,6 +12,26 @@ div.live-chat.h-screen.overflow-y-auto.pb-11.bg-white
 <script lang="ts" setup>
 import LiveChatMsg from '@/components/live-chat-msg/index.vue'
 import LiveChatInput from '@/components/live-chat-input/index.vue'
+import { onMounted } from '@vue/runtime-core'
+import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
+const route = useRoute()
+const store = useStore()
+
+const socket = null
+
+onMounted(() => {
+  const { query: { id }} = route
+  if(id) {
+    store.commit('live/SET_ROOM_ID', id)
+  }
+
+  // socket = new WebSocket()
+
+  // socket.on('open')
+
+  console.log(route.query.id, store.state.live.room_id)
+})
 
 </script>
 

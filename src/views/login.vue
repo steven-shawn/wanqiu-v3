@@ -1,14 +1,11 @@
 <template lang="pug">
 div#login.container.relative.h-full
-  van-nav-bar.text-primary(title="登陆/注册" left-arrow right-text="账号找回" style="color: red!important")
+  van-nav-bar.text-primary(title="登陆/注册" left-arrow right-text="账号找回" style="color: red!important" @click-right="onRightClick")
   div.content.w-full.h-full.flex.flex-col.items-center.absolute.inset-0.px-4(@click="onToggleTip(false)")
     div.flex.flex-col.justify-center.items-center.pt-20
-       img.w-10.h-10(src="@/assets/logo.png")
+       img.w-10.h-10(src="@/assets/logo@2x.png")
        p.text-md.text-primary.mt-1 金球体育
     div.login-form.container.rounded-md.bg-white.text-primary.px-4.pb-4.mt-5.box-shadow
-      // ul.tabs.flex.flex-row.py-1
-          li.tab.mr-10.text-lg(@click="onChangeLoginType(1)" :class="{'border-b-2': loginType === 1}") 短信登录/注册
-          li.tab.text-lg.text-opacity-80(@click="onChangeLoginType(2)" :class="{'border-b-2': loginType === 2}") 密码登录
       ol.form
           li.form-item.flex.flex-col.border-b.py-2
               p.text-md.py-4 手机号码
@@ -32,22 +29,23 @@ div#login.container.relative.h-full
           p 1.通信网络异常请重启手机
           p 2.查看手机设置-信息-黑名单
           p 3.检查是否有安全软件拦截了验证码
-    div.w-full.h-11.bg-primary.text-center.mt-14.rounded.align-middle.text-white.leading-10(@click="onSubmit") 登 录
-    div.w-full.h-11.bg-grey-lighter.text-center.mt-2.rounded.align-middle.text-primary.leading-10(@click="onChangeLoginType()") {{loginType === 2 ? '验证码' : '密码'}}登陆/注册
+    div.login-btn.w-full.h-11.text-center.mt-14.rounded.leading-10.flex-shrink-0(@click="onSubmit")
+    div.w-full.h-11.text-center.mt-2.leading-10.flex-shrink-0(
+      @click="onChangeLoginType()" :class="loginType === 2 ? 'login-phone' : 'login-pass'")
     //- div.text-xs.text-white.mt-4 未注册手机在验证后将自动登录
     div.text-xs.mt-36.text-white.flex.flex-row.items-center
       input.w-3.h-3.mr-1.bg-red-600(type="checkbox" v-model="checked")
       span.text-primary 我已阅读并接受 
-      router-link.text-blue-600(to="/agreement/user") 《用户协议》
-      router-link.text-blue-600(to="/agreement/privacy") 《隐私协议》
+      router-link.text-blue(to="/agreement/user") 《用户协议》
+      router-link.text-blue(to="/agreement/privacy") 《隐私协议》
 </template>
 
 <script setup lang="ts">
 import { RESEND_CODE_TIME, MOBILE_REG, PASSWORD_REG } from "@/config/system.conf"
 import { SET_INFO } from "@/store/types.store"
-import { NavBar, Notify, Dialog } from 'vant';
+import { NavBar, Notify, Dialog, Toast } from 'vant';
 
-import { ref, reactive, onBeforeUnmount } from 'vue'
+import { ref, reactive, onBeforeUnmount, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
@@ -62,7 +60,7 @@ const router = useRouter()
 
 /******** 数据定义 **********/
 const checked = ref(true) // 是否同意协议
-const loginType = ref(2) // 1手机验证码登录 2密码登录
+const loginType = ref(1) // 1手机验证码登录 2密码登录
 const showTip = ref(false) // 收不到验证码提示
 const seconds = ref(RESEND_CODE_TIME) // 倒计时秒数字
 const sendTxt = ref(initBtnText); // 倒计时文字
@@ -74,6 +72,13 @@ const user = reactive({ // 用户模型
 const interval = ref(-1) // 计数器
 
 /********** 生命周期 **************/
+onMounted(() => {
+  const userInfo = store.state.user.userInfo
+  if (userInfo.access_token) {
+    router.replace('/home/index')
+  }
+})
+
 onBeforeUnmount(() => { // 清除计时器
   if (interval.value && interval.value !== -1) {
     clearInterval(interval.value)
@@ -88,6 +93,10 @@ const onToggleTip = (flag: boolean | undefined | null) => {
   } else {
     showTip.value = !showTip.value
   }
+}
+
+const onRightClick = () => {
+  Toast('敬请期待')
 }
 
 // 长度检查
@@ -139,7 +148,7 @@ const onSubmit = async () => {
       // console.log(data)
       const token = data.token_type + ' ' + data.access_token
       const info = await _userinfo(token)
-      store.commit(SET_INFO, {...data, ...info})
+      store.commit(`user/${SET_INFO}`, {...data, ...info})
       const notSetLongonPwd = store.getters.info.notSetLongonPwd === 'true'
       if(!notSetLongonPwd) { // 已经设置过密码
         Notify({type: 'success', message: '登录成功'})
@@ -189,10 +198,14 @@ const $checkData = () => {
 
 <style lang="sass" scoped>
 #login
-  // background-image: url('@/assets/imgs/login_bg@2x.png')
-  // background-size: 100% 100%
   background: #f2f4f6
-  // height: 812px!important
-  .login-form
-    // height: 186px
+  .login-btn
+      background: url('@/assets/imgs/bg-login@2x.png') no-repeat center center
+      background-size: 100%
+  .login-phone
+    background: url('@/assets/imgs/login-phone@2x.png') no-repeat center center
+    background-size: 100% 100%
+  .login-pass
+    background: url('@/assets/imgs/login-pass@2x.png') no-repeat center center
+    background-size: 100% 100%
 </style>

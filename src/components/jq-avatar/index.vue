@@ -1,7 +1,7 @@
 <template lang="pug">
 div.flex.text-xs.justify-between
     div.w-14.h-14.rounded-full.flex-shrink-0.mr-2.overflow-hidden
-        van-image(:src="Util.require(`components/jq-avatar/default_avatar.png`)")
+        van-image(:src="getImageUrl(`default_avatar.png`)")
     div.flex.flex-col.justify-around.flex-1
         div.flex.items-end
             span.text-sm.mr-2.font-medium {{store.state.user.userInfo.nickName}}
@@ -13,7 +13,6 @@ div.flex.text-xs.justify-between
 </template>
 
 <script lang="ts" setup>
-import Util from '@/utils'
 import { useStore } from 'vuex';
 defineProps({
     showEdit: { // 是否显示编辑按钮
@@ -25,5 +24,10 @@ defineProps({
         default: ''
     }
 })
+
+const getImageUrl = (name: string) => {
+    return new URL(`./${name}`, import.meta.url).href;
+}
+
 const store = useStore()
 </script>
