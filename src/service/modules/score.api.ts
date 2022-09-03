@@ -34,6 +34,11 @@ import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'
     })
 }
 
+/**
+ * 获取焦点赛事
+ * @param dataType 
+ * @returns 
+ */
 export const _focusList = (dataType = 'f') => {
     return new Promise((resolve, reject) => {
         request({
@@ -43,7 +48,8 @@ export const _focusList = (dataType = 'f') => {
                 dataType
             }
         }).then(data => {
-            resolve(data.records)
+            const { records = []} = data || {}
+            resolve(records)
         })
     })
 }
@@ -65,6 +71,12 @@ export const _focus = (matchId: number, method: string = 'POST') => { // 1关注
     })
 }
 
+/**
+ * 获取联赛信息
+ * @param leagueType 
+ * @param queryType 
+ * @returns 
+ */
 export const _league = (leagueType: string = '0', queryType: string = '0') => {
     return request({
         url: '/pc/league/query',

@@ -3,6 +3,22 @@ import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'
 
 /** -=========== 直播相关接口 ================== */
 
+
+export const _focusLive = () => {
+    return new Promise((resolve, reject) => {
+        request({
+            url: '/pc/league/pageFocusLeagueInfo',
+            method: 'GET',
+            params: {
+                size: 5
+            }
+        }).then(data => {
+            const { records = []} = data
+            resolve(records)
+        })
+    })
+}
+
 /**
  * 热门
  * @returns

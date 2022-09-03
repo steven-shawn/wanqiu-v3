@@ -4,14 +4,14 @@ div#search
         div.flex.justify-between.items-center.bg-white.px-4.text-primary
             van-icon(:name="'arrow-left'" size="20px" @click="route")
             van-search.flex-1(v-model="state.keyword" placeholder="请输入搜索关键词" 
-                shape="round" right-icon="search" left-icon="''" @update:model-value="state.showResult = false")
+                shape="round" right-icon="search" left-icon="''" @update:model-value="onModelValue")
             div(@click="onSearch") 搜索
-    div.quick.bg-white.p-4(v-if="!state.keyword")
-        div(v-for="item in 3" :key="3")
-            p.text-xm.mt-2 热门赛事
+    div.quick.bg-white.p-4(v-if="!state.showResult")
+        div(v-for="(item, index) in state.quickList" :key="index")
+            p.text-xm.mt-2.text-primary {{item.title}}
             ul.flex.flex-wrap
-                li.text-md.text-grey-light.mt-1(v-for="item in 4" :key="item" style="width: 45%") 赛事名字
-    div.list.bg-white.p-4(v-if="!state.showResult && state.keyword")
+                li.text-md.text-grey-light.mt-1(v-for="(_item, _index) in item.list" :key="_index" style="width: 45%" @click="onQuick(_item)") {{_item}}
+    //div.list.bg-white.p-4(v-if="!state.showResult && state.keyword")
         ol.flex.flex-col
             li.flex.justify-between.py-2(v-for="(item, index) in 10" :key="item") 
                 p
@@ -20,51 +20,102 @@ div#search
                 img.w-3.h-3(src="@/assets/logo.png")
 
     van-tabs(color="#072b48" sticky animated v-model:active="state.activeTab" v-if="state.showResult")
-        van-tab(v-for="(item, index) in tabList" :title="item.text")
-            div.flex.flex-wrap.justify-between.px-2.py-4(v-if="state.activeTab === 0")
-                video-list-item(v-for="item in 20" :key="item" :item="{}")
-            div.px-2.py-4(v-if="state.activeTab === 1")
-                schedule-item(v-for="i in 20" :key="i")
-            div.px-2.py-4(v-if="state.activeTab === 2")
-                score-item(v-for="(item) in 20" :key="item" :score-info="{}")
-            div.flex.flex-wrap.justify-between.px-2.py-4(v-if="state.activeTab === 3")    
-                video-list-item(v-for="item in 10" :key="item" :item="{}")
+        van-tab(v-for="(item, index) in state.tabList" :title="item.text")    
+    van-list.calc-h(v-model:loading="state.tabList[state.activeTab].loading" :finished="state.tabList[state.activeTab].finished" 
+        finished-text="没有更多了" @load="onLoad(state.activeTab)" v-if="state.showResult" :immediate-check="false")
+        div.flex.flex-wrap.justify-between.px-2.py-4(v-if="true || state.activeTab === 0")
+            video-list-item(v-for="item in 20" :key="item" :item="{}")
+        //div.px-2.py-4(v-if="state.activeTab === 1")
+            schedule-item(v-for="i in 20" :key="i")
+        //div.px-2.py-4(v-if="state.activeTab === 2")
+            score-item(v-for="(item) in 20" :key="item" :score-info="{}")
+        //div.flex.flex-wrap.justify-between.px-2.py-4(v-if="state.activeTab === 3")    
+            video-list-item(v-for="item in 10" :key="item" :item="{}")
 
 </template>
 
 
 <script lang="ts" setup>
-import { Sticky, Search, Icon, Tabs, Tab } from "vant"
-import { reactive } from "vue";
+import { onMounted, reactive } from "vue";
 import VideoListItem from '@/components/video-list-item/index.vue' 
 import ScheduleItem from '@/components/schedule-item/index.vue'
 import ScoreItem from '@/components/score-item/index.vue'
 import { useRouter } from "vue-router";
+import { _quickList, _searchList, _searchRcommend, _searchArchor } from '@/service/modules/search.api'
+import { DEFAULT_PAGE_SIZE } from "@/config/system.conf";
 
 const router = useRouter()
 
 const state = reactive({
     keyword: '', // 搜索关键字
     activeTab: 0,
-    showResult: false
+    showResult: false,
+    quickList: {
+        comList: { title: '热门赛事', list: []}, // 比赛名称
+        teamList: {title: '热门赛队', list: []}, // 赛队名称
+        stuList: { title: '热门主播' , list: []}, // 主播名称
+    },
+    _searchList,
+    _searchRcommend,
+    _searchArchor,
+    tabList : [
+        { id: 1, text: '直播', data: [], refreshing: false, finished: false, loading: false,func: '_searchArchor'},
+        { id: 2, text: '赛程', data: [], refreshing: false, finished: false, loading: false,func: '_searchList' },
+        { id: 3, text: '比分', data: [], refreshing: false, finished: false, loading: false ,func: '_searchList' },
+        { id: 4, text: '推荐', data: [], refreshing: false, finished: false, loading: false, func: '_searchRcommend' },
+    ]
 })
-
-
-
-const tabList = [
-  { id: 1, text: '直播', data: [], refreshing: false, finished: false, loading: false,func: '_getScoreList', param: '' },
-  { id: 2, text: '赛程', data: [], refreshing: false, finished: false, loading: false,func: '_getScoreList', param: 0 },
-  { id: 3, text: '比分', data: [], refreshing: false, finished: false, loading: false ,func: '_getScoreList', param: 2 },
-  { id: 4, text: '推荐', data: [], refreshing: false, finished: false, loading: false },
-]
 
 // 搜索
 const onSearch = () => {
     console.log(state.keyword)
     state.showResult = true
 }
+
+const onQuick = (item: string) => {
+    state.keyword = item
+    onSearch()
+}
+
+
+const onModelValue = () =>{
+    // state.showResult = false
+    // _searchList(state.keyword).then(data => {
+    //     console.log(data)
+    // })
+}
+
+onMounted(() => { // 快捷数据
+    _quickList().then(data => {
+        state.quickList.comList.list = data.comList
+        state.quickList.teamList.list = data.teamList
+        state.quickList.stuList.list = data.stuList
+    })
+})
+
+
+const onLoad = async (index: number) => {
+    state.tabList[index].loading = true
+    const result = await state[state.tabList[index]['func']](state.keyword)
+    console.log(result)
+    state.tabList[index]['data'] = [...state.tabList[index]['data'], ...result]
+    state.tabList[index].loading = false
+    if (result.length < DEFAULT_PAGE_SIZE) {
+        state.tabList[index].finished = true
+    }
+    console.log(result, index)
+}
+
+
 // back
 const route = () => {
     router.go(-1)
 }
 </script>
+
+<style lang="sass" scoped>
+.calc-h
+    height: calc(100vh - 98px)
+    overflow: scroll
+    // background: red   
+</style>

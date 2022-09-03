@@ -40,7 +40,7 @@ import { useStore } from 'vuex'
 const store = useStore()
 
 const getImageUrl = (name: string) => {
-    return new URL(`./${name}`, import.meta.url).href;
+    return new URL(`./archor-level/${name}`, import.meta.url).href;
 }
 
 const state = reactive({

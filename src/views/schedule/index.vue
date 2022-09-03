@@ -6,12 +6,12 @@ div.pb-20.bg-gray-100.h-full.relative
   van-sticky
     div.flex.bg-white.text-sm.px-4.box-border.justify-between.items-center.pt-4.pb-2
       div.flex.items-center
-        p.flex(@click="onfilter")
+        p.flex(@click="onSetting")
           img(src="@/assets/imgs/icon_set@2x.png" class="w-18-px h-18px")
       div.flex.w-120-px.h-24-px.bg-grey.items-center.rounded.overflow-hidden
         p.text-sm.w-120-px.h-24-px.flex.justify-center.items-center.rounded(v-for="item in dataTypes" :key="item.id"
           :class="item.id === state.form.dataType ? 'bg-primary text-white': ''"  @click="onBallChange(item)") {{item.text}}
-      img(src="@/assets/imgs/icon_filter@2x.png" class="w-18-px h-18px")
+      img(src="@/assets/imgs/icon_filter@2x.png" class="w-18-px h-18px" @click="onfilter")
     van-tabs(color="#072b48" sticky animated v-model:active="state.active" @change="onChange")
       van-tab(v-for="item in (state.form.dataType !== 'f' ? state.tabList : state.tabList.filter(item => item.id !==2))" :title="item.text")
     score-quick-date(@showCalendar="state.show = true" :chooseDay="state.currentDate" @choose="onChoose")
@@ -29,7 +29,11 @@ import ScoreQuickDate from '@/components/score-quick-date/index.vue'
 import { DatetimePicker, Popup } from 'vant';
 import { _getScoreList } from '@/service/modules/schedule.api'
 import { onMounted, reactive, ref } from 'vue'
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
+const router = useRouter()
+const store = useStore()
 // 足球or篮球
 const dataTypes = [ // 顶部tab
   {id: 'f', text: '足球' },
@@ -103,11 +107,16 @@ const onDateConfirm = e => {
   state.list = []
   finished.value = false
   loading.value = true
+  state.form.queryDate = state.currentDate
   state.form.current = 1
   onLoad()
 }
 const onfilter = () => { // 过滤联赛
-  console.log(1111)
+  router.push('/score/leagues?type=schedule')
+}
+
+const onSetting = () => {
+  router.push('/score/setting')
 }
 
 const onBallChange = (item) => { // 足球篮球切换
@@ -135,6 +144,7 @@ const onRefresh = () => {
 
 // 上拉加载
 const onLoad = () => {
+    state.form.leagueIds = store.state.score.checked_schdules
     _getScoreList(state.form).then(data => {
       if (refreshing.value) {
         refreshing.value = false;
@@ -147,24 +157,7 @@ const onLoad = () => {
       }
       loading.value = false
     })
-    // setTimeout(() => {
-    //     if (refreshing.value) {
-    //       list.value = [];
-    //       refreshing.value = false;
-    //     }
-
-    //     for (let i = 0; i < 10; i++) {
-    //       list.value.push(list.value.length + 1);
-    //     }
-    //     loading.value = false;
-
-    //     if (list.value.length >= 40) {
-    //       finished.value = true;
-    //     }
-    //   }, 1000)
 }
-
-const liveList = ref([])
 
 onMounted(async () => {
   // const result = await _getScoreList(state.form)

@@ -1,7 +1,6 @@
 import request from '@/service/request'
 import { loginUser } from '@/types/login.type'
 import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'
-import { useRoute } from 'vue-router'
 
 /***============== 个人中心及登录/注册 ====================== */
 
@@ -44,7 +43,7 @@ import { useRoute } from 'vue-router'
 
 
 /**
- * 发送短信验证码
+ * 发送短信验证码（登陆）
  * @param mobile 电话号码
  * @returns
  */
@@ -64,12 +63,28 @@ export const _sendCode = (mobile: string | number) => {
 }
 
 /**
+ * 发送短信验证码(设置密码)
+ * @param mobile 
+ * @returns 
+ */
+export const _sendCodeSetPwd = (phoneNum: string | number) => {
+    return request({
+        url: '/pc/smsCode/sendSetPwdVaildCode',
+        method: 'GET',
+        loading: true,
+        params: {
+            phoneNum
+        }
+    })
+}
+
+/**
  * 登录接口
  * @param type 类型
  * @param user 登录对象
  * @returns
  */
-export const _login = (type: number, user:loginUser) => {
+export const _login = (user:loginUser) => {
     return new Promise((resolve, reject) => {
         request({
             url: '/auth/mobile/token/sms?mobile=' + 'SMS@' + user.phone + '&grant_type=mobile&code='+ user.code,
@@ -89,6 +104,22 @@ export const _login = (type: number, user:loginUser) => {
             resolve(data)
             // resolve(formatUserInfo(data))
         })
+    })
+}
+
+/**
+ * 用户名密码登陆
+ * @param user 
+ * @returns 
+ */
+export const _loginByPwd = (user: loginUser) => {
+    return request({
+        url: `/auth/oauth/token?grant_type=password&username=${user.phone}&password=${user.password}`,
+        method: 'POST',
+        returnType: 'origin',
+        headers: {
+            'Authorization': 'Basic cGM6cGM='
+        }
     })
 }
 
@@ -138,9 +169,33 @@ export const _banners = (type: string = 'h1', pageNum:number = 1, pageSize: numb
     })
 }
 
+/**
+ * 获取余额
+ * @returns 
+ */
 export const _getBalance = () => {
     return request({
         url: '/pc/memmemberrelated/findMemMemberDiamond',
         method: 'GET'
+    })
+}
+
+/**
+ * 设置登陆密码
+ * @param form 
+ * @returns 
+ */
+export const _setPwd = (form) => {
+    return request({
+        url: '/pc/smsCode/userSetPwdByCode',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: {
+            phone: form.phone,
+            pwd: form.pwd,
+            smsCode: form.sms
+        }
     })
 }

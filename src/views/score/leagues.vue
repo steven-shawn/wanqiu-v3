@@ -10,20 +10,22 @@ div.leagues.pb-20
                     :key="item.id + ''" :class="{'active': item.id === state.activeTab}") {{item.text}}
     van-loading.text-center.pt-24(type="spinner" v-if="state.loading" color="#000")
     van-checkbox-group(v-model="state.checked" v-if="!state.loading")
-      van-index-bar(v-if="!state.loading")
+      van-index-bar(v-if="!state.loading && state.tabList[state.activeTab / 1 - 1].data.length")
         van-index-anchor(index="A")
         ol.flex.px-2.flex-wrap
             li.border.border-primary.border-opacity-50.w-109-px.h-28-px.flex.items-center.justify-between.text-xs.px-1.mb-2.mx-1(
-                v-for="item in state.infoList" :key="item.leagueId" style="border-color:rgba(102, 120, 133, 0.1)")
+                v-for="item in state.tabList[state.activeTab / 1 - 1].data" :key="item.leagueId" style="border-color:rgba(102, 120, 133, 0.1)")
                 p.flex-1.flex.items-center
                     //- img.w-3.h-3.mr-1(src="@/assets/logo.png")
                     van-checkbox.mr-2(:name="item.leagueId" icon-size="15px")
                     span.text-grey-light.text-xs {{item.name}}
                 p.text-grey-light.text-xs {{item.count}}
 
-        van-index-anchor(index="B")
+        // van-index-anchor(index="B")
         //ol
             li(v-for="item in 10" :key="item")
+      van-empty(v-if="!state.loading && !state.tabList[state.activeTab / 1 - 1].data.length")
+        span.text-xs.text-primary 暂无联赛      
     div.footer.h-70-px.bg-white.w-full.fixed.bottom-0.left-0.flex.justify-between.items-center.px-4.text-primary
         p.flex.items-center
             span.mr-1.text-md(@click="select('all')") 全选
@@ -41,10 +43,12 @@ import router from '@/router';
 import { _league } from '@/service/modules/score.api'
 import { SET_LEGUES, SET_CHECKED } from '@/store/modules/score.store';
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 
 interface tabItem {
     id: Number,
-    text: String
+    text: String,
+    data: Array<IInfoItem>
 }
 
 interface IInfoItem {
@@ -58,9 +62,10 @@ interface IState {
     tabList: Array<tabItem>,
     infoList: Array<IInfoItem>,
     checked: Array<number>,
-    loading: boolean
+    loading: boolean,
+    // type: String | null | undefined
 }
-
+const route = useRoute()
 const store = useStore()
 
 // 数据模型
@@ -68,21 +73,26 @@ const state: IState = reactive({
     loading: true,
     activeTab: 1,
     tabList: [
-        { id: 1, text: '全部' },
-        { id: 2, text: '热门' },
-        { id: 3, text: '五大联赛' },
-        { id: 4, text: '其他' }
+        { id: 1, text: '全部', data: [] },
+        { id: 2, text: '热门', data: [] },
+        { id: 3, text: '五大联赛', data: [] },
+        { id: 4, text: '其他', data: [] }
     ],
     checked: [], // 复选
     infoList: []
 })
 
 onMounted(async () => {
+    const { query: { type } } = route
     await store.dispatch(`score/${SET_LEGUES}`)
     state.loading = false
-    const { infoList } = store.state.score.leagues
-    state.infoList = infoList.sort((prev: IInfoItem, next: IInfoItem) => prev.name.localeCompare(next.name))
-    state.checked = store.state.score.checked
+    const { infoList = [], hotList = [], specialList = [], elseList = [] } = store.state.score.leagues
+    state.tabList[0]['data'] = infoList.sort((prev: IInfoItem, next: IInfoItem) => prev.name.localeCompare(next.name)) || []
+    state.tabList[1]['data'] = hotList || []
+    state.tabList[2]['data'] = specialList || []
+    state.tabList[3]['data'] = elseList || []
+    // state.infoList = infoList.sort((prev: IInfoItem, next: IInfoItem) => prev.name.localeCompare(next.name))
+    state.checked = type ? store.state.score.checked_schdules: store.state.score.checked
 })
 
 
@@ -97,15 +107,16 @@ const onTab = (item: tabItem) => {
 
 // 全选， 反选等
 const select = (type: String) => {
+    const currentList = state.tabList[state.activeTab / 1 - 1].data
     if (type === 'all') {
-        state.infoList.map(item => {
+        currentList.map(item => {
             if(!state.checked.includes(item.leagueId)) {
                 state.checked.push(item.leagueId)
             }
         })
     } else { // 反选
         // const _checked = []
-        state.infoList.map(item => {
+        currentList.map(item => {
             if(!state.checked.includes(item.leagueId)) {
                 state.checked.push(item.leagueId)
             } else {
@@ -119,7 +130,8 @@ const select = (type: String) => {
 
 // 确定
 const onConfirm = () => {
-    store.commit(`score/${SET_CHECKED}`, state.checked)
+    const { query: { type } } = route
+    store.commit(`score/${SET_CHECKED}`, !type ? state.checked : { value: state.checked})
     router.go(-1)
 }
 

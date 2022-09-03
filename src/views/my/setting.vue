@@ -6,7 +6,7 @@ div.pb-20.pt-11.bg-gray-100.h-full
         li.h-10.bg-white.mb-2.shadow-lg.rounded-lg.flex.justify-between.items-center.px-4(v-for="item in list" :key="item.id" @click="onRoute(item)")
             span.text-xs {{item.title}}
             van-icon.text-gray-600(name="arrow")
-    button.h-10.bg-red-600.w-full.rounded.mt-2.text-white.text-xs 退出登录        
+    button.h-10.bg-primary.w-full.rounded.mt-2.text-white.text-xs 退出登录        
 </template>
 
 <script setup lang="ts">

@@ -10,13 +10,19 @@ const scoreStore = {
         leagues: {}, // 联赛id
         inited: false, // 是否调用过
         checked: [], // 选中的联赛id
+        checked_schdules: [], // 赛程选中
     },
     mutations: {
         [SET_LEGUES](state:any, leagues: any) {
             state.leagues = leagues
         },
-        [SET_CHECKED](state:any, checked: Array<string>) {
-            state.checked = checked
+        [SET_CHECKED](state:any, checked: Array<string> | Object) {
+            if (Array.isArray(checked)) {
+                state.checked = checked
+            } else {
+                state.checked_schdules = checked.value
+            }
+            
         }
     },
     actions: {
@@ -24,6 +30,7 @@ const scoreStore = {
             if (!state.inited) {
                 const data = await _league()
                 commit(SET_LEGUES, data)
+                state.inited = true
             }
         }
     }
