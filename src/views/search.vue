@@ -22,14 +22,14 @@ div#search
     van-tabs(color="#072b48" sticky animated v-model:active="state.activeTab" v-if="state.showResult")
         van-tab(v-for="(item, index) in state.tabList" :title="item.text")    
     van-list.calc-h(v-model:loading="state.tabList[state.activeTab].loading" :finished="state.tabList[state.activeTab].finished" 
-        finished-text="没有更多了" @load="onLoad(state.activeTab)" v-if="state.showResult" :immediate-check="false")
+        finished-text="没有更多了" @load="onLoad(state.activeTab)" v-if="state.showResult")
         div.flex.flex-wrap.justify-between.px-2.py-4(v-if="true || state.activeTab === 0")
-            video-list-item(v-for="item in 20" :key="item" :item="{}")
-        //div.px-2.py-4(v-if="state.activeTab === 1")
+            video-list-item(v-for="(item, index) in state.tabList[state.activeTab]['data']" :key="index" :item="item")
+        div.px-2.py-4(v-if="state.activeTab === 1")
             schedule-item(v-for="i in 20" :key="i")
-        //div.px-2.py-4(v-if="state.activeTab === 2")
+        div.px-2.py-4(v-if="state.activeTab === 2")
             score-item(v-for="(item) in 20" :key="item" :score-info="{}")
-        //div.flex.flex-wrap.justify-between.px-2.py-4(v-if="state.activeTab === 3")    
+        div.flex.flex-wrap.justify-between.px-2.py-4(v-if="state.activeTab === 3")    
             video-list-item(v-for="item in 10" :key="item" :item="{}")
 
 </template>
