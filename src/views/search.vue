@@ -3,7 +3,7 @@ div#search
     van-sticky
         div.flex.justify-between.items-center.bg-white.px-4.text-primary
             van-icon(:name="'arrow-left'" size="20px" @click="route")
-            van-search.flex-1(v-model="state.keyword" placeholder="请输入搜索关键词" 
+            van-search.flex-1(v-model="state.keyword" placeholder="请输入搜索关键词"
                 shape="round" right-icon="search" left-icon="''" @update:model-value="onModelValue")
             div(@click="onSearch") 搜索
     div.quick.bg-white.p-4(v-if="!state.showResult")
@@ -13,24 +13,24 @@ div#search
                 li.text-md.text-grey-light.mt-1(v-for="(_item, _index) in item.list" :key="_index" style="width: 45%" @click="onQuick(_item)") {{_item}}
     //div.list.bg-white.p-4(v-if="!state.showResult && state.keyword")
         ol.flex.flex-col
-            li.flex.justify-between.py-2(v-for="(item, index) in 10" :key="item") 
+            li.flex.justify-between.py-2(v-for="(item, index) in 10" :key="item")
                 p
                     span.mr-1(style="color: red") {{index + 1}}.
                     span 赛事名称
                 img.w-3.h-3(src="@/assets/logo.png")
 
     van-tabs(color="#072b48" sticky animated v-model:active="state.activeTab" v-if="state.showResult")
-        van-tab(v-for="(item, index) in state.tabList" :title="item.text")    
+        van-tab(v-for="(item, index) in state.tabList" :title="item.text")
     van-list.calc-h(v-model:loading="state.tabList[state.activeTab].loading" :finished="state.tabList[state.activeTab].finished" 
         finished-text="没有更多了" @load="onLoad(state.activeTab)" v-if="state.showResult")
-        div.flex.flex-wrap.justify-between.px-2.py-4(v-if="true || state.activeTab === 0")
-            video-list-item(v-for="(item, index) in state.tabList[state.activeTab]['data']" :key="index" :item="item")
+        div.flex.flex-wrap.justify-between.px-2.py-4(v-if="state.activeTab === 0")
+            video-list-item(v-for="(item, index) in state.tabList[0]['data']" :key="index" :item="item")
         div.px-2.py-4(v-if="state.activeTab === 1")
-            schedule-item(v-for="i in 20" :key="i")
+            schedule-item(v-for="(item, index) in state.tabList[1]['data']" :key="index" :item="item")
         div.px-2.py-4(v-if="state.activeTab === 2")
-            score-item(v-for="(item) in 20" :key="item" :score-info="{}")
-        div.flex.flex-wrap.justify-between.px-2.py-4(v-if="state.activeTab === 3")    
-            video-list-item(v-for="item in 10" :key="item" :item="{}")
+            score-item(v-for="(item, index) in state.tabList[2]['data']" :key="index" :score-info="item")
+        div.flex.flex-wrap.justify-between.px-2.py-4(v-if="state.activeTab === 3")
+            video-list-item(v-for="(item, index) in state.tabList[3]['data']" :key="index" :item="item")
 
 </template>
 
@@ -59,16 +59,24 @@ const state = reactive({
     _searchRcommend,
     _searchArchor,
     tabList : [
-        { id: 1, text: '直播', data: [], refreshing: false, finished: false, loading: false,func: '_searchArchor'},
-        { id: 2, text: '赛程', data: [], refreshing: false, finished: false, loading: false,func: '_searchList' },
-        { id: 3, text: '比分', data: [], refreshing: false, finished: false, loading: false ,func: '_searchList' },
-        { id: 4, text: '推荐', data: [], refreshing: false, finished: false, loading: false, func: '_searchRcommend' },
+        { id: 1, text: '直播', data: [], current: 1, finished: false, loading: false,func: '_searchArchor'},
+        { id: 2, text: '赛程', data: [], current: 1, finished: false, loading: false,func: '_searchList' },
+        { id: 3, text: '比分', data: [], current: 1, finished: false, loading: false ,func: '_searchList' },
+        { id: 4, text: '推荐', data: [], current: 1, finished: false, loading: false, func: '_searchRcommend' },
     ]
 })
 
 // 搜索
 const onSearch = () => {
-    console.log(state.keyword)
+    // console.log(state.keyword)
+    state.tabList[0].data = []
+    state.tabList[0].finished = false
+     state.tabList[1].data = []
+    state.tabList[1].finished = false
+     state.tabList[2].data = []
+    state.tabList[2].finished = false
+     state.tabList[3].data = []
+    state.tabList[3].finished = false
     state.showResult = true
 }
 
@@ -96,14 +104,15 @@ onMounted(() => { // 快捷数据
 
 const onLoad = async (index: number) => {
     state.tabList[index].loading = true
-    const result = await state[state.tabList[index]['func']](state.keyword)
-    console.log(result)
+    const result = await state[state.tabList[index]['func']](state.keyword, state.tabList[index]['current'])
+    console.log(index, result)
     state.tabList[index]['data'] = [...state.tabList[index]['data'], ...result]
     state.tabList[index].loading = false
     if (result.length < DEFAULT_PAGE_SIZE) {
         state.tabList[index].finished = true
+    } else {
+        state.tabList[index]['current']++
     }
-    console.log(result, index)
 }
 
 
@@ -117,5 +126,5 @@ const route = () => {
 .calc-h
     height: calc(100vh - 98px)
     overflow: scroll
-    // background: red   
+    // background: red
 </style>

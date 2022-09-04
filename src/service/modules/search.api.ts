@@ -76,13 +76,19 @@ export const _searchArchor = (queryStr: string, current:number = 1, size: number
  * @returns 
  */
 export const _searchRcommend = (searchWord: string, current:number = 1, size: number = DEFAULT_PAGE_SIZE) => {
-    return request({
-        url: '/pc/league/pageRecommendLeagueInfo',
-        method: 'GET',
-        params: {
-            searchWord,
-            current,
-            size
-        }
+    return new Promise((resovle,reject) => {
+        request({
+            url: '/pc/league/pageRecommendLeagueInfo',
+            method: 'GET',
+            params: {
+                searchWord,
+                current,
+                size
+            }
+        }).then(data => {
+            const { records = []} = data || {}
+            resovle(records)
+        })
     })
+    
 }

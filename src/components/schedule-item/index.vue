@@ -19,10 +19,10 @@ div.schedule-item.flex.bg-white.mb-1.justify-between.text-xs.p-2.rounded.shadow-
         button.rounded.text-white.text-xs.mb-3
     div.flex.flex-col.justify-center.items-end.border-l.w-20
         //- div 欧冠
-        div.flex(v-if="item.stuAnchorList.length")
+        div.flex(v-if="item.stuAnchorList && item.stuAnchorList.length")
             span.block.w-4.h-4.bg-black.rounded-full.border.border-white(v-for="(_item, _index) in item.stuAnchorList" :key="_index")
         div.mt-2
-            span.text-xs.text-primary(v-if="item.stuAnchorList.length")
+            span.text-xs.text-primary(v-if="item.stuAnchorList && item.stuAnchorList.length")
                 span {{item.stuAnchorList.length}}+主播
                 van-icon.rotate-180(name="arrow-left")
             span.text-xs.text-gray-500(v-else) 暂无主播
