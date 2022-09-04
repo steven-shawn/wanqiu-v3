@@ -80,7 +80,7 @@ const onRightClick = () => {
 }
 
 onMounted(() => { // 获取余额
-    store.dispatch('SET_BALANCE')
+    store.dispatch('user/SET_BALANCE')
     // _getBalance().then(data => {
     //     console.log(data)
     // })

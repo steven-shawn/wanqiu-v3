@@ -6,7 +6,7 @@ div.pb-20.pt-11.bg-gray-100.h-full.relative.box-border
     van-tab.box-border.px-45-px(title="聊天" name="a")
         live-chat.box-border(v-if="active==='a'")
     van-tab(title="主播" name="b")
-        live-archor(v-if="active==='b'")
+        live-archor(v-if="active==='b'" :info="state.info")
     van-tab(title="赛况" name="c")
         live-process(v-if="active==='c'" :info="state.info")
     van-tab(title="指数" name="d")

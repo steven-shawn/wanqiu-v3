@@ -1,3 +1,4 @@
+import { _reserve } from './schedule.api';
 import request from '@/service/request'
 import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'
 
@@ -36,5 +37,37 @@ import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'
                 resolve([])
             }
         })
+    })
+}
+
+/**
+ * 预约比赛
+ * @param matchId 
+ * @returns 
+ */
+export const _reserve = (matchId: string) => {
+    return request({
+        url: '/pc/usrmatchref/save',
+        method: 'GET',
+        params: {
+            matchId
+        }
+    })
+}
+
+/**
+ * 获取预约列表
+ * @param current 
+ * @param size 
+ * @returns 
+ */
+export const _reserveList = (current: number = 1, size:number = DEFAULT_PAGE_SIZE ) => {
+    return request({
+        url: '/pc/usrmatchref/page',
+        method: 'GET',
+        params: {
+            current,
+            size
+        }
     })
 }

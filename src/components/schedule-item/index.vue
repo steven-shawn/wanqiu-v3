@@ -16,7 +16,7 @@ div.schedule-item.flex.bg-white.mb-1.justify-between.text-xs.p-2.rounded.shadow-
         span.text-red-light {{item.homeScore}}:{{item.awayScore}}
     div.flex.flex-col.justify-between.items-center.mr-2
         span.text-grey-light.text-center.font-10 {{item.matchTime.split(' ')[1].split(':').slice(0,2).join(':')}}
-        button.rounded.text-white.text-xs.mb-3
+        button.rounded.text-white.text-xs.mb-3(:class="status" @click="onItemClick")
     div.flex.flex-col.justify-center.items-end.border-l.w-20
         //- div 欧冠
         div.flex(v-if="item.stuAnchorList && item.stuAnchorList.length")
@@ -29,7 +29,43 @@ div.schedule-item.flex.bg-white.mb-1.justify-between.text-xs.p-2.rounded.shadow-
 </template>
 
 <script lang="ts" setup>
-defineProps(['item'])
+import { computed } from "@vue/runtime-core"
+import { useRouter } from "vue-router"
+import { Notify } from "vant";
+import { _reserve } from '@/service/modules/schedule.api'
+const router = useRouter()
+
+const props = defineProps(['item'])
+const status = computed(() => {
+    if (props.item.matchState === 2) {
+        return 'end'
+    } else if (props.item.matchState === 0) {
+        return 'watch'
+    } else if (props.item.isbooking) {
+        return 'reserved'
+    } else {
+        return 'reserve'
+    }
+})
+
+const onItemClick = async () => {
+    const {stuAnchorList, matchState, isbooking, matchId } = props.item
+    if(matchState === 0) {
+        if (stuAnchorList && stuAnchorList.length) {
+            router.push(`/live/room?id=${stuAnchorList[0].memIdentityId}`)
+        } else {
+            Notify({type: 'warning', message: '暂无主播'})
+        }
+        return
+    }
+    if (!isbooking) {
+        await _reserve(matchId)
+        props.item.isbooking = true
+        Notify({type: 'success', message: '预约成功'})
+    }
+
+
+}
 </script>
 
 
@@ -39,8 +75,19 @@ defineProps(['item'])
 button
     width: 84px
     height: 24px
-    background: url(./bg-watch@2x.png) no-repeat center center
-    background-size: contain 
+    background-size: contain
+    &.watch
+        background: url(./bg-watch@2x.png) no-repeat center center
+        background-size: contain
+    &.end
+        background: url(./end@2x.png) no-repeat center center
+        background-size: contain
+    &.reserve
+        background: url(./bg-reserve@2x.png) no-repeat center center
+        background-size: contain
+    &.reserved
+        background: url(./reserved@2x.png) no-repeat center center
+        background-size: contain
 .schedule-item
     margin-bottom: 10px
     // box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2)

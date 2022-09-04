@@ -87,6 +87,40 @@ export const _getAnchor = (id: number) => {
     })
 }
 
+/**
+ * 关注主播
+ * @param memIdentityId 
+ * @returns 
+ */
+export const _followAnchor = (memIdentityId: string) => {
+    return request({
+        url: `/pc/usrstdref/${memIdentityId}`,
+        method: 'POST'
+    })
+}
+
+/**
+ * 获取我关注的主播列表
+ * @param current 
+ * @param size 
+ * @returns 
+ */
+export const _archorList = (current: number = 1, size: number = DEFAULT_PAGE_SIZE) => {
+    return new Promise((resolve, reject) => {
+        request({
+            url: '/pc/usrstdref/page',
+            method: 'GET',
+            params: {
+                size,
+                current
+            }
+        }).then(data => {
+            const { records = [] } = data || {}
+            resolve(records)
+        })
+    }) 
+}
+
 /**********  直播间 */
 
 /**

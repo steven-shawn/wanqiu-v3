@@ -9,7 +9,8 @@ div.m-4.p-4.bg-black.h-240.rounded-lg.text-white.flex.flex-col.justify-between
         span.block.w-12.h-4
           img(:src="getImageUrl(`${state.info.gradeName}.png`)")
         span.text-xs.mx-1 正在直播
-        span.block.w-3.h-3.bg-red-600
+        // span.block.w-3.h-3.bg-red-600
+        button.text-xs.ml-2(@click="onFollow") {{info.ifFocusStu ? '已关注' : '关注主播'}}
   div.relative.sign.-top-8
     p.w-4.h-12.bg-yellow-600.rounded-l-md.absolute.right-0.-top-1
     p.absolute.right-0.h-10.w-auto.bg-white.rounded.text-black.text-xs.pr-4.pl-1.flex.items-center {{state.info.anchorSign}}
@@ -35,13 +36,19 @@ div.m-4.p-4.bg-black.h-240.rounded-lg.text-white.flex.flex-col.justify-between
 <script lang="ts" setup>
 import { IMG_URL } from '@/config/system.conf';
 import { onMounted, reactive } from 'vue'
-import { _getAnchor } from '@/service/modules/live.api'
+import { _getAnchor, _followAnchor } from '@/service/modules/live.api'
 import { useStore } from 'vuex'
+import { Notify } from 'vant';
 const store = useStore()
 
 const getImageUrl = (name: string) => {
     return new URL(`./archor-level/${name}`, import.meta.url).href;
 }
+
+const props = defineProps({
+  info: {}
+})
+
 
 const state = reactive({
   info: {}
@@ -52,4 +59,12 @@ onMounted(() => {
   })
   // console.log(111111)
 })
+
+const onFollow = async () => {
+  if (!props.info.ifFocusStu) {
+    await _followAnchor(state.info.memIdentityId)
+    Notify({type: 'success', message: '关注成功'})
+    props.info.ifFocusStu = true
+  }
+}
 </script>
