@@ -2,9 +2,11 @@
 div.pb-20.pt-11.bg-gray-100.h-full
   jq-header.fixed 会员等级
   div.px-4
-    jq-avatar.my-2(:showEdit="false" :LevelIcon="1")
-    div.text-xs.bg-white.rounded-lg.px-4.py-3.shadow-lg  尊敬的14级会员，您只需要再消费93个球钻即可升到15级，您在直播间的等级标记将换成15级骁勇先锋。
-    my-level.my-3.rounded-lg
+    jq-avatar.my-2(:showEdit="false" :levelIcon="`${state.info.effectUrl}`")
+    div.text-xs.bg-white.rounded-lg.px-4.py-3.shadow-lg  
+      span 尊敬的{{state.info.level}}级会员,您只需要再消费{{state.info.nextGrowthValue - state.info.currentExperience}}个球钻即可升到{{state.info.nextLevel}}级,您在直播间的等级标记将换成{{state.info.nextLevel}}级
+      img.inline.ml-2.w-20.h-6(:src="IMG_URL + state.info.nextEffectUrl")
+    my-level.my-3.rounded-lg(:info="state.info")
     div.bg-white.shadow-lg.rounded-lg.text-xs.pb-4
       h2.p-4 如何快速升级
       ul.flex.text-xs.flex-wrap.justify-between
@@ -19,9 +21,15 @@ import JqHeader from '@/components/jq-header/index.vue'
 import JqAvatar from '@/components/jq-avatar/index.vue'
 import MyLevel from '@/components/my-level/index.vue'
 
-import { ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { _getGrade } from '@/service/modules/user.api'
+import { IMG_URL } from '@/config/system.conf'
 const router = useRouter()
+
+const state = reactive({
+  info: {}
+})
 
 // 底部列表数据
 const upGradeList = ref([
@@ -33,6 +41,12 @@ const upGradeList = ref([
   { id: 6, icon: '', title: '方案套餐', content: '拉风炫酷 闪亮登场' }
 ])
 
+onMounted(() => {
+  _getGrade().then(data => {
+    state.info = data
+    // console.log(data)
+  })
+})
 
 </script>
 

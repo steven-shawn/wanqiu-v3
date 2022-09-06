@@ -199,3 +199,14 @@ export const _setPwd = (form) => {
         }
     })
 }
+
+/**
+ * 获取会员等级信息
+ * @returns 
+ */
+export const _getGrade = () => {
+    return request({
+        url: '/pc/memmemberrelated/memMemberGrade',
+        method: 'GET'
+    })
+}

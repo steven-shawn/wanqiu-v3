@@ -177,6 +177,9 @@ export const _buyNoble = (propsNum: number) => {
     return request({
         url: '/pc/memmemberrelated/openOrRenewNoble',
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
         data: {
             propsNum
         }

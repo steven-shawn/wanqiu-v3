@@ -28,36 +28,37 @@ div#noble.pb-20.pt-11.w-screen.h-full.absolute.z-10
               span.text-primary {{store.state.user.userInfo.diamond}}
             p.text-grey-light 由主播“{{props.archorhName}}”为你开通
           div.flex.flex-col.justify-between
-            p.flex.flex-col.text-grey-light.text-xs.mb-2(v-if="item.status === 1")
+            p.flex.flex-col.text-grey-light.text-xs.mb-2(v-if="item.propsNum")
               span 有效期至
-              span.text-primary 2022-02-01 10:10:10
-            button.w-24.h-9.rounded.text-xs.bg-red-600.text-white(:class="{'extends': item.status === 1}" @click="onBuy(item)")
+              span.text-primary {{item.nobleExpireDate}}
+            button.w-24.h-9.rounded.text-xs.bg-red-600.text-white(:class="{'extends': item.propsNum}" @click="onBuy(item)")
     van-popup.rounded(v-model:show="state.show" style="overflow:visible ;")
       div.pupup.rounded-2xl.p-0
         img.absolute.left-0.-top-9.z-10(src="./popup-head@2x.png")
         img.absolute.-right-2.-top-2.z-10.w-5.h-5(src="./icon-close@2x.png" @click="state.show = false")
         div.border.mt-5.relative.logo-box
-          img.logo-box.bg.absolute(src="./level-1_bg@2x.png")
-          img.logo.absolute(src="./level1@2x.png")
+          //- img.logo-box.bg.absolute(:src="IMG_URL + state.list[state.active].bigLogoUrl")
+          img.logo.absolute(:src="IMG_URL + state.list[state.active].effectUrl")
 
-        div.text-primary.text-lg.mt-4.text-center 成功开通金球贵族【主教】
+        div.text-primary.text-lg.mt-4.text-center 成功开通金球贵族【{{state.list[state.active].gradeName}}】
         div.mt-12.text-xs.pl-6
           p.text-grey-light 贵族有效期：
-          p.text-primary.mt-1 2022-1-15 02:15:48 至 2022-2-15 02:15:48
+          p.text-primary.mt-1 {{state.list[state.active].nobleExpireDate}}
         div.mt-3.text-xs.pl-6
           p.text-grey-light 喇叭有效期：
-          p.text-primary.mt-1 2022-1-15 02:15:48 至 2022-2-15 02:15:48
+          p.text-primary.mt-1 {{state.list[state.active].remainNum}}
 
 </template>
 
 <script setup lang="ts">
 import JqHeader from '@/components/jq-header/index.vue'
-import { ref, reactive } from '@vue/reactivity'
+import { reactive } from '@vue/reactivity'
 import { inject, onMounted } from '@vue/runtime-core'
 import { _getNoble, _userNoble, _buyNoble } from '@/service/modules/live.api'
 import { SET_BALANCE } from '@/store/types.store'
 import { IMG_URL } from '@/config/system.conf'
 import { useStore } from 'vuex'
+import { Notify } from 'vant'
 const store = useStore()
 
 const props = defineProps(['archorhName'])
@@ -66,7 +67,8 @@ const props = defineProps(['archorhName'])
 const state = reactive({
   show: false,
   active: '',
-  list: []
+  list: [],
+  orders: []
 })
 
 const popCtrl = inject('popCtrl')
@@ -76,20 +78,36 @@ const onLeftClick = () => {
     popCtrl.showNoble = false
 }
 
+// 购买或者续费
 const onBuy = async (item) => {
-  // TODO:
-  // await _buyNoble(item.propsNum)
+  // console.log(state.active)
+  // return
+  await _buyNoble(item.propsNum || item.gradeName)
+  Notify({type: 'success', message: item.propsNum ? '续费成功' : '开通成功'})
   store.dispatch(`user/${SET_BALANCE}`) /// 更新余额
-  state.show = false
-
+  await getNoble()
+  state.show = true
 }
 
-onMounted(async() => {
-  let data = await _userNoble() // 接口有问题
-  console.log(data)
+const getNoble = async () => {
+  state.orders = {}
+  const data = await _userNoble()
+  data.map(item => { // 转化成对象
+    state.orders[item.propsNum] = item
+  })
+
   _getNoble().then(data => {
     state.list = data
+    state.list.map(item => {
+      if(state.orders[item.gradeNum]) {
+        Object.assign(item, state.orders[item.gradeNum])
+      }
+    })
   })
+}
+
+onMounted(() => { // 渲染
+  getNoble()
 })
 
 
@@ -118,10 +136,11 @@ onMounted(async() => {
       width: 320px
       height: 280px
     .logo
-      width: 240px
+      // width: 240px
       height: 240px  
       left: 50%
-      margin-left: -120px
+      // margin-left: -120px
+      transform: translate(-50%, 0px)
       top: 50%
       margin-top: -120px
 
