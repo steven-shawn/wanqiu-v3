@@ -252,12 +252,14 @@ export const _getLiveText = (matchId: string) => {
  * @param matchId 
  * @returns 
  */
-export const _getLiveEvent = (matchId: string) => {
+export const _getLiveEvent = (matchId: string, current:number = 1, size:number = DEFAULT_PAGE_SIZE) => {
     return request({
         url: '/pc/score/queryEventInfoList',
         method: 'GET',
         params: {
-            matchId
+            matchId,
+            size,
+            current
         }
     })
 }

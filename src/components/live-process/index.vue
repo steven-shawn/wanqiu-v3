@@ -26,13 +26,13 @@ div.flex.flex-col.py-4.h-screen.overflow-y-auto.live-process
         div.flex.items-center
             span.block.w-4.h-4.ml-1.flex.items-center(v-for="(_item, _index) in leftList" :key="_item.id")
               img(:src="getImageUrl(`${_item.img}@2x.png`)" v-if="_item.img && index ===0" class="w-full")
-              span.text-xs.text-primary(v-else) {{state.rest[_item._id && index === 1 ? _item._id : _item.id].homeData}}
+              span.text-xs.text-primary(v-else) {{state.rest[_item._id && index === 1 ? _item._id : _item.id] && state.rest[_item._id && index === 1 ? _item._id : _item.id].homeData || '-'}}
         div.flex-1.h-1.bg-primary.rounded-lg.overflow-hidden.mx-2
             van-progress(:percentage="item.rate" :show-pivot="false" color="#ce1313")            
         div.flex.items-center
           span.block.w-4.h-4.ml-1.flex.items-center(v-for="_item in leftList.slice(0).reverse()" :key="_item.id")
             img(:src="getImageUrl(`${_item.img}@2x.png`)" v-if="_item.img && index === 0" class="w-full")
-            span.text-xs.text-primary(v-else) {{state.rest[_item._id && index === 1 ? _item._id : _item.id].awayData}} 
+            span.text-xs.text-primary(v-else) {{state.rest[_item._id && index === 1 ? _item._id : _item.id] && state.rest[_item._id && index === 1 ? _item._id : _item.id].awayData || '-'}} 
   div.bg-white.rounded-md.shadow-lg.w-full.pb-4.mt-4
     h1.h-11.flex.justify-between.items-center.text-xs.text-primary.bg-grey
       p.h-full.flex-1.text-center.leading-10.pt-1(:class="{'active': state.activeTab === 0}" @click="onTab(0)") 文字直播
