@@ -270,12 +270,62 @@ export const _getLiveEvent = (matchId: string, current:number = 1, size:number =
  * @returns 
  */
 export const _getIndex = (matchId: string) => {
-    return request({
-        url: '/pc/wqodds/getWqOdds',
-        method: 'GET',
-        params: {
-            matchId
-        }
+    return new Promise((resolve, reject) => { 
+        request({
+            url: '/pc/wqodds/getWqOdds',
+            method: 'GET',
+            params: {
+                matchId: '2282830'
+            }
+        }).then(data => {
+            data.map(item => {
+                let odds = []
+                if (!item.europeOdds) { // 胜平负
+                    item.europeOdds = [['初始','即时'],['-','-'], ['-','-'],['-','-']]
+                } else {
+                    try { odds = JSON.parse(item.europeOdds)
+                    } catch { odds = item.europeOdds.split(',') }
+                    item.europeOdds = [['初始','即时'],[odds[2],odds[3]], [odds[4],odds[5]],[odds[6],odds[7]]]
+                }
+                if (!item.handicap) { // 让球
+                    item.handicap = [['-','-','-'],['-','-','-']]
+                } else {
+                    try { odds = JSON.parse(item.handicap)
+                    } catch { odds = item.handicap.split(',') }
+                    item.handicap = [[odds[2],odds[3],odds[4]],[odds[5],odds[6],odds[7]]]
+                }
+                if (!item.overUnder) { // 总进球
+                    item.overUnder = [['-','-','-'],['-','-','-']]
+                } else {
+                    try { odds = JSON.parse(item.overUnder)
+                    } catch { odds = item.overUnder.split(',') }
+                    item.overUnder = [[odds[2],odds[3],odds[4]],[odds[5],odds[6],odds[7]]]
+                }
+                if (!item.europeOddsHalf) { // 胜平负(半场)
+                    item.europeOddsHalf = [['初始','即时'],['-','-'], ['-','-'],['-','-']]
+                } else {
+                    try { odds = JSON.parse(item.europeOddsHalf)
+                    } catch { odds = item.europeOddsHalf.split(',') }
+                    item.europeOddsHalf = [['初始','即时'],[odds[2],odds[3]], [odds[4],odds[5]],[odds[6],odds[7]]]
+                }
+                if (!item.handicapHalf) { // 让球(半场)
+                    item.handicapHalf = [['-','-','-'],['-','-','-']]
+                } else {
+                    try { odds = JSON.parse(item.handicapHalf)
+                    } catch { odds = item.handicapHalf.split(',') }
+                    item.handicapHalf = [[odds[2],odds[3],odds[4]],[odds[5],odds[6],odds[7]]]
+                }
+                if (!item.overUnderHalf) { // 总进球(半场)
+                    item.overUnderHalf = [['-','-','-'],['-','-','-']]
+                } else {
+                    try { odds = JSON.parse(item.overUnderHalf)
+                    } catch { odds = item.overUnderHalf.split(',') }
+                    item.overUnderHalf = [[odds[2],odds[3],odds[4]],[odds[5],odds[6],odds[7]]]
+                }
+            })
+            resolve(data)
+            // console.log(data)
+        })
     })
 }
 /**

@@ -45,7 +45,8 @@ const state = reactive({
 })
 
 onMounted(() => {
-    _getLive(store.state.live.room_id).then(data => {
+    const room_id = store.state.live.room_id
+    _getLive(room_id).then(data => {
         state.info = data
     })
 })
