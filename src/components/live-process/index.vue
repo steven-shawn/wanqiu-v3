@@ -25,13 +25,13 @@ div.flex.flex-col.py-4.h-screen.overflow-y-auto.live-process
       div.flex.justify-center.mt-1.overflow-hidden.items-center
         div.flex.items-center
             span.block.w-4.h-4.ml-1.flex.items-center(v-for="(_item, _index) in leftList" :key="_item.id")
-              img(:src="getImageUrl(`${_item.img}@2x.png`)" v-if="_item.img && index ===0" class="w-full")
+              img(:src="getImageUrl(`${_item.img}`)" v-if="_item.img && index ===0" class="w-full")
               span.text-xs.text-primary(v-else) {{state.rest[_item._id && index === 1 ? _item._id : _item.id] && state.rest[_item._id && index === 1 ? _item._id : _item.id].homeData || '-'}}
         div.flex-1.h-1.bg-primary.rounded-lg.overflow-hidden.mx-2
             van-progress(:percentage="item.rate" :show-pivot="false" color="#ce1313")            
         div.flex.items-center
           span.block.w-4.h-4.ml-1.flex.items-center(v-for="_item in leftList.slice(0).reverse()" :key="_item.id")
-            img(:src="getImageUrl(`${_item.img}@2x.png`)" v-if="_item.img && index === 0" class="w-full")
+            img(:src="getImageUrl(`${_item.img}`)" v-if="_item.img && index === 0" class="w-full")
             span.text-xs.text-primary(v-else) {{state.rest[_item._id && index === 1 ? _item._id : _item.id] && state.rest[_item._id && index === 1 ? _item._id : _item.id].awayData || '-'}} 
   div.bg-white.rounded-md.shadow-lg.w-full.pb-4.mt-4
     h1.h-11.flex.justify-between.items-center.text-xs.text-primary.bg-grey
@@ -42,15 +42,16 @@ div.flex.flex-col.py-4.h-screen.overflow-y-auto.live-process
       van-switch.ml-2(v-model="state.checked" size="15px")
     ul.px-2(:class="state.activeTab === 0 ? 'pt-4': ''")
       template(v-if="state.activeTab === 0")
-        li.flex.flex-col.px-4(v-for="item in 10" :key="item")
+        li.flex.flex-col.px-4(v-for="item in state.liveList" :key="item")
           div.flex.justify-between.w-full.items-center
             p.flex.items-center
               img.w-3.h-3.mr-2(src="@/assets/logo.png")
               span.text-xs.text-primary 41′ - 第6个进球 - (德牧)  
             img.w-3.h-3(src="@/assets/logo.png")
           p.flex.items-center.border-l.my-1.mx-1.text-xs.text-white text
+        van-empty.text-xs.text-primary(v-if="!state.liveList.length") 暂无文字直播    
       template(v-else)
-        li.flex.px-4.justify-center.items-center(v-for="(item, index) in 10" :key="item" :class="index === 0 ? 'pt-4': ''")
+        li.flex.px-4.justify-center.items-center(v-for="(item, index) in state.eventList" :key="item" :class="index === 0 ? 'pt-4': ''")
           p.bg-grey.flex-1.rounded.py-2.flex.items-end.flex-col.px-2(class="w-11/12" :class="{'invisible': item % 2 === 0}")
             span.text-xs.text-primary 0-1
             img.w-4.h-4(src="@/assets/logo.png")
@@ -58,10 +59,11 @@ div.flex.flex-col.py-4.h-screen.overflow-y-auto.live-process
           p.bg-grey.flex-1.rounded.py-2.flex.flex-col.px-2(class="w-11/12" :class="{'invisible': item % 2 !== 0 }")
             span.text-xs.text-primary 0-1
             img.w-4.h-4(src="@/assets/logo.png")
+        van-empty.text-xs.text-primary(v-if="!state.eventList.length") 暂无重要事件      
   ol.flex.flex-wrap.mt-4.bg-white.p-4
     li.flex.items-center.mb-3(v-for="item in symbols" :key="item.id" :class="'w-1/5'")
       p.w-4.h-4.mr-1
-        img(src="@/assets/logo.png")
+        img(:src="item.img ? getImageUrl(item.img) : Logo")
       p.text-xs.text-primary {{item.text}}   
 </template>
 
@@ -69,6 +71,7 @@ div.flex.flex-col.py-4.h-screen.overflow-y-auto.live-process
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from 'vue'
 import { IMG_URL } from '@/config/system.conf';
+import Logo from '@/assets/logo.png'
 import { _processTech, _getLiveText, _getLiveEvent } from '@/service/modules/live.api'
 const props = defineProps({
   info: {}
@@ -76,7 +79,7 @@ const props = defineProps({
 
 
 const getImageUrl = (name: string) => {
-    return new URL(`./${name}`, import.meta.url).href;
+    return new URL(`./${name}@2x.png`, import.meta.url).href;
 }
 
 const state = reactive({
@@ -84,30 +87,32 @@ const state = reactive({
   counts: [],
   rest: {},
   activeTab: 0, // tab
-  checked: false // switch
+  checked: false, // switch
+  liveList: [], // 文字直播
+  eventList: [], // 重要事件
 })
 
 const leftList = [
   { id: 6, img: 'cornor' },
-  { id: 13, img: 'red' },
-  { id: 11, img: 'yellow' },
+  { id: 13, img: '2' },
+  { id: 11, img: '3' },
   { id: 4, img: '', _id: 34 }
 ]
 
 const symbols = [
   { id: 1, text: '进球', img: '1'},
-  { id: 2, text: '射正', img: '1'},
-  { id: 3, text: '射偏', img: '1'},
-  { id: 4, text: '点球', img: '1'},
-  { id: 5, text: '点球未进', img: '1'},
-  { id: 6, text: '乌龙球', img: '1'},
-  { id: 7, text: '助攻', img: '1'},
-  { id: 8, text: '角球', img: '1'},
-  { id: 9, text: '黄牌', img: '1'},
-  { id: 10, text: '红牌', img: '1'},
-  { id: 11, text: '换人', img: '1'},
-  { id: 12, text: '两黄一红', img: '1'},
-  { id: 13, text: 'VAR', img: '1'},
+  { id: 2, text: '射正', img: ''},
+  { id: 3, text: '射偏', img: ''},
+  { id: 4, text: '点球', img: '7'},
+  { id: 5, text: '点球未进', img: '13'},
+  { id: 6, text: '乌龙球', img: '8'},
+  { id: 7, text: '助攻', img: ''},
+  { id: 8, text: '角球', img: ''},
+  { id: 9, text: '黄牌', img: '3'},
+  { id: 10, text: '红牌', img: '2'},
+  { id: 11, text: '换人', img: '11'},
+  { id: 12, text: '两黄一红', img: '9'},
+  { id: 13, text: 'VAR', img: '14'},
 ]
 
 const onTab = (type: number) => {
@@ -117,11 +122,11 @@ const onTab = (type: number) => {
   state.activeTab = type
   if (state.activeTab === 0) {
     _getLiveText(props.info.matchId).then(data => {
-      console.log('live text', data)
+      state.liveList = data || []
     })
   } else {
     _getLiveEvent(props.info.matchId).then(data => {
-      console.log('evt', data)
+      state.eventList = data || []
     })
   }
 }

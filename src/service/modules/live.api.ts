@@ -241,6 +241,20 @@ export const _processTech = (matchId: string) => {
                     result.rest[item.dataType] = item
                 }
               })
+            // 初始化数据  
+            if (!result.circles.length) {
+                result.circles = [
+                    { rate: 0 ,title: '进攻',homeData: '--', awayData: '--'},
+                    { rate: 0 ,title: '危险进攻',homeData: '--', awayData: '--'},
+                    { rate: 0 ,title: '控球率',homeData: '--', awayData: '--'}
+                ]
+            }  
+            if (!result.counts.length) {
+                result.counts = [
+                    { rate: 0 ,title: '射正球门',homeData: '--', awayData: '--'},
+                    { rate: 0 ,title: '射偏球门',homeData: '--', awayData: '--'},
+                ]
+            }
             resovle(result)
         })
     })
