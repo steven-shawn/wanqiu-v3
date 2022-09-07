@@ -13,6 +13,7 @@ const demoLink = 'https://api.dogecloud.com/player/get.mp4?vcode=5ac682e6f823199
 const props = defineProps(['url', 'img'])
 
 onMounted(() => {
+    const url = props.url.replace('.flv', '.m3u8') //
     const dp = new DPlayer({
         container: document.getElementById('dplayer'),
         screenshot: true,
@@ -22,14 +23,14 @@ onMounted(() => {
         lang: 'zh-cn',
         logo: Logo,
         video: {
-            // url: props.url,
+            url,
             // pic: IMG_URL + props.img,
-            type: 'flv',
+            type: 'auto',
             thumbnails: IMG_URL + props.img,
             quality: [
-                { name: '标清', url: props.url, type: 'auto'},
-                { name: '高清', url: props.url, type: 'hls'},
-                { name: '超清', url: props.url, type: 'flv'}
+                { name: '标清', url, type: 'auto'},
+                { name: '高清', url, type: 'hls'},
+                { name: '超清', url, type: 'flv'}
             ],
             defaultQuality: 0,
             contextmenu: [
