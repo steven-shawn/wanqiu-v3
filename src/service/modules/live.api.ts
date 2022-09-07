@@ -147,6 +147,24 @@ export const _giftList = () => {
 }
 
 /**
+ * 发送礼物
+ * @param params 
+ * @returns 
+ */
+export const _sendGift = (params) => {
+    return request({
+        url: '/pc/platformpublic/operateOpeGiftData',
+        method: 'GET',
+        loading: true,
+        params: {
+            consumeNum: 1,
+            giftId: params.gid,
+            studioId: params.rid
+        }
+    })
+}
+
+/**
  * 获取贵族
  * @returns 
  */
@@ -177,6 +195,7 @@ export const _buyNoble = (propsNum: number) => {
     return request({
         url: '/pc/memmemberrelated/openOrRenewNoble',
         method: 'POST',
+        loading: true,
         headers: {
             'Content-Type': 'application/json'
         },
