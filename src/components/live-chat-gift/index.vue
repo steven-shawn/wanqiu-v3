@@ -11,7 +11,7 @@ div.bg-white.w-full.text-primary.rounded-t-xl.shadow-lg.shadow-black
      div.w-12.h-12.rounded-full.mb-1
        img(:src="`${IMG_URL}${item.pictureUrl}`")
      p.text-xs.text-primary {{item.giftName}}
-     p.text-xs.w-full.text-center.py-1(:class="state.active === item.id ? 'bg-primary text-white rounded' : ''" @click.stop="onSend(item)") {{item.diamondPrice}}球钻
+     p.text-xs.w-full.text-center.py-1(:class="state.active === item.id ? 'bg-primary text-white rounded' : ''" @click="onSend(item)") {{item.diamondPrice}}球钻
   div.h-11.flex.justify-between.items-center.bg-white.shadow-lg.shadow-black.px-4.text-xs.mx-4.rounded-lg
     p.flex.items-center
      img.w-4.h-4(src="./icon_diamond@2x.png")
@@ -49,7 +49,9 @@ onMounted(() => {
 
 // 发送礼物
 const onSend = async (item) => {
-  console.log(item)
+  if(item.id !== state.active) {
+    return
+  }
   const rid = store.state.live.room_id
   await _sendGift({gid: item.id, rid})
   store.dispatch('user/SET_BALANCE') // 更新余额
