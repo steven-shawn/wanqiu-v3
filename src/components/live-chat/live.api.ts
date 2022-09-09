@@ -82,7 +82,7 @@ export const _focusLive = () => {
  */
 export const _getAnchor = (id: number) => {
     return request({
-        url: `/pc/stustudio/stuAnchor/${id}`,
+        url: `/warning/stuAnchor/${id}`,
         method: 'GET',
     })
 }
@@ -130,7 +130,7 @@ export const _archorList = (current: number = 1, size: number = DEFAULT_PAGE_SIZ
  */
 export const _getLive = (id: number) => {
     return request({
-        url: `/pc/stustudio/${id}`,
+        url: `/warning/${id}`,
         method: 'POST'
     })
 }

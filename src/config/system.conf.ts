@@ -3,6 +3,8 @@ export const REQUEST_URL = import.meta.env.VITE_APP_BASE_URL   // 请求地址 T
 export const IMG_URL = 'http://xqadminimage.tyltxt.com:88/' // 图片服务器地址
 export const REQUEST_TIMEOUT = 20000    // 网络请求超时时间,默认10秒
 
+export const WS_URL = 'ws://xqimserver.tyltxt.com:88' // 聊天室链接
+
 export const RESEND_CODE_TIME = 60 // 重新发送验证码的时间
 
 
