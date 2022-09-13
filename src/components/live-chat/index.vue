@@ -61,7 +61,7 @@ let socket = null
 const send = (num: number | string, item: string | object) => { // 发送消息
   let msgObj = {}
   if (num == "1") {//ping
-    msgObj  = { ...PUBLIC_DATA, cotent: 'PING' }
+    msgObj  = { ...PUBLIC_DATA, content: 'PING' }
   }
   if (num == "2013") {//发言
     msgObj = {...PUBLIC_DATA, content: item }

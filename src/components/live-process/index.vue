@@ -46,7 +46,7 @@ div.flex.flex-col.py-4.h-screen.overflow-y-auto.live-process
           div.flex.justify-between.w-full.items-center
             p.flex.items-center
               img.w-3.h-3.mr-2(src="@/assets/logo.png")
-              span.text-xs.text-primary 41′ - 第6个进球 - (德牧)  
+              span.text-xs.text-primary {{item.content}}  
             img.w-3.h-3(src="@/assets/logo.png")
           p.flex.items-center.border-l.my-1.mx-1.text-xs.text-white text
         van-empty.text-xs.text-primary(v-if="!state.liveList.length") 暂无文字直播    
