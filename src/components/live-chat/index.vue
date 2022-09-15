@@ -2,10 +2,11 @@
 div.live-chat.h-screen.overflow-y-auto.pb-11.bg-white
   div.px-2.flex.bg-grey-lighter.items-center
     img.w-3.h-3(src="./icon_notify@2x.png")
-    marquee.h-8.leading-8.text-primary.text-xs 这里是公告内容这里是公告内容这里是公告内容这里是公告内容 
-  live-chat-msg 
-  live-chat-msg(text-color="#d46666") 
-  live-chat-msg(type="msg" v-for="item in 10" :key="item") 
+    //- marquee.h-8.leading-8.text-primary.text-xs 这里是公告内容这里是公告内容这里是公告内容这里是公告内容 
+    van-notice-bar.w-full(delay="1" scrollable background="#edf0f2" :text="state.announcement" :key="state.announcement" v-if="state.announcement")
+  //- live-chat-msg 
+  //- live-chat-msg(text-color="#d46666") 
+  live-chat-msg(type="msg" v-for="(item,index) in state.chatList" :key="index" :item="item" v-if="Object.keys(nobles).length") 
   live-chat-input
 </template>
 
@@ -25,7 +26,7 @@ let timeout: number | null = null
 
 const TIME_BREAK = 50 * 1000 // 发送间隔
 
-const CLINET = 'mobile'
+const CLINET = '1'
 const VERSION = '1.0.0'
 const APP_ID = '1'
 const DEVICE = '1'
@@ -39,6 +40,10 @@ const userInfo = computed(() => {
   return store.state.user.userInfo
 })
 
+const nobles = computed(() => {
+  return store.state.live.nobles
+})
+
 // console.log(userInfo)
 const PUBLIC_DATA = { // 公共数据
   device: DEVICE,
@@ -49,11 +54,12 @@ const PUBLIC_DATA = { // 公共数据
   token: TOKEN,
   sender: ID,
   receiver: ROOM_ID,
-  userInfo: JSON.stringify(store.state.user.userInfo)
+  userInfo: JSON.stringify({...store.state.user.userInfo, access_token: '', refresh_token: ''})
 }
 
 
 const state = reactive({
+  announcement: '', // 公告
   chatList: []
 })
 
@@ -81,6 +87,7 @@ onMounted(() => {
   if(id) {
     store.commit('live/SET_ROOM_ID', id)
   }
+  store.dispatch('live/SET_NOBLE')
 
   socket = new WebSocket(WS_URL)
 
@@ -112,11 +119,16 @@ onMounted(() => {
 
   socket.onmessage = function (evt) {
     let { data: res } = evt
-    res = res.split('#')
-    const msgType = res[0]
-    res = JSON.parse(res[1])
+    res = res.split('#') // xxxx#{code:xxx,data: {}, msg: ''}
+    const MSG_TYPE = res[0] // xxxx
+    try { // 是对象
+      res = JSON.parse(res[1]) // {code:xxx,data: {}, msg: ''}
+    } catch { // 是字符串
+      res = { code: 100, data: res[1], msg: 'system'}
+    }
+    
     const { code , data, msg } = res
-    console.log(code, data, msg)
+    // console.log(code, data, msg)
       // let stringifyItem = evt.data.split('#')
       // let obj = {}
       let item = {}
@@ -125,14 +137,15 @@ onMounted(() => {
       //     obj = JSON.parse(stringifyItem[1]);
       //     msgType = stringifyItem[0]
       // }
-      switch (msgType) {
+      const chatListItem = {}
+      switch (MSG_TYPE) {
           case "10000":   //心跳检测
               console.log('心跳检测', data)
               break;
-          case "1000":   //Login ok
+          case "1000":   // Login ok
               send('2014', '')
               break;
-          case "9999":   //
+          case "9999":   // send message Ok
               //if (TOKEN) {
                 // data.nobleGradeNum = userInfo.nobleGradeNum
                 // data.memGradeLevel = userInfo.memGradeLevel
@@ -167,6 +180,28 @@ onMounted(() => {
               /*msgType*/
               // ROOM_ENTER 进入直播间
               // ROOM_TEXT  ：发言内容
+              if (msg === 'system') { // 公告
+                state.announcement = data
+                chatListItem.type = msg
+                chatListItem.content = data
+              } else {
+                const { msgType } = data
+                chatListItem.type = msgType
+                chatListItem.content = data.content
+                chatListItem.userInfo = JSON.parse(data.userInfo) || {}
+                // console.log(msgType)
+                // if (msgType === 'ROOM_TEXT') { // 发言内容
+                  
+                // } else if (msgType === 'ROOM_ENTER') { // 进入直播间
+
+                // } else {
+                //   throw new Error('其他未捕捉到的类型')
+                // }
+              }
+              state.chatList.push(chatListItem)
+              // console.log(data)
+              return
+              // const {userInfo = {}} =  data
               // if (data.userInfo && data.userInfo !== '') {
               //     objItem = Object.assign(data, {type: msgType}, {userInfo: JSON.parse(data.userInfo)})
               //     if (objItem && objItem.userInfo && objItem.userInfo.memGradeLevel) {
