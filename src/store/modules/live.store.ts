@@ -14,7 +14,7 @@ const liveStore = {
             state.room_id = id
             localStorage.setItem(ROOM_ID, id + '')
         },
-        [SET_NOBLE](state: any, list: Array<Object>) {
+        [SET_NOBLE](state: any, list: Object) {
             state.nobles = list
         }
     },

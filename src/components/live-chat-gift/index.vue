@@ -31,7 +31,10 @@ import { Notify } from 'vant';
 const store = useStore()
 
 const popCtrl =  inject('popCtrl')
+// 操作结果
+const results = ['', '操作成功','添加帐变记异常', '余额不足', '参数数据异常']
 
+const emits = defineEmits(['gift'])
 const state = reactive({
   active: '',
   list: []
@@ -43,7 +46,6 @@ onMounted(() => {
     if (state.list.length) {
       state.active = state.list[0]['id']
     }
-    
   })
 })
 
@@ -53,9 +55,17 @@ const onSend = async (item) => {
     return
   }
   const rid = store.state.live.room_id
-  await _sendGift({gid: item.id, rid})
+  const res = await _sendGift({gid: item.id, rid})
+
+  const { result } = res
+
+
   store.dispatch('user/SET_BALANCE') // 更新余额
-  Notify({type: 'success', message: item.giftName + '发送成功'})
+  Notify({type: result / 1 === 1 ? 'success' : 'warning',
+     message: result / 1 === 1 ? item.giftName + '发送成功' : results[result]})
+  if (result / 1 === 1) {
+    emits('gift', {...item, count: 1})
+  }   
 }
 
 const onClose = () => {

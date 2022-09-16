@@ -83,7 +83,7 @@ export const _focusLive = () => {
 export const _getAnchor = (id: number) => {
     return request({
         url: `/pc/stustudio/stuAnchor/${id}`,
-        method: 'GET',
+        method: 'POST',
     })
 }
 
@@ -156,6 +156,7 @@ export const _sendGift = (params) => {
         url: '/pc/platformpublic/operateOpeGiftData',
         method: 'GET',
         loading: true,
+        returnType: 'origin',
         params: {
             consumeNum: 1,
             giftId: params.gid,
@@ -371,6 +372,7 @@ export const _lineup = (matchId: string) => {
         request({
             url: '/pc/wqlineup/getWqLineupByMatchId',
             method: 'GET',
+            loading: true,
             params: {
                 matchId
             }
@@ -384,7 +386,7 @@ export const _lineup = (matchId: string) => {
             let awayIndex = 0
             // 主阵容
             for(let i = 0; i < homeArray.length; i++) {
-                console.log(homeIndex, homeArray[i])
+                // console.log(homeIndex, homeArray[i])
                 homeResult.push(awayLineup.slice(homeIndex, homeArray[i] / 1 + homeIndex))
                 homeIndex += homeArray[i] / 1
                 
@@ -395,7 +397,7 @@ export const _lineup = (matchId: string) => {
                 awayIndex += awayArray[i] / 1
             }
 
-            console.log(homeResult)
+            // console.log(homeResult)
             data.homeLineup = homeResult.reverse()
             data.awayLineup = awayResult
             data.homeArray = homeArray.join('-')

@@ -6,19 +6,25 @@ div.pb-20.pt-11.bg-gray-100.h-full.relative.box-border
     van-loading
   van-tabs(swipeable animated v-model:active="active" background="#fff" color="#667885" title-active-color="#072b48" title-inactive-color="#072b48")
     van-tab.box-border.px-45-px(title="聊天" name="a")
-        live-chat.box-border(v-if="active==='a'")
+        keep-alive
+            live-chat.box-border(v-if="active==='a'" :gift-info="state.giftInfo")
     van-tab(title="主播" name="b")
-        live-archor(v-if="active==='b'" :info="state.info")
+        keep-alive
+            live-archor(v-if="active==='b'" :info="state.info")
     van-tab(title="赛况" name="c")
-        live-process(v-if="active==='c'" :info="state.info")
+        keep-alive
+            live-process(v-if="active==='c'" :info="state.info")
     van-tab(title="指数" name="d")
-        live-index(v-if="active==='d' && state.info.matchId" :matchId="state.info.matchId")
+        keep-alive
+            live-index(v-if="active==='d' && state.info.matchId" :matchId="state.info.matchId")
     van-tab(title="阵容" name="e")
-        live-line(v-if="active==='e' && state.info.matchId" :info="state.info")
+        keep-alive
+            live-line(v-if="active==='e' && state.info.matchId" :info="state.info")
     van-tab(title="相关直播" name="f")
-        live-relate(v-if="active==='f' && state.info.matchId" :matchId="state.info.matchId")
+        keep-alive
+            live-relate(v-if="active==='f' && state.info.matchId" :matchId="state.info.matchId")
   live-chat-noble.fixed.top-0(v-if="state.showNoble" :archorhName="state.info.nickName")
-  live-chat-gift.fixed.bottom-0(v-if="state.showGift")
+  live-chat-gift.fixed.bottom-0(v-if="state.showGift" @gift="onGift")
 </template>
 
 <script setup lang="ts">
@@ -43,8 +49,11 @@ const store = useStore()
 const state = reactive({
     showNoble: false, // 显示贵族页面
     showGift: false, // 显示礼物界面
-    info: {}
+    info: {},
+    giftInfo: {}, // 发送的礼物信息
 })
+
+const chatTab = ref()
 
 onMounted(() => {
     const room_id = store.state.live.room_id
@@ -52,6 +61,11 @@ onMounted(() => {
         state.info = data
     })
 })
+
+// 礼物
+const onGift = (evt: Event) => {
+    state.giftInfo = evt
+}
 
 provide('popCtrl', state)
 const active = ref('a')

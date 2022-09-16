@@ -92,7 +92,7 @@ onMounted(() => {
   height: 403px
   // border: 1px solid blue  
 .bg-shadow
-  width: 138px
+  // width: 138px
   height: 26px
   margin: 0 4px 2px 0
   padding: 3px 44px 3px 8px

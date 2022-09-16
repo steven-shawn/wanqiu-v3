@@ -1,13 +1,14 @@
 <template lang="pug">
-div.live-chat.h-screen.overflow-y-auto.pb-11.bg-white
+div.live-chat.h-screen.overflow-y-auto.pb-11.bg-white(ref="chat" @scroll="onscroll")
   div.px-2.flex.bg-grey-lighter.items-center
     img.w-3.h-3(src="./icon_notify@2x.png")
     //- marquee.h-8.leading-8.text-primary.text-xs 这里是公告内容这里是公告内容这里是公告内容这里是公告内容 
     van-notice-bar.w-full(delay="1" scrollable background="#edf0f2" :text="state.announcement" :key="state.announcement" v-if="state.announcement")
   //- live-chat-msg 
   //- live-chat-msg(text-color="#d46666") 
-  live-chat-msg(type="msg" v-for="(item,index) in state.chatList" :key="index" :item="item" v-if="Object.keys(nobles).length") 
-  live-chat-input
+  live-chat-msg(type="msg" v-for="(item,index) in state.chatList" :key="index" :item="item" 
+    v-if="Object.keys(nobles).length && Object.keys(levels).length") 
+  live-chat-input(@send="onSendMsg")
 </template>
 
 <script lang="ts" setup>
@@ -17,16 +18,28 @@ import { onBeforeUnmount, onMounted, reactive } from '@vue/runtime-core'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { WS_URL } from '@/config/system.conf'
-import { computed } from '@vue/reactivity'
+import { computed, ref } from '@vue/reactivity'
+import { nextTick } from 'vue'
+import { Notify } from 'vant'
+import { watch } from 'vue'
 
 const route = useRoute()
 const store = useStore()
+const chat = ref() // $ref
+
+const props = defineProps(['giftInfo'])
+
+watch(() => props.giftInfo, (newVal, oldVal) => {
+  // console.log(newVal)
+  onSendMsg(newVal)
+})
 
 let timeout: number | null = null
+let scrollTimeout: number | null
 
 const TIME_BREAK = 50 * 1000 // 发送间隔
 
-const CLINET = '1'
+const CLINET = 'ANDRIOD'
 const VERSION = '1.0.0'
 const APP_ID = '1'
 const DEVICE = '1'
@@ -42,6 +55,10 @@ const userInfo = computed(() => {
 
 const nobles = computed(() => {
   return store.state.live.nobles
+})
+
+const levels = computed(() => {
+  return store.state.user.levels
 })
 
 // console.log(userInfo)
@@ -60,6 +77,7 @@ const PUBLIC_DATA = { // 公共数据
 
 const state = reactive({
   announcement: '', // 公告
+  atBottom: false, // 是否已经在底部了
   chatList: []
 })
 
@@ -78,17 +96,70 @@ const send = (num: number | string, item: string | object) => { // 发送消息
       msgObj = {...PUBLIC_DATA}
   }
   const sendStr = `${num}#` + JSON.stringify(msgObj)
+  // console.log(num, msgObj)
   socket.send(sendStr);
   // this.inpTxt = ""            
 }
 
-onMounted(() => {
+// 发送消息
+const onSendMsg = (e: Event) => {
+  // console.log(e)
+  if (!e) {
+    Notify({type: 'warning', message: '请输入内容' })
+    return
+  }
+  send('2013', e)
+}
+
+/// 滚动到底部
+const scrollToBottom = () => {
+  if (chat.value.scrollHeight - chat.value.clientHeight <= 0) { // 内容不够的时候
+    state.atBottom = true
+  }
+  if (state.atBottom) {
+    nextTick(() => {
+      chat.value.scrollTo(chat.value.scrollHeight - chat.value.clientHeight, 300) //
+    })
+  }
+  
+}
+
+// 判断是否在底部
+const onscroll = (e: Event) => {
+  if (scrollTimeout) { // 节流
+    clearTimeout(scrollTimeout)
+  }
+  scrollTimeout = setTimeout(() => {
+    const { scrollHeight, scrollTop, clientHeight } = e.target || {}
+    state.atBottom = scrollTop === scrollHeight - clientHeight //
+  }, 50)
+}
+
+// 清除定时器
+const clearTimer = () => {
+  if (timeout) {
+    clearTimeout(timeout)
+    timeout = null
+  }
+}
+
+// 保持会话
+const keepAlive = () => {
+  clearTimer()
+  timeout = setTimeout(() => {
+    send(1, '')
+    keepAlive()
+  }, TIME_BREAK)
+}
+
+onMounted(async () => {
   const { query: { id }} = route
   if(id) {
     store.commit('live/SET_ROOM_ID', id)
   }
-  store.dispatch('live/SET_NOBLE')
-
+  await store.dispatch('live/SET_NOBLE')
+  await store.dispatch('user/SET_LEVEL')
+  // console.log('levels',levels.value[1]['effectUrl'])
   socket = new WebSocket(WS_URL)
 
   // 打开链接
@@ -100,23 +171,6 @@ onMounted(() => {
     }
   }
 
-  // 保持会话
-  const keepAlive = () => {
-    clearTimer()
-    timeout = setTimeout(() => {
-      send(1, '')
-      keepAlive()
-    }, TIME_BREAK)
-  }
-  // 清除定时器
-  const clearTimer = () => {
-    if (timeout) {
-      clearTimeout(timeout)
-      timeout = null
-    }
-  }
-
-
   socket.onmessage = function (evt) {
     let { data: res } = evt
     res = res.split('#') // xxxx#{code:xxx,data: {}, msg: ''}
@@ -126,7 +180,7 @@ onMounted(() => {
     } catch { // 是字符串
       res = { code: 100, data: res[1], msg: 'system'}
     }
-    
+    const chatListItem = {} // 消息单体
     const { code , data, msg } = res
     // console.log(code, data, msg)
       // let stringifyItem = evt.data.split('#')
@@ -137,7 +191,7 @@ onMounted(() => {
       //     obj = JSON.parse(stringifyItem[1]);
       //     msgType = stringifyItem[0]
       // }
-      const chatListItem = {}
+      
       switch (MSG_TYPE) {
           case "10000":   //心跳检测
               console.log('心跳检测', data)
@@ -176,82 +230,31 @@ onMounted(() => {
               //     that.$refs.element.scrollTop = 10000000;
               // });
               break;
+          case "2013":  // 发送消息后的回消息  
           case "2014":   //接受历史消息
               /*msgType*/
               // ROOM_ENTER 进入直播间
               // ROOM_TEXT  ：发言内容
+              const { msgType = '', contentType = '' } = data || {}
               if (msg === 'system') { // 公告
                 state.announcement = data
                 chatListItem.type = msg
                 chatListItem.content = data
               } else {
-                const { msgType } = data
                 chatListItem.type = msgType
                 chatListItem.content = data.content
                 chatListItem.userInfo = JSON.parse(data.userInfo) || {}
-                // console.log(msgType)
-                // if (msgType === 'ROOM_TEXT') { // 发言内容
-                  
-                // } else if (msgType === 'ROOM_ENTER') { // 进入直播间
-
-                // } else {
-                //   throw new Error('其他未捕捉到的类型')
-                // }
+                if (msgType === 'ROOM_ENTER') {
+                  chatListItem.content = '进入直播间'
+                }
+                if (contentType === 'Gift') { // 礼物
+                  const giftObj = JSON.parse(data.content)
+                  chatListItem.content = '送出' + giftObj.count + '个' + giftObj.giftName
+                }
               }
               state.chatList.push(chatListItem)
-              // console.log(data)
-              return
-              // const {userInfo = {}} =  data
-              // if (data.userInfo && data.userInfo !== '') {
-              //     objItem = Object.assign(data, {type: msgType}, {userInfo: JSON.parse(data.userInfo)})
-              //     if (objItem && objItem.userInfo && objItem.userInfo.memGradeLevel) {
-              //         objItem.userInfo.icon = that.leveList.filter(item => item.level == objItem.userInfo.memGradeLevel)[0].effectUrl
-              //     }
-              //     if (objItem && objItem.userInfo && objItem.userInfo.nobleGradeNum) {
-              //         objItem.userInfo.noble_icon = that.nobleList.filter(item => item.gradeNum == objItem.userInfo.nobleGradeNum)[0].logoUrl
-              //     }
-              //     if (objItem.msgType === 'ROOM_ENTER') objItem.content = '进入直播间'
-              //     if (objItem.contentType === 'Gift') {
-              //         let giftJson = JSON.parse(objItem.content)
-              //         let giftInfo = that.giftList.filter(item => item.giftName == giftJson.giftName)[0]
-              //         giftInfo.count = giftJson.count
-              //         objItem.content = giftInfo
-              //     }
-              //     state.chatList.push(objItem);
-              //     that.$nextTick(() => {
-              //         that.$refs.element.scrollTop = 10000000;
-              //     });
-              //     that.$emit("sendDankamu", objItem)
-              //     // debugger
-              // } else {
-              //     console.log('2014-异常', data.userInfo)
-              // }
-              break;
-          case "2013":   //
-              // if (data.userInfo && data.userInfo !== '') {
-              //     objItem = Object.assign(data, {type: msgType}, {userInfo: JSON.parse(data.userInfo)})
-              //     if (objItem && objItem.userInfo && objItem.userInfo.memGradeLevel) {
-              //         objItem.userInfo.icon = that.leveList.filter(item => item.level == objItem.userInfo.memGradeLevel)[0].effectUrl
-              //     }
-              //     if (objItem && objItem.userInfo && objItem.userInfo.nobleGradeNum) {
-              //         objItem.userInfo.noble_icon = that.nobleList.filter(item => item.gradeNum == objItem.userInfo.nobleGradeNum)[0].logoUrl
-              //     }
-              //     if (objItem.msgType === 'ROOM_ENTER') objItem.content = '进入直播间'
-              //     if (objItem.contentType === 'Gift') {
-              //         let giftJson = JSON.parse(objItem.content)
-              //         let giftInfo = that.giftList.filter(item => item.giftName == giftJson.giftName)[0]
-              //         giftInfo.count = giftJson.count
-              //         objItem.content = giftInfo
-              //     }
-              //     state.chatList.push(objItem);
-              //     that.$nextTick(() => {
-              //         that.$refs.element.scrollTop = 10000000;
-              //     });
-              //     that.$emit("sendDankamu", objItem)
-              // } else {
-              //     console.log('2013-异常')
-              // }
-              // break;
+              scrollToBottom()
+              break;     
           case "1020":   //离开直播间
               break;
           case "1030":   //送礼物
@@ -445,13 +448,14 @@ onMounted(() => {
   };
 
   // socket.on('open')
-  onBeforeUnmount(() => {
+  // console.log(route.query.id, store.state.live.room_id)
+})
+
+onBeforeUnmount(() => {
+    console.log('bofore')
     clearTimer()
     socket && socket.close()
   })
-
-  // console.log(route.query.id, store.state.live.room_id)
-})
 
 </script>
 

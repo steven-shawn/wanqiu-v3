@@ -210,3 +210,14 @@ export const _getGrade = () => {
         method: 'GET'
     })
 }
+
+/**
+ * 获取用户等级列表
+ * @returns 
+ */
+export const _getLevels = () => {
+    return request({
+        url: '/pc/memmemberrelated/findMemGradeDTOList',
+        method: 'GET'
+    })
+}
