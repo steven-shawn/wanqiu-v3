@@ -7,3 +7,6 @@ cp ./.env.development ../xinqiu-h5/.env.development
 cp ./.env.production ../xinqiu-h5/.env.production
 echo "### done###"
 
+git add .
+git commit -m"update by bash"
+git push origin master
