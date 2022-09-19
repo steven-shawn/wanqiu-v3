@@ -1,7 +1,9 @@
 
 <template lang="pug">
-keep-alive  
-  router-view(v-show="isReady")
+//keep-alive  
+//keep-alive(v-slot="{ Component }")
+    component(:is="Component")
+router-view(v-show="isReady")
 jq-tarbar(v-if="showTarbar")
 </template>
 

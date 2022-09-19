@@ -1,4 +1,7 @@
 import { createApp } from 'vue'
+import { getOS } from '@/utils'
+import { IOS_DOWNLOAD_URL, SERVICE_URL } from '@/config/system.conf'
+import { Notify } from 'vant'
 
 // tailwind
 import '@/assets/style/index.scss'
@@ -20,4 +23,24 @@ import 'vant/lib/index.css'
 // Root component
 import App from './App.vue'
 
-createApp(App).use(store).use(Vant).use(router).mount('#app')
+const app = createApp(App) 
+app.directive('download', {
+    beforeMount(el) {
+        el.removeEventListener('click', ()=>{}, true) // 移除，在捕获阶段就要移除
+        el.addEventListener('click', (e: Event) => { // 重新添加
+            e.preventDefault()
+            e.stopPropagation()
+            const os = getOS()
+            if (os.isPhone) { // iphone 
+                window.location.href = IOS_DOWNLOAD_URL
+            } else { // 其他
+                Notify({type: 'danger', message: '目前只支持ios客户端下载'})
+            }
+        },true)
+    },
+    unmounted(el) {
+        el.removeEventListener('click', ()=>{})
+    }
+})
+
+app.use(store).use(Vant).use(router).mount('#app')

@@ -18,10 +18,20 @@ const router = createRouter({
         y: 0
     }), //页面初始化的时候都在0显示
     routes: [
-        {path: '/', redirect: '/login'},
+        {path: '/', redirect: '/home/index'},
         ...routes,
         { path: '/:pathMatch(.*)', redirect: '/404' } // /:pathMatch(.*)*
     ]
+})
+
+const WHITE_LIST = ['/', '/home/index', '/my/index', '/live/index', '/live/room']
+
+router.beforeEach((to, from, next) => {
+    if (WHITE_LIST.includes(to.path)) { // 允许访问的路由
+        next()
+    } else {
+        router.push('/home/index')
+    }
 })
 
 // router.afterEach((to:Object, from: Object, next: Function) => {

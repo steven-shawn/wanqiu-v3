@@ -9,7 +9,6 @@ div.w-full.h-11.flex.justify-between.items-center.bg-white.text-primary.z-10.top
 </template>
 
 <script setup lang="ts">
-import { Icon } from 'vant'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()

@@ -1,13 +1,13 @@
 <template lang="pug">
 div.pb-20.pt-11.bg-gray-100.h-full 
-  jq-header.fixed(leftIcon="setting" rightIcon="chat-o" @e-left-click="onLeftClick" @e-right-click="onRightClick") 我的
+  jq-header.fixed(leftIcon="setting" rightIcon="chat-o" @e-left-click="onLeftClick" @e-right-click="onRightClick" v-download) 我的
   div.px-4
     jq-avatar.my-2
     div.diamond-box.w-full.h-24.rounded.flex.justify-between
         div.flex.flex-col.text-white.justify-center.pl-4.text-primary.w-full
             div.flex.w-full.justify-between
                 div.text-sm.text-primary 我的球钻
-                div.text-xs.mr-4.text-primary.flex.items-center(@click="onRoute({router: '/my/charge'})")
+                div.text-xs.mr-4.text-primary.flex.items-center(v-download @click="onRoute({router: '/my/charge'})")
                   span 充值明细
                   van-icon.rotate-180(name="arrow-left" size="12px")
             div.flex.justify-between.w-full.items-end
@@ -18,12 +18,12 @@ div.pb-20.pt-11.bg-gray-100.h-full
                 div.flex.items-center.mr-4
                     button.w-16.h-6.bg-red-600.rounded.text-white.text-xs.charge
     ul.flex.bg-white.rounded.my-2.px-4.py-3.justify-between
-        li.flex.flex-col.items-center.flex-1(v-for="item in tabList" :key="item.id" @click="onRoute(item)")
+        li.flex.flex-col.items-center.flex-1(v-for="item in tabList" :key="item.id" v-download @click="onRoute(item)")
             div.w-11.h-9.mb-2.img-bg.flex.justify-center.items-center
                 van-image.w-7.h-7(:src="getImageUrl(`icon_${item.icon}.png`)")
             div.text-xs.text-primary {{item.text}}
     ul.flex.flex-col.my-3.bg-white.rounded.shadow-lg
-        li.flex.justify-between.h-10.items-center.border-b(v-for="item in cellList" :key="item.id" @click="onRoute(item)")
+        li.flex.justify-between.h-10.items-center.border-b(v-for="item in cellList" :key="item.id" v-download @click="onRoute(item)")
             span.block.w-5.h-5.mx-4
                 van-image(:src="getImageUrl(`icon_${item.icon}.png`)")
             span.flex-1.text-xs.text-primary {{item.text}}
@@ -80,7 +80,7 @@ const onRightClick = () => {
 }
 
 onMounted(() => { // 获取余额
-    store.dispatch('user/SET_BALANCE')
+    // store.dispatch('user/SET_BALANCE')
     // _getBalance().then(data => {
     //     console.log(data)
     // })

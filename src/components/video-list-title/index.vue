@@ -5,14 +5,14 @@ div.flex.justify-between.items-center.h-9.text-xs
     strong.text-base {{title}}
    div.flex.items-center.text-xs
     span.text-red-light(:class="{'hidden': type !== 'hot'}") 当前有{{count}}个热门直播
-    span.ml-2.text-grey-light(@click="onMore")  查看更多
+    span.ml-2.text-grey-light(@click="onMore" v-download)  查看更多
        van-icon(name="arrow")
 
 </template>
 
 
 <script lang="ts" setup>
-import Util from '@/utils'
+// import Util from '@/utils'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 

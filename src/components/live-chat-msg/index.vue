@@ -15,7 +15,7 @@ div.flex.text-sm.shadow
         :style="{'backgroundImage': `url(${IMG_URL}${levels[item.userInfo.memGradeLevel]['effectUrl']})`}")
         span.invisible {{item.userInfo.memGradeLevel}}
       p.break-all.inline
-        strong.text-sm.font-normal.text-blue {{item.userInfo.nickName}}:
+        strong.text-sm.font-normal.text-blue {{item.userInfo.nickName || '游客'}}:
         span.text-xs.text-black-light {{item.content}}
         // {{item.userInfo}}
 </template>

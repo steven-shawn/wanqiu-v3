@@ -15,3 +15,7 @@ export const PASSWORD_REG = /^[a-z](?=.*?\d)[a-z\d]{7,15}$/i // 密码验证规�
 
 
 export const DEFAULT_PAGE_SIZE = 10 // 默认分页条数
+
+
+export const IOS_DOWNLOAD_URL = 'https://ios.jqiu10.com/tpzauk' // ios下载链接
+export const SERVICE_URL = 'https://mg6d.halan6.live/#/' // 客服地址

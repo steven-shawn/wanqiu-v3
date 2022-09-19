@@ -39,7 +39,7 @@ let scrollTimeout: number | null
 
 const TIME_BREAK = 50 * 1000 // 发送间隔
 
-const CLINET = 'ANDRIOD'
+const CLINET = 'H5'
 const VERSION = '1.0.0'
 const APP_ID = '1'
 const DEVICE = '1'
@@ -68,10 +68,11 @@ const PUBLIC_DATA = { // 公共数据
   appId: APP_ID,
   version: VERSION,
   sourceIp: SOURCE_IP,
-  token: TOKEN,
-  sender: ID,
+  token: TOKEN || '1',
+  sender: ID || '1',
   receiver: ROOM_ID,
-  userInfo: JSON.stringify({...store.state.user.userInfo, access_token: '', refresh_token: ''})
+  userType: 'Tourist',
+  userInfo: JSON.stringify({}) //{...store.state.user.userInfo, access_token: '', refresh_token: ''}
 }
 
 

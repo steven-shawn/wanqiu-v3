@@ -136,6 +136,17 @@ export const _getLive = (id: number) => {
 }
 
 /**
+ * 快速发言
+ * @returns 
+ */
+export const _quickSpeak = () => {
+    return request({
+        url: '/pc/platformpublic/findOpeSpeakQuickly',
+        method: 'GET'
+    })
+}
+
+/**
  * 获取礼物
  * @returns
  */
