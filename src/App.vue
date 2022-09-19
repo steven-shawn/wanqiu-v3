@@ -1,6 +1,7 @@
 
 <template lang="pug">
-router-view(v-show="isReady")
+keep-alive  
+  router-view(v-show="isReady")
 jq-tarbar(v-if="showTarbar")
 </template>
 
