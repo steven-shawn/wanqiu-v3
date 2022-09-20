@@ -71,7 +71,7 @@ const PUBLIC_DATA = { // 公共数据
   sender: ID || '1',
   receiver: ROOM_ID,
   userType: 'Tourist',
-  userInfo: JSON.stringify({}) //{...store.state.user.userInfo, access_token: '', refresh_token: ''}
+  userInfo: {} //{...store.state.user.userInfo, access_token: '', refresh_token: ''}
 }
 
 
@@ -132,7 +132,7 @@ const onscroll = (e: Event) => {
   scrollTimeout = setTimeout(() => {
     const { scrollHeight, scrollTop, clientHeight } = e.target || {}
     state.atBottom = scrollTop === scrollHeight - clientHeight //
-    console.log('atBottom', state.atBottom)
+    // console.log('atBottom', state.atBottom)
   }, 50)
 }
 
@@ -202,8 +202,9 @@ onMounted(async () => {
               send('2014', '')
               break;
           case "9999":   // send message Ok
-            const { nickName, userId } = data
-            PUBLIC_DATA['userInfo'] = JSON.stringify({ nickName, sender: userId })
+            const { userId } = data
+            // PUBLIC_DATA['sender'] = userId
+            PUBLIC_DATA['userInfo'] = data
             // console.log('1', data, nickName, PUBLIC_DATA)
               //if (TOKEN) {
                 // data.nobleGradeNum = userInfo.nobleGradeNum
