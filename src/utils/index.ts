@@ -34,9 +34,9 @@ export const getOS = () => { // window.navigator.userAgent.match(/(phone|pad|pod
 }
 
 
-export default {
-    require
-}
+// export default {
+//     require
+// }
 
 // export default {
 //     // ...ImageUtil,

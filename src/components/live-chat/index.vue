@@ -45,7 +45,7 @@ const DEVICE = '1'
 const SOURCE_IP = '1'
 
 const TOKEN = store.state.user.userInfo.access_token // 登陆token
-const ID = store.state.user.userInfo.memIdentityId // 用户id
+// const ID = store.state.user.userInfo.memIdentityId // 用户id
 const ROOM_ID = store.state.live.room_id // 直播间id
 
 const userInfo = computed(() => {
@@ -68,7 +68,7 @@ const PUBLIC_DATA = { // 公共数据
   version: VERSION,
   sourceIp: SOURCE_IP,
   token: TOKEN || '1',
-  sender: ID || '1',
+  sender: '1',
   receiver: ROOM_ID,
   userType: 'Tourist',
   userInfo: {} //{...store.state.user.userInfo, access_token: '', refresh_token: ''}

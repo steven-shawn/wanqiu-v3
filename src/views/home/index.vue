@@ -28,8 +28,14 @@ div#home
       li 2. 点选「设备管理」
       li 3. 点击「信任」APP既完成设置
     ul.flex.flex-wrap.justify-between
-      li.border-box.mt-8.flex(v-for="item in 4" :key="item" class="w-1/2" :class="item % 2 ? 'justify-start': 'justify-end'")
-        img(:src="getImageUrl(`assets/imgs/home/${item}@2x.png`)" :style="{width: '90%'}")
+      li.border-box.mt-8.flex(class="w-1/2" :class="'justify-start'")
+        img(src="@/assets/imgs/home/1@2x.png" :style="{width: '90%'}")
+      li.border-box.mt-8.flex(class="w-1/2" :class="'justify-end'")
+        img(src="@/assets/imgs/home/2@2x.png" :style="{width: '90%'}")
+      li.border-box.mt-8.flex(class="w-1/2" :class="'justify-start'")
+        img(src="@/assets/imgs/home/3@2x.png" :style="{width: '90%'}")
+      li.border-box.mt-8.flex(class="w-1/2" :class="'justify-end'")
+        img(src="@/assets/imgs/home/4@2x.png" :style="{width: '90%'}")  
     p.mt-5.text-center.text-xs 客服邮箱：jqiuty@gmail.com
     p.mt-5.text-center.text-xs.mb-12 体育直播、足球比分、篮球比分、足球赛事直播、NBA直播、CBA直播、英超直播、德甲、西甲、意甲、法甲、欧冠、欧联、日职联、韩K联、澳超直播、一级体育赛事直播站    
 
@@ -38,13 +44,11 @@ div#home
 <script setup lang="ts">
 import JqDownloadHeader from '@/components/jq-download-header/index.vue' 
 import { SERVICE_URL } from '@/config/system.conf'
-
+// const getImageUrl = (name: string) => {
+//     return new URL(`../../${name}`, import.meta.url).href;
+// }
 const onService = () => { // 客服
   location.href = SERVICE_URL
-}
-
-const getImageUrl = (name: string) => {
-    return new URL(`../../${name}`, import.meta.url).href;
 }
 
 </script>
