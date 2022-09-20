@@ -2,10 +2,10 @@
 div#home
   van-sticky
     jq-download-header
-  div.w-full.h-574-px.bg-blue.flex.flex-col.justify-center.items-center.text-white
-    img.w-71-px.h-32-px(src="@/assets/imgs/home/world-cup@2x.png")
-    h2.text-3xl.font-bold 2022卡塔尔世界杯
-    img.w-363-px.h-290-px(src="@/assets/logo.png")
+  div.w-full.h-574-px.top-bg.flex.flex-col.justify-center.items-center.text-white
+    img.w-71-px.h-32-px.invisible(src="@/assets/imgs/home/world-cup@2x.png")
+    h2.text-3xl.font-bold.invisible 2022卡塔尔世界杯
+    img.w-363-px.h-290-px(src="@/assets/imgs/home/adv@2x.png")
     p.text-base 全世界一起喝彩
     p.text-base 精彩尽在金球直播
     img.w-200-px.h-52-px.mt-1(src="@/assets/imgs/home/ios-download@2x.png" v-download)
@@ -50,6 +50,9 @@ const getImageUrl = (name: string) => {
 </script>
 
 <style lang="sass" scoped>
+.top-bg
+  background: url(@/assets/imgs/home/top-bg@2x.png) no-repeat center top
+  background-size: 100% 100%
 .gradient
   background-image: linear-gradient(to bottom, #f8f1c0, #dbd09b 42%, #8f793b)
   -webkit-background-clip: text
