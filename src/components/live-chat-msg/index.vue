@@ -16,7 +16,9 @@ div.flex.text-sm.shadow
         span.invisible {{item.userInfo.memGradeLevel}}
       p.break-all.inline
         strong.text-sm.font-normal.text-blue {{item.userInfo.nickName || '游客'}}:
-        span.text-xs.text-black-light {{item.content}}
+        span.text-xs.text-black-light()
+          span {{item.content}}
+          img.w-6.h-6.inline.ml-1(:src="item.gift" v-if="item.gift")
         // {{item.userInfo}}
 </template>
 
@@ -45,6 +47,10 @@ const levels = computed(() => {
   return store.state.user.levels
 })
 
+
+// const giftObj = computed(() => {
+//     return store.state.live.giftObj
+// })
 
 
 const getImageUrl = (name: string) => {

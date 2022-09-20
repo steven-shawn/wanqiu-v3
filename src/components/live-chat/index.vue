@@ -17,7 +17,7 @@ import LiveChatInput from '@/components/live-chat-input/index.vue'
 import { onBeforeUnmount, onMounted, reactive } from '@vue/runtime-core'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import { WS_URL } from '@/config/system.conf'
+import { WS_URL, IMG_URL} from '@/config/system.conf'
 import { computed, ref } from '@vue/reactivity'
 import { nextTick, watch } from 'vue'
 import { Notify } from 'vant'
@@ -132,6 +132,7 @@ const onscroll = (e: Event) => {
   scrollTimeout = setTimeout(() => {
     const { scrollHeight, scrollTop, clientHeight } = e.target || {}
     state.atBottom = scrollTop === scrollHeight - clientHeight //
+    console.log('atBottom', state.atBottom)
   }, 50)
 }
 
@@ -156,6 +157,7 @@ onMounted(async () => {
   const { query: { id }} = route
   if(id) {
     store.commit('live/SET_ROOM_ID', id)
+    store.dispatch('live/SET_GIFT_LIST')
   }
   await store.dispatch('live/SET_NOBLE')
   await store.dispatch('user/SET_LEVEL')
@@ -200,6 +202,9 @@ onMounted(async () => {
               send('2014', '')
               break;
           case "9999":   // send message Ok
+            const { nickName, userId } = data
+            PUBLIC_DATA['userInfo'] = JSON.stringify({ nickName, sender: userId })
+            // console.log('1', data, nickName, PUBLIC_DATA)
               //if (TOKEN) {
                 // data.nobleGradeNum = userInfo.nobleGradeNum
                 // data.memGradeLevel = userInfo.memGradeLevel
@@ -252,12 +257,16 @@ onMounted(async () => {
                   chatListItem.content = '进入直播间'
                 }
                 if (contentType === 'Gift') { // 礼物
-                  const giftObj = JSON.parse(data.content)
-                  chatListItem.content = '送出' + giftObj.count + '个' + giftObj.giftName
+                  const gift = JSON.parse(data.content)
+                  chatListItem.content = '送出' + gift.count + '个' // + giftObj.giftName
+                  chatListItem.gift = Object.keys(store.state.live.giftObj).length ? `${IMG_URL}${store.state.live.giftObj[gift.giftName]['pictureUrl']}` : null
+                  // chatListItem.content = `<span>送出${gift.count}个<img style="width: 20px; height: 20px;" src="" /></span>`
                 }
               }
               state.chatList.push(chatListItem)
-              scrollToBottom()
+              nextTick(() => {
+                scrollToBottom()
+              })
               break;     
           case "1020":   //离开直播间
               break;

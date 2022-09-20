@@ -10,7 +10,7 @@ div.m-4.p-4.bg-black.h-240.rounded-lg.text-white.flex.flex-col.justify-between
           img(:src="getImageUrl(`${state.info.gradeName}.png`)")
         span.text-xs.mx-1 正在直播
         // span.block.w-3.h-3.bg-red-600
-        button.text-xs.ml-2(@click="onFollow") {{info.ifFocusStu ? '已关注' : '关注主播'}}
+        button.text-xs.ml-2(v-download @click="onFollow") {{info.ifFocusStu ? '已关注' : '关注主播'}}
   div.relative.sign.-top-8
     p.w-4.h-12.bg-yellow-600.rounded-l-md.absolute.right-0.-top-1
     p.absolute.right-0.h-10.w-auto.bg-white.rounded.text-black.text-xs.pr-4.pl-1.flex.items-center {{state.info.anchorSign}}
