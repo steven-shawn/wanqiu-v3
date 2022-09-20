@@ -19,9 +19,8 @@ import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { WS_URL } from '@/config/system.conf'
 import { computed, ref } from '@vue/reactivity'
-import { nextTick } from 'vue'
+import { nextTick, watch } from 'vue'
 import { Notify } from 'vant'
-import { watch } from 'vue'
 
 const route = useRoute()
 const store = useStore()
@@ -236,6 +235,10 @@ onMounted(async () => {
               /*msgType*/
               // ROOM_ENTER 进入直播间
               // ROOM_TEXT  ：发言内容
+              if (code / 1 !== 100) {
+                Notify({ type: 'danger', message: msg})
+                return
+              }
               const { msgType = '', contentType = '' } = data || {}
               if (msg === 'system') { // 公告
                 state.announcement = data
