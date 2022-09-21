@@ -432,3 +432,14 @@ export const _lineInfo = (matchId: string) => {
         }
     })
 }
+
+/**
+ * 获取客服链接
+ * @returns 
+ */
+export const _getServiceLink = () => {
+    return request({
+        url: '/pc/syslink/list',
+        method: 'GET'
+    })
+}

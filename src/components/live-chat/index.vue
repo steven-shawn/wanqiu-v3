@@ -9,6 +9,8 @@ div.live-chat.h-screen.overflow-y-auto.pb-11.bg-white(ref="chat" @scroll="onscro
   live-chat-msg(type="msg" v-for="(item,index) in state.chatList" :key="index" :item="item" 
     v-if="Object.keys(nobles).length && Object.keys(levels).length") 
   live-chat-input(@send="onSendMsg")
+  div.w-6.h-6.absolute.right-2.bottom-12(@click.stop="onService")
+    img(src="@/assets/logo.png")
 </template>
 
 <script lang="ts" setup>
@@ -59,6 +61,14 @@ const nobles = computed(() => {
 const levels = computed(() => {
   return store.state.user.levels
 })
+
+const onService = async () => {
+  await store.dispatch('live/SET_SERVICE_LINK')
+  const link = store.state.live.serviceLink
+  if (link) {
+    location.href = link
+  }
+}
 
 // console.log(userInfo)
 const PUBLIC_DATA = { // 公共数据
