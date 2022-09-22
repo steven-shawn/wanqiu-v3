@@ -18,7 +18,7 @@ div.pb-16
 </template>
 
 <script setup lang="ts">
-import JqDownloadHeader from '@/components/jq-download-header/index.vue'  
+import JqDownloadHeader from '@/components/jq-download-header/index.vue'
 import VideoListTitle from '@/components/video-list-title/index.vue'
 import VideoListItem from '@/components/video-list-item/index.vue'
 import { _hotList, _liveList } from '@/service/modules/live.api'

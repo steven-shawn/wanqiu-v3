@@ -184,16 +184,24 @@ onMounted(async () => {
   }
 
   socket.onmessage = function (evt) {
+    console.log
     let { data: res } = evt
     res = res.split('#') // xxxx#{code:xxx,data: {}, msg: ''}
     const MSG_TYPE = res[0] // xxxx
+    // console.log(res)
     try { // 是对象
       res = JSON.parse(res[1]) // {code:xxx,data: {}, msg: ''}
     } catch { // 是字符串
       res = { code: 100, data: res[1], msg: 'system'}
     }
     const chatListItem = {} // 消息单体
-    const { code , data, msg } = res
+    let { code , data, msg } = res
+    // data = JSON.parse(data)
+    console.log('data', data)
+    try {
+      data = JSON.parse(data)
+    } catch {
+    }
     // console.log(code, data, msg)
       // let stringifyItem = evt.data.split('#')
       // let obj = {}
@@ -203,7 +211,6 @@ onMounted(async () => {
       //     obj = JSON.parse(stringifyItem[1]);
       //     msgType = stringifyItem[0]
       // }
-      
       switch (MSG_TYPE) {
           case "10000":   //心跳检测
               console.log('心跳检测', data)
@@ -268,12 +275,12 @@ onMounted(async () => {
               } else {
                 chatListItem.type = msgType
                 chatListItem.content = data.content
-                chatListItem.userInfo = JSON.parse(data.userInfo) || {}
+                chatListItem.userInfo = JSON.parse(data.userInfo || "{}")
                 if (msgType === 'ROOM_ENTER') {
                   chatListItem.content = '进入直播间'
                 }
                 if (contentType === 'Gift') { // 礼物
-                  const gift = JSON.parse(data.content)
+                  const gift = JSON.parse(data.content || "{}")
                   chatListItem.content = '送出' + gift.count + '个' // + giftObj.giftName
                   chatListItem.gift = Object.keys(store.state.live.giftObj).length ? `${IMG_URL}${store.state.live.giftObj[gift.giftName]['pictureUrl']}` : null
                   // chatListItem.content = `<span>送出${gift.count}个<img style="width: 20px; height: 20px;" src="" /></span>`

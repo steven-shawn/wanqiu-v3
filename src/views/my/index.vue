@@ -1,6 +1,8 @@
 <template lang="pug">
-div.pb-20.pt-11.bg-gray-100.h-full 
-  jq-header.fixed(leftIcon="setting" rightIcon="chat-o" @e-left-click="onLeftClick" @e-right-click="onRightClick" v-download) 我的
+div.pb-20.bg-gray-100.h-full
+  van-sticky
+    jq-download-header
+  // jq-header.fixed(leftIcon="setting" rightIcon="chat-o" @e-left-click="onLeftClick" @e-right-click="onRightClick" v-download) 我的
   div.px-4
     jq-avatar.my-2
     div.diamond-box.w-full.h-24.rounded.flex.justify-between
@@ -33,6 +35,7 @@ div.pb-20.pt-11.bg-gray-100.h-full
 <script setup lang="ts">
 import JqHeader from '@/components/jq-header/index.vue'
 import JqAvatar from '@/components/jq-avatar/index.vue'
+import JqDownloadHeader from '@/components/jq-download-header/index.vue'
 // import Util from '@/utils'
 import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'

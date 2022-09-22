@@ -10,7 +10,7 @@ div.flex.flex-col.w-l(@click="onItemClick")
     div.w-8.h-8.rounded-2xl.bg-black.mr-1.flex-shrink-0.overflow-hidden
       van-image.w-8.h-8(:src="IMG_URL+item.memImg" fit="cover" round)
     div.flex.flex-col.flex-1
-        p.text-sm.truncate.w-32.text-primary  {{item.matchTitle}}
+        p.text-sm.truncate.w-32.text-primary  {{item.studioTitle}}
         div.flex.justify-between.text-xs.text-gray-400
             span.text-grey-light.text-xs {{item.nickName}}
             span
