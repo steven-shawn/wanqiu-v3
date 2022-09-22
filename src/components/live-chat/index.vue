@@ -9,8 +9,8 @@ div.live-chat.h-screen.overflow-y-auto.pb-11.bg-white(ref="chat" @scroll="onscro
   live-chat-msg(type="msg" v-for="(item,index) in state.chatList" :key="index" :item="item" 
     v-if="Object.keys(nobles).length && Object.keys(levels).length") 
   live-chat-input(@send="onSendMsg")
-  div.w-6.h-6.absolute.right-2.bottom-12(@click.stop="onService")
-    img(src="@/assets/logo.png")
+  div.w-16.h-16.absolute.right-2.bottom-16(@click.stop="onService")
+    img(src="./helper.png")
 </template>
 
 <script lang="ts" setup>
@@ -108,7 +108,7 @@ const send = (num: number | string, item: string | object) => { // 发送消息
   const sendStr = `${num}#` + JSON.stringify(msgObj)
   // console.log(num, msgObj)
   socket.send(sendStr);
-  // this.inpTxt = ""            
+  // this.inpTxt = ""
 }
 
 // 发送消息
@@ -212,9 +212,14 @@ onMounted(async () => {
               send('2014', '')
               break;
           case "9999":   // send message Ok
-            const { userId } = data
+            let { userId } = data
+            userId += ''
             // PUBLIC_DATA['sender'] = userId
-            PUBLIC_DATA['userInfo'] = data
+            if (!PUBLIC_DATA['userInfo'].nickName) {
+              userId = userId.substring(0, userId.length - 5) + data.nickName.split('-')[1]
+              PUBLIC_DATA['userInfo'] = {...data, userId }
+              PUBLIC_DATA['sender'] = userId
+            }
             // console.log('1', data, nickName, PUBLIC_DATA)
               //if (TOKEN) {
                 // data.nobleGradeNum = userInfo.nobleGradeNum
