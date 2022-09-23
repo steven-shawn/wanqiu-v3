@@ -9,7 +9,10 @@ div.live-chat.h-screen.overflow-y-auto.pb-11.bg-white(ref="chat" @scroll="onscro
   live-chat-msg(type="msg" v-for="(item,index) in state.chatList" :key="index" :item="item" 
     v-if="Object.keys(nobles).length && Object.keys(levels).length") 
   live-chat-input(@send="onSendMsg")
-  div.w-16.h-16.absolute.right-2.bottom-16(@click.stop="onService")
+  div.fixed.bottom-16(style="left: 7%" @click.stop="scrollToBottom(true)" v-if="!state.atBottom")
+    span.text-xs.text-red-light 更多消息
+    van-icon.text-red-light(name="arrow-down")
+  div.w-16.h-16.fixed.left-2.bottom-16.z-10(@click.stop="onService" style="left: 13.5%")
     img(src="./helper.png")
 </template>
 
@@ -122,13 +125,15 @@ const onSendMsg = (e: Event) => {
 }
 
 /// 滚动到底部
-const scrollToBottom = () => {
+const scrollToBottom = (flag: boolean) => {
   if (chat.value.scrollHeight - chat.value.clientHeight <= 0) { // 内容不够的时候
     state.atBottom = true
   }
-  if (state.atBottom) {
+  if (state.atBottom || flag) {
     nextTick(() => {
+      // console.log(chat.value.scrollHeight, chat.value.clientHeight, chat.value.scrollHeight - chat.value.clientHeight)
       chat.value.scrollTo(chat.value.scrollHeight - chat.value.clientHeight, 300) //
+      // chat.value.scrollTo(10000, 300)
     })
   }
   
@@ -141,6 +146,7 @@ const onscroll = (e: Event) => {
   }
   scrollTimeout = setTimeout(() => {
     const { scrollHeight, scrollTop, clientHeight } = e.target || {}
+    // console.log(e, scrollTop, scrollHeight, clientHeight)
     state.atBottom = scrollTop === scrollHeight - clientHeight //
     // console.log('atBottom', state.atBottom)
   }, 50)
@@ -184,7 +190,6 @@ onMounted(async () => {
   }
 
   socket.onmessage = function (evt) {
-    console.log
     let { data: res } = evt
     res = res.split('#') // xxxx#{code:xxx,data: {}, msg: ''}
     const MSG_TYPE = res[0] // xxxx
@@ -197,7 +202,7 @@ onMounted(async () => {
     const chatListItem = {} // 消息单体
     let { code , data, msg } = res
     // data = JSON.parse(data)
-    console.log('data', data)
+    // console.log('data', data)
     try {
       data = JSON.parse(data)
     } catch {
@@ -206,7 +211,7 @@ onMounted(async () => {
       // let stringifyItem = evt.data.split('#')
       // let obj = {}
       let item = {}
-      let objItem = {}
+      // let objItem = {}
       // if (stringifyItem[1].indexOf('code') !== -1) {
       //     obj = JSON.parse(stringifyItem[1]);
       //     msgType = stringifyItem[0]
@@ -288,7 +293,7 @@ onMounted(async () => {
               }
               state.chatList.push(chatListItem)
               nextTick(() => {
-                scrollToBottom()
+                scrollToBottom(false)
               })
               break;     
           case "1020":   //离开直播间

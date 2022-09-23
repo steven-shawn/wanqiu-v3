@@ -1,3 +1,6 @@
+rm -f dist-test.zip
+rm -f dist-prod.zip
+
 npm run build # 编译测试环境
 
 zip -q -r -m ./dist-test.zip ./dist
