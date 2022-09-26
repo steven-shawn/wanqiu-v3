@@ -3,7 +3,8 @@ div.pb-20.pt-11.bg-gray-100.h-full
   jq-header.fixed 关于我们
   div.px-4.py-4
     div.flex.flex-col.justify-center.items-center
-        div.w-24.h-24.rounded-full.bg-red-600
+        div.w-24.h-24.rounded-full
+          img(src="@/assets/logo@2x.png")
         p.text-gray-600.my-2.text-xs 金球 V 1.0.0
     div.h-10.bg-white.mb-2.shadow-lg.rounded-lg.flex.justify-between.items-center.px-4
         span.text-xs 版本信息

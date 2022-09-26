@@ -9,7 +9,7 @@ div.live-chat.h-screen.overflow-y-auto.pb-11.bg-white(ref="chat" @scroll="onscro
   live-chat-msg(type="msg" v-for="(item,index) in state.chatList" :key="index" :item="item" 
     v-if="Object.keys(nobles).length && Object.keys(levels).length") 
   live-chat-input(@send="onSendMsg")
-  div.fixed.bottom-16(style="left: 7%" @click.stop="scrollToBottom(true)" v-if="!state.atBottom")
+  //div.fixed.bottom-16(style="left: 7%" @click.stop="scrollToBottom(true)" v-if="!state.atBottom")
     span.text-xs.text-red-light 更多消息
     van-icon.text-red-light(name="arrow-down")
   //div.w-16.h-16.fixed.left-2.bottom-16.z-10(@click.stop="onService" style="left: 13.5%")
@@ -113,8 +113,8 @@ div.live-chat.h-screen.overflow-y-auto.pb-11.bg-white(ref="chat" @scroll="onscro
     }
     if (state.atBottom || flag) {
       nextTick(() => {
-        // console.log(chat.value.scrollHeight, chat.value.clientHeight, chat.value.scrollHeight - chat.value.clientHeight)
-        chat.value.scrollTo(chat.value.scrollHeight - chat.value.clientHeight, 300) //
+        console.log(chat.value.scrollHeight, chat.value.clientHeight, chat.value.scrollHeight - chat.value.clientHeight)
+        chat.value.scrollTo(chat.value.scrollHeight - chat.value.clientHeight + 50, 300) //
         // chat.value.scrollTo(10000, 300)
       })
     }

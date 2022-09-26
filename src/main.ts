@@ -11,7 +11,7 @@ import store from '@/store'
 import router from '@/router'
 
 // vant
-import Vant from 'vant'
+import Vant, { Notify } from 'vant'
 import 'vant/lib/index.css'
 
 // plugins
@@ -20,4 +20,36 @@ import 'vant/lib/index.css'
 // Root component
 import App from './App.vue'
 
-createApp(App).use(store).use(Vant).use(router).mount('#app')
+
+const app = createApp(App) 
+app.directive('waiting', { // 敬请期待
+    beforeMount(el) {
+        el.removeEventListener('click', ()=>{}, true) // 移除，在捕获阶段就要移除
+        el.addEventListener('click', (e: Event) => { // 重新添加
+            e.preventDefault()
+            e.stopPropagation()
+                Notify({type: 'primary', message: '敬请期待'})
+        },true)
+    },
+    unmounted(el) {
+        el.removeEventListener('click', ()=>{})
+    }
+})
+
+app.directive('auth', { // 登陆检查
+    beforeMount(el) {
+        el.removeEventListener('click', ()=>{}, true) // 移除，在捕获阶段就要移除
+        el.addEventListener('click', (e: Event) => { // 重新添加
+            e.preventDefault()
+            e.stopPropagation()
+            if (!store.state.user.userInfo.access_token) {
+                router.push('/login')
+            }
+        }, true)
+    },
+    unmounted(el) {
+        el.removeEventListener('click', ()=>{})
+    }
+})
+
+app.use(store).use(Vant).use(router).mount('#app')

@@ -33,11 +33,11 @@ div.pb-20.pt-11.bg-gray-100.h-full
 <script setup lang="ts">
 import JqHeader from '@/components/jq-header/index.vue'
 import JqAvatar from '@/components/jq-avatar/index.vue'
-import Util from '@/utils'
 import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { _getBalance } from '@/service/modules/user.api'
+import { Notify } from 'vant'
 
 const store = useStore()
 const router = useRouter()
@@ -50,8 +50,8 @@ const getImageUrl = (name: string) => {
 const tabList = ref([
     {id: 1, text: '我的关注', router: '/my/concern', icon: 'collect'},
     {id: 2, text: '我的预约', router: '/my/reserve', icon: 'reserve'},
-    {id: 3, text: '申请主播', router: '/my/apply-anchor', icon: 'apply'},
-    {id: 4, text: '申请专家', router: '/my/apply-anchor', icon: 'expert'}
+    {id: 3, text: '申请主播', router: '', icon: 'apply'},
+    {id: 4, text: '申请专家', router: '', icon: 'expert'}
 ])
 
 // 我的等级...
@@ -61,11 +61,20 @@ const cellList = ref([
     {id: 3, text: '喇叭历史', icon: 'trump', router: '' },
     {id: 4, text: '我的房管', icon: 'admin', router: '' },
     {id: 5, text: '在线客服', icon: 'service', router: '' },
-    {id: 6, text: '常见问题', icon: 'ques', router: '/my/faq' }
+    {id: 6, text: '常见问题', icon: 'ques', router: '' } // my/faq
 ])
 
 // 点击跳转到指定的路由
 const onRoute = item => {
+    if (!item.router) {
+        Notify({type: 'primary', message: '敬请期待'})
+        return
+    } else {
+        if (!store.state.user.userInfo.access_token) {
+            router.push('/login')
+            return
+        }
+    }
     router.push(item.router)
 }
 
@@ -76,11 +85,17 @@ const onLeftClick = () => {
 
 // 点击消息图标
 const onRightClick = () => {
+    if (!store.state.user.userInfo.access_token) {
+        router.push('/login')
+        return
+    }
   router.push('/my/message')
 }
 
 onMounted(() => { // 获取余额
-    store.dispatch('user/SET_BALANCE')
+    if (store.state.user.userInfo.access_token) {
+        store.dispatch('user/SET_BALANCE')
+    }
     // _getBalance().then(data => {
     //     console.log(data)
     // })

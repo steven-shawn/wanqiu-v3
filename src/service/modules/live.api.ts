@@ -145,6 +145,16 @@ export const _giftList = () => {
         method: 'GET'
     })
 }
+/**
+ * 快速发言
+ * @returns 
+ */
+ export const _quickSpeak = () => {
+    return request({
+        url: '/pc/platformpublic/findOpeSpeakQuickly',
+        method: 'GET'
+    })
+}
 
 /**
  * 发送礼物

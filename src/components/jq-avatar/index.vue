@@ -4,7 +4,7 @@ div.flex.text-xs.justify-between
         van-image(:src="img ? IMG_URL + img : getImageUrl(`default_avatar.png`)")
     div.flex.flex-col.justify-around.flex-1
         div.flex.items-end
-            span.text-sm.mr-2.font-medium {{store.state.user.userInfo.nickName}}
+            span.text-sm.mr-2.font-medium(:class="{'text-red-light': !store.state.user.userInfo.nickName}" v-auth) {{store.state.user.userInfo.nickName || '登陆/注册'}}
             span.block.w-20.h-6.rounded.overflow-hidden(v-if="levelIcon")
                 img.w-full.h-full(:src="IMG_URL + levelIcon")
         p.text-gray-600 {{store.state.user.userInfo.sign || '这家伙很懒 什么都没有留下下下下 ....'}}

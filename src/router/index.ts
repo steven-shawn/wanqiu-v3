@@ -18,7 +18,7 @@ const router = createRouter({
         y: 0
     }), //页面初始化的时候都在0显示
     routes: [
-        {path: '/', redirect: '/login'},
+        {path: '/', redirect: '/live/index'},
         ...routes,
         { path: '/:pathMatch(.*)', redirect: '/404' } // /:pathMatch(.*)*
     ]

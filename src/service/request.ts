@@ -79,11 +79,12 @@ service.interceptors.response.use(res => {
       case 0: // 正确响应
         return Promise.resolve(data)
         break
-      // case 401:
-      // case 402:
-      // case 407:
-      // case 424:   // 登录状态已过期，您可以继续留在该页面，或者重新登录 
-      //   logout()
+      case 2:  
+      case 401:
+      case 402:
+      case 407:
+      case 424:   // 登录状态已过期，您可以继续留在该页面，或者重新登录 
+        logout()
         break
       default: // 直接弹出消息
         Notify({ type: 'warning', message: msg })
