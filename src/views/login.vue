@@ -153,13 +153,13 @@ const onSubmit = async () => {
       const notSetLongonPwd = store.getters.info.notSetLongonPwd === 'true'
       if(!notSetLongonPwd) { // 已经设置过密码
         Notify({type: 'success', message: '登录成功'})
-        router.replace('/live/index')
+        router.replace('/home/index')
       } else { // 没有设置密码
         Dialog.confirm({title: '', message: '恭喜你注册成功,是否立即设置【登陆密码】?'}).then(() => {
           router.replace('/my/setting-changepwd')
           // router.replace('/my/change-password')
         }).catch(() => {
-          router.replace('/live/index')
+          router.replace('/home/index')
         })
       }
     } else {

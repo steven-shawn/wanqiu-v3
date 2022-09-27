@@ -19,7 +19,7 @@ const getImageUrl = (name: string) => {
 const props = defineProps({
     activeId: {
         type: Number,
-        default: 3
+        default: 1
     }
 })
 

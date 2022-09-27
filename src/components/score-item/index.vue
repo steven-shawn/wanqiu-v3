@@ -68,32 +68,35 @@ const calcTime = (matchTime, startTime) => {
 }
 const getStatus = () => {
     let {matchTime, startTime } = props.scoreInfo
+    let time = new Date(props.scoreInfo.nowTime).getTime() - new Date(props.scoreInfo.startTime).getTime()
     switch(props.scoreInfo.state / 1) {
+        case 0:
+            return '未开'
         case -1: // 已结束
         return '完'
         case 1: // 上半场
             // let {matchTime, startTime } = props.scoreInfo
-            return calcTime(matchTime, startTime) + '\''
+            return Math.floor(time / 1000 / 60) + '\''
         case 2: // 中场
             return '中场'
         case 3: // 下半场
-             return calcTime(matchTime, startTime) + 45 + '\''
+             return Math.floor((time + 45 * 60 * 1000) / 1000 / 60) + '\''
         case 4: // 加时
-            return
+            return Math.floor((time + 90 * 60 * 1000) / 1000 / 60)
         case 5: // 点球
             return '点球'
-        case 10: //
+        case -10: //
             return '取消'
-        case 11:
+        case -11:
             return '待定'
-        case 12:
+        case -12:
             return '腰斩'
-        case 13:
+        case -13:
             return '中断'
-        case 14:
+        case -14:
             return '推迟'
         default:
-            return '未知'
+            return '--'
 
     }
 }
