@@ -29,8 +29,9 @@ export const _focusLive = () => {
             url: '/pc/league/pageHotLeagueInfo',
             method: 'GET',
             params: {
+                leagueType: '',
                 current,
-                size
+                size: 1000
             }
         }).then(data=> {
             const { records = [], total = 0 } = data
@@ -51,13 +52,14 @@ export const _focusLive = () => {
  * 直播
  * @returns
  */
- export const _liveList = (matchId:string = '', size: number = 6, all: boolean = false) => {
+ export const _liveList = (matchId:string = '', size: number = 1000, all: boolean = false) => {
     return new Promise((resolve, reject) => {
         return request({
             url: '/pc/league/pageCurrentLeagueInfo',
             method: 'GET',
             params: {
-                leagueType: 0,
+                leagueType: '',
+                current: 1,
                 matchId,
                 size
             }
