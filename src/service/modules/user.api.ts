@@ -235,7 +235,7 @@ export const _getDownloadUrl = () => {
             resolve(iosURL)
         } else {
             request({
-                url: ' /pc/sysdownloadlink/list',
+                url: '/pc/sysdownloadlink/list',
                 method: 'GET',
                 loading: true,
                 params: {
