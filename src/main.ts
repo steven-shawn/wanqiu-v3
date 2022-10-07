@@ -1,7 +1,8 @@
 import { createApp } from 'vue'
 import { getOS } from '@/utils'
-import { IOS_DOWNLOAD_URL, SERVICE_URL } from '@/config/system.conf'
-import { Notify } from 'vant'
+// import { IOS_DOWNLOAD_URL, SERVICE_URL } from '@/config/system.conf'
+import { Loading, Notify } from 'vant'
+import { _getDownloadUrl } from '@/service/modules/user.api'
 
 // tailwind
 import '@/assets/style/index.scss'
@@ -32,7 +33,10 @@ app.directive('download', {
             e.stopPropagation()
             const os = getOS()
             if (os.isPhone) { // iphone 
-                window.location.href = IOS_DOWNLOAD_URL
+                _getDownloadUrl().then(url => {
+                    window.location.href = url
+                })
+                // window.location.href = IOS_DOWNLOAD_URL
             } else { // 其他
                 Notify({type: 'danger', message: '目前只支持ios客户端下载'})
             }

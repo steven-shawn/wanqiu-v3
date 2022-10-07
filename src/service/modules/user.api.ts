@@ -1,3 +1,4 @@
+import { Loading } from 'vant';
 import request from '@/service/request'
 import { loginUser } from '@/types/login.type'
 import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'
@@ -219,5 +220,36 @@ export const _getLevels = () => {
     return request({
         url: '/pc/memmemberrelated/findMemGradeDTOList',
         method: 'GET'
+    })
+}
+
+/**
+ * 获取下载链接
+ * @returns 
+ */
+const IOS_DOWNLOAD_URL = 'IOS_DOWNLOAD_URL'
+export const _getDownloadUrl = () => {
+    return new Promise((resolve, reject) => {
+        const iosURL =sessionStorage.getItem(IOS_DOWNLOAD_URL)
+        if (iosURL) {
+            resolve(iosURL)
+        } else {
+            request({
+                url: ' /pc/sysdownloadlink/list',
+                method: 'GET',
+                loading: true,
+                params: {
+                    client: 2
+                }
+            }).then(data => {
+                const current = data.find(item => item.client === '4')
+                if (current) {
+                    resolve(current.organizeName)
+                    sessionStorage.setItem(IOS_DOWNLOAD_URL, current.organizeName)
+                } else {
+                   reject('链接未配置')
+                }
+            })
+        }
     })
 }

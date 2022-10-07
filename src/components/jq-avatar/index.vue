@@ -1,7 +1,7 @@
 <template lang="pug">
 div.flex.text-xs.justify-between
     div.w-14.h-14.rounded-full.flex-shrink-0.mr-2.overflow-hidden
-        van-image(:src="img ? IMG_URL + img : getImageUrl(`default_avatar.png`)")
+        van-image(:src="img ? IMG_URL + img : getImageUrl(`logo@2x.png`)")
     div.flex.flex-col.justify-around.flex-1
         div.flex.items-end(v-download)
             span.text-base.mr-2.font-medium.text-red-light {{store.state.user.userInfo.nickName || '登陆/注册'}}
@@ -33,7 +33,7 @@ defineProps({
 })
 
 const getImageUrl = (name: string) => {
-    return new URL(`./${name}`, import.meta.url).href;
+    return new URL(`../../assets/${name}`, import.meta.url).href;
 }
 
 const store = useStore()
