@@ -24,7 +24,7 @@ const router = createRouter({
     ]
 })
 
-const WHITE_LIST = ['/', '/home/index', '/my/index', '/live/index', '/live/room']
+const WHITE_LIST = ['/', '/home/index', '/my/index', '/live/index', '/live/room', '/score/index', '/schedule/index', '/live/hot', '/live/live']
 
 router.beforeEach((to, from, next) => {
     if (WHITE_LIST.includes(to.path)) { // 允许访问的路由

@@ -4,14 +4,15 @@ div.pb-20.bg-gray-100.h-full.relative
     van-datetime-picker.w-full(v-model="state.currentDate" type="date"
       title="选择年月日" :min-date="state.minDate" :max-date="state.maxDate" @confirm="onDateConfirm" @cancel="state.show = false")
   van-sticky
-    div.flex.bg-white.text-sm.px-4.box-border.justify-between.items-center.pt-4.pb-2
-      div.flex.items-center
+    div.flex.bg-white.text-sm.px-4.box-border.justify-center.items-center
+    jq-download-header
+      //div.flex.items-center
         p.flex(@click="onSetting")
           img(src="@/assets/imgs/icon_set@2x.png" class="w-18-px h-18px")
       div.flex.w-120-px.h-24-px.bg-grey.items-center.rounded.overflow-hidden
         p.text-sm.w-120-px.h-24-px.flex.justify-center.items-center.rounded(v-for="item in dataTypes" :key="item.id"
           :class="item.id === state.form.dataType ? 'bg-primary text-white': ''"  @click="onBallChange(item)") {{item.text}}
-      img(src="@/assets/imgs/icon_filter@2x.png" class="w-18-px h-18px" @click="onfilter")
+      //img(src="@/assets/imgs/icon_filter@2x.png" class="w-18-px h-18px" @click="onfilter")
     van-tabs(color="#072b48" sticky animated v-model:active="state.active" @change="onChange")
       van-tab(v-for="item in (state.form.dataType !== 'f' ? state.tabList : state.tabList.filter(item => item.id !==2))" :title="item.text")
     score-quick-date(@showCalendar="state.show = true" :chooseDay="state.currentDate" @choose="onChoose")
@@ -26,6 +27,7 @@ import JqHeader from '@/components/jq-header/index.vue'
 import ScoreTitle from '@/components/score-title/index.vue'
 import ScheduleItem from '@/components/schedule-item/index.vue'
 import ScoreQuickDate from '@/components/score-quick-date/index.vue'
+import JqDownloadHeader from '@/components/jq-download-header/index.vue'
 import { DatetimePicker, Popup } from 'vant';
 import { _getScoreList } from '@/service/modules/schedule.api'
 import { onMounted, reactive, ref } from 'vue'
@@ -120,6 +122,7 @@ const onSetting = () => {
 }
 
 const onBallChange = (item) => { // 足球篮球切换
+  return
   state.form.dataType = item.id
   onRefresh()
   // TODO: 获取数据

@@ -3,6 +3,8 @@
 //keep-alive  
 //keep-alive(v-slot="{ Component }")
     component(:is="Component")
+//van-sticky
+  jq-download-header    
 router-view(v-show="isReady")
 jq-tarbar(v-if="showTarbar")
 </template>
@@ -10,6 +12,7 @@ jq-tarbar(v-if="showTarbar")
 
 <script setup lang="ts">
 import JqTarbar from '@/components/jq-tarbar/index.vue'
+import JqDownloadHeader from '@/components/jq-download-header/index.vue' 
 import { watch, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 

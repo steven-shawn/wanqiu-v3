@@ -1,6 +1,8 @@
 <template lang="pug">
-div.pb-20.pt-11.bg-gray-100.h-full.relative.box-border
-  jq-header.fixed 正在直播
+div.pb-20.bg-gray-100.h-full.relative.box-border(style="")
+  //jq-header.fixed 正在直播
+  van-sticky
+      jq-download-header
   live-player(:url="state.info.pullUrl" :img="state.info.liveImg" v-if="state.info.pullUrl")
   div.w-full.h-52.flex.justify-center.items-center(v-else)
     van-loading
@@ -33,6 +35,7 @@ import JqHeader from '@/components/jq-header/index.vue'
 import LivePlayer from '@/components/live-player/index.vue'
 import LiveChat from '@/components/live-chat/index.vue'
 import LiveArchor from '@/components/live-archor/index.vue'
+import JqDownloadHeader from '@/components/jq-download-header/index.vue'
 // import LiveProcess from '@/components/live-process/index.vue'
 // import LiveIndex from '@/components/live-index/index.vue'
 // import LiveLine from '@/components/live-line/index.vue'

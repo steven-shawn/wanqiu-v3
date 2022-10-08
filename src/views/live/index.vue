@@ -2,7 +2,7 @@
 div.pb-16
   van-sticky
     jq-download-header
-  //live-swiper
+  live-swiper
   div.hot.px-2.mt-2(style="min-height: 192px;")
     video-list-title(:count="state.hotTotal" title="热门直播")
     div.flex.flex-wrap.justify-between
@@ -21,6 +21,7 @@ div.pb-16
 import JqDownloadHeader from '@/components/jq-download-header/index.vue'
 import VideoListTitle from '@/components/video-list-title/index.vue'
 import VideoListItem from '@/components/video-list-item/index.vue'
+import LiveSwiper from '@/components/live-swiper/index.vue'
 import { _hotList, _liveList } from '@/service/modules/live.api'
 import { onMounted, reactive } from '@vue/runtime-core'
 // import LiveSwiper from '@/components/live-swiper/index.vue'

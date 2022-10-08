@@ -4,6 +4,8 @@ div.pb-24.bg-grey.h-full.text-primary
     van-datetime-picker.w-full(v-model="state.currentDate" type="date"
       title="选择年月日" :min-date="state.minDate" :max-date="state.maxDate" @confirm="onDateConfirm" @cancel="state.show = false")
   van-sticky
+      jq-download-header
+  //van-sticky
     div.flex.bg-white.text-sm.px-4.box-border.justify-between.items-center.pt-4.pb-2
       div.flex.items-center
         p.flex(@click="onfilter")
@@ -16,7 +18,7 @@ div.pb-24.bg-grey.h-full.text-primary
         p.text-sm.w-120-px.h-24-px.flex.justify-center.items-center.rounded(v-for="item in dataTypes" :key="item.id" 
           :class="item.id === state.form.dataType ? 'bg-primary text-white': ''"  @click="onBallChange(item)") {{item.text}}
       img(src="@/assets/imgs/icon_set@2x.png" class="w-18-px h-18px" @click="route('/score/setting')")
-  van-tabs(color="#072b48" sticky animated v-model:active="state.active")
+  van-tabs(color="#072b48" sticky offset-top="68" animated v-model:active="state.active")
     van-tab(v-for="(item, index) in state.tabList" :title="item.text")
       div.overflow-y-auto.mt-1.h-full.border(style="min-height: 70vh")
         van-sticky(:offset-top="50" v-if="index === 3")
@@ -29,6 +31,7 @@ div.pb-24.bg-grey.h-full.text-primary
 <script setup lang="ts">
 import ScoreItem from '@/components/score-item/index.vue'
 import ScoreQuickDate from '@/components/score-quick-date/index.vue'
+import JqDownloadHeader from '@/components/jq-download-header/index.vue'
 import { _getScoreList, _focusList } from '@/service/modules/score.api'
 
 import { onMounted, ref, reactive } from 'vue'
