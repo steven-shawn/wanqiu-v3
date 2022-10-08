@@ -17,7 +17,7 @@ div#search
                 p
                     span.mr-1(style="color: red") {{index + 1}}.
                     span 赛事名称
-                img.w-3.h-3(src="@/assets/logo.png")
+                img.w-3.h-3(src="@/assets/logo@2x.png")
 
     van-tabs(color="#072b48" sticky animated v-model:active="state.activeTab" v-if="state.showResult")
         van-tab(v-for="(item, index) in state.tabList" :title="item.text")

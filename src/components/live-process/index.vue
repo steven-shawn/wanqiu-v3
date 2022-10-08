@@ -45,20 +45,20 @@ div.flex.flex-col.py-4.h-screen.overflow-y-auto.live-process
         li.flex.flex-col.px-4(v-for="item in state.liveList" :key="item")
           div.flex.justify-between.w-full.items-center
             p.flex.items-center
-              img.w-3.h-3.mr-2(src="@/assets/logo.png")
+              img.w-3.h-3.mr-2(src="@/assets/logo@2x.png")
               span.text-xs.text-primary {{item.content}}  
-            img.w-3.h-3(src="@/assets/logo.png")
+            img.w-3.h-3(src="@/assets/logo@2x.png")
           p.flex.items-center.border-l.my-1.mx-1.text-xs.text-white text
         van-empty.text-xs.text-primary(v-if="!state.liveList.length") 暂无文字直播    
       template(v-else)
         li.flex.px-4.justify-center.items-center(v-for="(item, index) in state.eventList" :key="item" :class="index === 0 ? 'pt-4': ''")
           p.bg-grey.flex-1.rounded.py-2.flex.items-end.flex-col.px-2(class="w-11/12" :class="{'invisible': item % 2 === 0}")
             span.text-xs.text-primary 0-1
-            img.w-4.h-4(src="@/assets/logo.png")
+            img.w-4.h-4(src="@/assets/logo@2x.png")
           p.line.mx-2 7'
           p.bg-grey.flex-1.rounded.py-2.flex.flex-col.px-2(class="w-11/12" :class="{'invisible': item % 2 !== 0 }")
             span.text-xs.text-primary 0-1
-            img.w-4.h-4(src="@/assets/logo.png")
+            img.w-4.h-4(src="@/assets/logo@2x.png")
         van-empty.text-xs.text-primary(v-if="!state.eventList.length") 暂无重要事件      
   ol.flex.flex-wrap.mt-4.bg-white.p-4
     li.flex.items-center.mb-3(v-for="item in symbols" :key="item.id" :class="'w-1/5'")
@@ -71,7 +71,7 @@ div.flex.flex-col.py-4.h-screen.overflow-y-auto.live-process
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from 'vue'
 import { IMG_URL } from '@/config/system.conf';
-import Logo from '@/assets/logo.png'
+import Logo from '@/assets/logo@2x.png'
 import { _processTech, _getLiveText, _getLiveEvent } from '@/service/modules/live.api'
 const props = defineProps({
   info: {}

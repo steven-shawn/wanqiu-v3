@@ -2,7 +2,7 @@
 div.leagues.pb-20
     van-sticky
         div.flex.items-center.bg-white.h-44-px.justify-center.box-shadow
-            //- img.w-30-px.h-30-px.absolute.left-2.top-2(src="@/assets/logo.png" )
+            //- img.w-30-px.h-30-px.absolute.left-2.top-2(src="@/assets/logo@2x.png" )
             van-icon.absolute.left-2.top-3.flex.justify-center.items-center(:name="'arrow-left'" size="20px"
              @click="onBack" style="position: absolute;")
             ul.flex.w-258-px.h-24-px.bg-grey.items-center.rounded.bg-opacity-90
@@ -16,7 +16,7 @@ div.leagues.pb-20
             li.border.border-primary.border-opacity-50.w-109-px.h-28-px.flex.items-center.justify-between.text-xs.px-1.mb-2.mx-1(
                 v-for="item in state.tabList[state.activeTab / 1 - 1].data" :key="item.leagueId" style="border-color:rgba(102, 120, 133, 0.1)")
                 p.flex-1.flex.items-center
-                    //- img.w-3.h-3.mr-1(src="@/assets/logo.png")
+                    //- img.w-3.h-3.mr-1(src="@/assets/logo@2x.png")
                     van-checkbox.mr-2(:name="item.leagueId" icon-size="15px")
                     span.text-grey-light.text-xs {{item.name}}
                 p.text-grey-light.text-xs {{item.count}}

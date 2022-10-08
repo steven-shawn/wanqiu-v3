@@ -18,7 +18,7 @@ div.flex.flex-col.py-4.h-screen.overflow-y-auto.live-line
       ul.flex.justify-center(v-for="(item, index) in state.lines.homeLineup" :key="index" style="height: 50px")
        li.flex.flex-col.justify-center.items-center.text-center(v-for="_item in item" :key="_item" :class="'w-1/5'")
          span.block.w-8.h-8.rounded-full.flex-shrink-0.bg-white.relative
-          img.rounded-full(src="@/assets/logo.png")
+          img.rounded-full(src="@/assets/logo@2x.png")
           span.block.rounded-full.bg-white.w-4.h-4.absolute.top-0.left-0.text-primary(:class="'-translate-x-1/2 -translate-y-1/2'") {{_item.number}}
          span.text-xs.break-words.overflow-clip {{_item.nameChs}}
       div.text-opacity-80.text-xs.absolute.left-2.bottom-1 阵容胜率：{{state.info.homeRate || '--'}}  
@@ -27,7 +27,7 @@ div.flex.flex-col.py-4.h-screen.overflow-y-auto.live-line
       ul.flex.justify-center(v-for="(item, index) in state.lines.awayLineup" :key="index" style="height: 50px")
        li.flex.flex-col.justify-center.items-center.text-center(v-for="_item in item" :key="_item" :class="'w-1/5'")
          span.block.w-8.h-8.rounded-full.flex-shrink-0.bg-white.relative.rounded-full.w-4.h-4
-          img.rounded-full(src="@/assets/logo.png")
+          img.rounded-full(src="@/assets/logo@2x.png")
           span.block.rounded-full.bg-grey-light.w-4.h-4.absolute.top-0.left-0.text-white.mt-2(:class="'-translate-x-1/2 -translate-y-1/2'") {{_item.number}}
          span.text-xs.break-words.overflow-clip {{_item.nameChs}}     
     div.h-11.flex.justify-between.items-center.px-2.rounded-b-md.absolute.bottom-6

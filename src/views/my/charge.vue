@@ -26,7 +26,7 @@ div#charge(@click="toggleShow('')")
     div.flex.flex-col.bg-white.pt-4.pb-2.mt-2(v-for="item in 4" :key="item")
         div.flex.justify-between.items-center.px-4
             div.flex.items-center
-                img.w-8.h-8.rounded-full.mr-2.border(src="@/assets/logo.png")
+                img.w-8.h-8.rounded-full.mr-2.border(src="@/assets/logo@2x.png")
                 div.text-xs
                     p.text-primary 礼物消费
                     p.text-grey-light.mt-1 2021-11-11 12:12:50
