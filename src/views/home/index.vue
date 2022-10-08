@@ -11,7 +11,7 @@ div#home
     img.w-200-px.h-52-px.mt-1(src="@/assets/imgs/home/ios-download@2x.png" v-download)
     p.text-lg.mt-1 
       strong 官网地址：
-      span www.jqiu9.com
+      span {{OFFICIAL_URL}}
     p.text-md.gradient 【点击查看安装教程】
     img.w-14-px.h-14-px.mt-1(src="@/assets/imgs/home/down-arrow@2x.png")
   div.bg-primary.flex.items-center.justify-between.px-4.h-58-px
@@ -43,7 +43,7 @@ div#home
 
 <script setup lang="ts">
 import JqDownloadHeader from '@/components/jq-download-header/index.vue' 
-import { SERVICE_URL } from '@/config/system.conf'
+import { SERVICE_URL, OFFICIAL_URL } from '@/config/system.conf'
 // const getImageUrl = (name: string) => {
 //     return new URL(`../../${name}`, import.meta.url).href;
 // }

@@ -1,4 +1,6 @@
-export const REQUEST_URL = import.meta.env.VITE_APP_BASE_URL
+export const REQUEST_URL = import.meta.env.VITE_APP_BASE_URL // 请求地址
+
+export const OFFICIAL_URL = import.meta.env.VITE_APP_INDEX_LINK // 首页链接
 
 export const REQUEST_TIMEOUT = 20000    // 网络请求超时时间,默认10秒
 
