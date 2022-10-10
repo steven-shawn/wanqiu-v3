@@ -502,6 +502,6 @@ onBeforeUnmount(() => {
 
 <style scoped lang="sass">
 .live-chat
-    margin-top: -296px
-    padding-top: 296px
+    margin-top: -364px
+    padding-top: 364px
 </style>

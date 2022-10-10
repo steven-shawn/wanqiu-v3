@@ -1,8 +1,8 @@
 import { createApp } from 'vue'
-import { getOS } from '@/utils'
 // import { IOS_DOWNLOAD_URL, SERVICE_URL } from '@/config/system.conf'
-import { Loading, Notify } from 'vant'
+import { Loading, Notify, Dialog } from 'vant'
 import { _getDownloadUrl } from '@/service/modules/user.api'
+import { APP_NAME } from '@/config/system.conf'
 
 // tailwind
 import '@/assets/style/index.scss'
@@ -31,15 +31,20 @@ app.directive('download', {
         el.addEventListener('click', (e: Event) => { // 重新添加
             e.preventDefault()
             e.stopPropagation()
-            const os = getOS()
-            if (os.isPhone) { // iphone 
-                _getDownloadUrl().then(url => {
-                    window.location.href = url
-                })
-                // window.location.href = IOS_DOWNLOAD_URL
-            } else { // 其他
-                Notify({type: 'danger', message: '目前只支持ios客户端下载'})
-            }
+            Dialog.confirm({
+                title: '',
+                message: `赶紧下载${APP_NAME}体育APP\n更多精彩内容体验`,
+                beforeClose: (action) => {
+                    if (action === 'confirm') { // 确定
+                        _getDownloadUrl().then(url => {
+                            Dialog.close()
+                            window.location.href = url
+                        })
+                    } else { // 取消
+                        Dialog.close()
+                    }
+                },
+            })
         },true)
     },
     unmounted(el) {

@@ -4,7 +4,7 @@ div#login.container.relative.h-full
   div.content.w-full.h-full.flex.flex-col.items-center.absolute.inset-0.px-4(@click="onToggleTip(false)")
     div.flex.flex-col.justify-center.items-center.pt-20
        img.w-10.h-10(src="@/assets/logo@2x.png")
-       p.text-md.text-primary.mt-1 金球体育
+       p.text-md.text-primary.mt-1 {{APP_NAME}}体育
     div.login-form.container.rounded-md.bg-white.text-primary.px-4.pb-4.mt-5.box-shadow
       ol.form
           li.form-item.flex.flex-col.border-b.py-2
@@ -41,7 +41,7 @@ div#login.container.relative.h-full
 </template>
 
 <script setup lang="ts">
-import { RESEND_CODE_TIME, MOBILE_REG, PASSWORD_REG } from "@/config/system.conf"
+import { RESEND_CODE_TIME, MOBILE_REG, PASSWORD_REG, APP_NAME } from "@/config/system.conf"
 import { SET_INFO } from "@/store/types.store"
 import { NavBar, Notify, Dialog, Toast } from 'vant';
 

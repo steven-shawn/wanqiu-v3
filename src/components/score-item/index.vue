@@ -1,5 +1,5 @@
 <template lang="pug">
-div.score-item.flex.flex-col.bg-white.px-2.mt-1.text-xs.shadow-md
+div.score-item.flex.flex-col.bg-white.px-2.mt-1.text-xs.shadow-md(v-download)
     div.flex.justify-between.w-full.text-xs.my-2.border-b.pb-1
         div.flex.flex-1
             span(:style="{color: scoreInfo.color}") {{scoreInfo.leagueChsShort}}

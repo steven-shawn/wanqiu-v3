@@ -2,6 +2,7 @@ import { Loading } from 'vant';
 import request from '@/service/request'
 import { loginUser } from '@/types/login.type'
 import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'
+import { getOS } from '@/utils'
 
 /***============== 个人中心及登录/注册 ====================== */
 
@@ -227,12 +228,12 @@ export const _getLevels = () => {
  * 获取下载链接
  * @returns 
  */
-const IOS_DOWNLOAD_URL = 'IOS_DOWNLOAD_URL'
+const APP_DOWNLOAD_URL = 'APP_DOWNLOAD_URL'
 export const _getDownloadUrl = () => {
     return new Promise((resolve, reject) => {
-        const iosURL =sessionStorage.getItem(IOS_DOWNLOAD_URL)
-        if (iosURL) {
-            resolve(iosURL)
+        const APP_URL =sessionStorage.getItem(APP_DOWNLOAD_URL)
+        if (APP_URL) {
+            resolve(APP_URL)
         } else {
             request({
                 url: '/pc/sysdownloadlink/list',
@@ -242,10 +243,17 @@ export const _getDownloadUrl = () => {
                     client: 2
                 }
             }).then(data => {
-                const current = data.find(item => item.client === '4')
+                const os = getOS()
+                let current;
+                if (os.isPhone) { // iphone
+                    current = data.find(item => item.client === '4')
+                } else { // 其他
+                    current = data.find(item => item.client === '2')
+                }
+                
                 if (current) {
                     resolve(current.organizeName)
-                    sessionStorage.setItem(IOS_DOWNLOAD_URL, current.organizeName)
+                    sessionStorage.setItem(APP_DOWNLOAD_URL, current.organizeName)
                 } else {
                    reject('链接未配置')
                 }

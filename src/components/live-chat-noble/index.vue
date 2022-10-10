@@ -40,7 +40,7 @@ div#noble.pb-20.pt-11.w-screen.h-full.absolute.z-10
           //- img.logo-box.bg.absolute(:src="IMG_URL + state.list[state.active].bigLogoUrl")
           img.logo.absolute(:src="IMG_URL + state.list[state.active].effectUrl")
 
-        div.text-primary.text-lg.mt-4.text-center 成功开通金球贵族【{{state.list[state.active].gradeName}}】
+        div.text-primary.text-lg.mt-4.text-center 成功开通{{APP_NAME}}贵族【{{state.list[state.active].gradeName}}】
         div.mt-12.text-xs.pl-6
           p.text-grey-light 贵族有效期：
           p.text-primary.mt-1 {{state.list[state.active].nobleExpireDate}}
@@ -56,7 +56,7 @@ import { reactive } from '@vue/reactivity'
 import { inject, onMounted } from '@vue/runtime-core'
 import { _getNoble, _userNoble, _buyNoble } from '@/service/modules/live.api'
 import { SET_BALANCE } from '@/store/types.store'
-import { IMG_URL } from '@/config/system.conf'
+import { IMG_URL, APP_NAME } from '@/config/system.conf'
 import { useStore } from 'vuex'
 import { Notify } from 'vant'
 const store = useStore()

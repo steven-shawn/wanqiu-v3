@@ -1,7 +1,7 @@
 <template lang="pug">
 div.pb-20.bg-gray-100.h-full.relative.box-border(style="")
-  //jq-header.fixed 正在直播
-  van-sticky
+  jq-header.fixed 正在直播
+  //van-sticky
       jq-download-header
   live-player(:url="state.info.pullUrl" :img="state.info.liveImg" v-if="state.info.pullUrl")
   div.w-full.h-52.flex.justify-center.items-center(v-else)
@@ -17,8 +17,8 @@ div.pb-20.bg-gray-100.h-full.relative.box-border(style="")
     van-tab(title="赛况" name="c" disabled)
         //keep-alive
             live-process(v-if="active==='c'" :info="state.info")
-    van-tab(title="指数" name="d" disabled)
-        //keep-alive
+    van-tab(title="指数" name="d")
+        keep-alive
             live-index(v-if="active==='d' && state.info.matchId" :matchId="state.info.matchId")
     van-tab(title="阵容" name="e" disabled)
         //keep-alive
@@ -43,13 +43,11 @@ import JqDownloadHeader from '@/components/jq-download-header/index.vue'
 import LiveChatNoble from '@/components/live-chat-noble/index.vue'
 import LiveChatGift from '@/components/live-chat-gift/index.vue'
 import { _getLive } from '@/service/modules/live.api'
-import { getOS } from '@/utils'
+import { download } from '@/utils'
 // import { popCtrlType } from '@/types/live.type'
 
 import { onMounted, provide, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
-import { Notify } from 'vant'
-import { IOS_DOWNLOAD_URL } from '@/config/system.conf'
 
 const store = useStore()
 // 状态传递器
@@ -64,13 +62,8 @@ const chatTab = ref()
 
 const onClickTab = (e: any) => {
     const { name } = e
-    if (!['a','b'].includes(name)) {
-        const os = getOS()
-        if (os.isPhone) { // iphone 
-            window.location.href = IOS_DOWNLOAD_URL
-        } else { // 其他
-            Notify({type: 'danger', message: '目前只支持ios客户端下载'})
-        }
+    if (!['a','b', 'd'].includes(name)) {
+        download()
     }
 }
 

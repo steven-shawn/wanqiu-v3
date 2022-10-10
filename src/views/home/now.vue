@@ -1,7 +1,8 @@
 <template lang="pug">
 div
-  jq-header.fixed 正在直播
-  jq-header.invisible
+  van-sticky
+    jq-header.fixed 正在直播
+  // jq-header.invisible
   van-pull-refresh(v-model="state.refreshing" @refresh="onRefresh")
     van-list(v-model:loading="state.loading" :finished="state.finished" 
     :finished-text="state.finished && !state.list.length ? '' : '没有更多了'" @load="onLoad")

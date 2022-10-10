@@ -2,6 +2,8 @@ export const REQUEST_URL = import.meta.env.VITE_APP_BASE_URL // 请求地址
 
 export const OFFICIAL_URL = import.meta.env.VITE_APP_INDEX_LINK // 首页链接
 
+export const APP_NAME = import.meta.env.VITE_APP_APP_NAME // 平台名称
+
 export const REQUEST_TIMEOUT = 20000    // 网络请求超时时间,默认10秒
 
 export const RESEND_CODE_TIME = 60 // 重新发送验证码的时间

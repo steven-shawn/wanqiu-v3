@@ -1,7 +1,10 @@
 <template lang="pug">
 div
-  jq-header.fixed 热门直播
-  jq-header.invisible
+  //- van-sticky
+  //-   jq-download-header
+  van-sticky
+      jq-header.fixed 热门直播
+  //- jq-header.invisible
   van-pull-refresh(v-model="state.refreshing" @refresh="onRefresh")
     van-list(v-model:loading="state.loading" :finished="state.finished"
     :finished-text="state.finished && !state.list.length ? '' : '没有更多了'" @load="onLoad")
@@ -13,6 +16,7 @@ div
 <script setup lang="ts">
 import JqHeader from '@/components/jq-header/index.vue'
 import VideoListItem from '@/components/video-list-item/index.vue'
+// import JqDownloadHeader from '@/components/jq-download-header/index.vue'
 import { reactive } from 'vue'
 import { _hotList } from '@/service/modules/live.api'
 import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'

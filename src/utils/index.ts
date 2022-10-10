@@ -7,6 +7,10 @@
 // import RemUtil from './Rem.util'
 // import StorageUtil from './Storage.util'
 
+import { Dialog } from "vant";
+import { _getDownloadUrl } from "@/service/modules/user.api";
+import { APP_NAME } from "@/config/system.conf";
+
 const require = (url: string) => {
     return  `src/${url}`
     // return new URL(`src/${url}`, import.meta.url).href
@@ -31,6 +35,24 @@ export const getOS = () => { // window.navigator.userAgent.match(/(phone|pad|pod
         isPc : isPc, // pc
         isH5: !isPhone && !isApk // 安卓网页
     }
+}
+
+
+export const download = () => {
+    Dialog.confirm({
+        title: '',
+        message: `赶紧下载${APP_NAME}体育APP\n更多精彩内容体验`,
+        beforeClose: (action) => {
+            if (action === 'confirm') { // 确定
+                _getDownloadUrl().then(url => {
+                    Dialog.close()
+                    window.location.href = url
+                })
+            } else { // 取消
+                Dialog.close()
+            }
+        },
+    })
 }
 
 

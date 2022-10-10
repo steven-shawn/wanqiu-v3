@@ -7,19 +7,19 @@ div#home
     h2.text-3xl.font-bold.invisible 2022卡塔尔世界杯
     img.w-363-px.h-290-px(src="@/assets/imgs/home/adv@2x.png")
     p.text-base 全世界一起喝彩
-    p.text-base 精彩尽在金球直播
+    p.text-base 精彩尽在{{APP_NAME}}直播
     img.w-200-px.h-52-px.mt-1(src="@/assets/imgs/home/ios-download@2x.png" v-download)
     p.text-lg.mt-1 
-      strong 官网地址：
-      span {{OFFICIAL_URL}}
-    p.text-md.gradient 【点击查看安装教程】
-    img.w-14-px.h-14-px.mt-1(src="@/assets/imgs/home/down-arrow@2x.png")
-  div.bg-primary.flex.items-center.justify-between.px-4.h-58-px
+    strong 官网地址：
+    span {{OFFICIAL_URL}}
+    //- p.text-md.gradient 【点击查看安装教程】
+    //- img.w-14-px.h-14-px.mt-1(src="@/assets/imgs/home/down-arrow@2x.png")
+  //div.bg-primary.flex.items-center.justify-between.px-4.h-58-px
     p.flex.items-center.text-white
       img.w-40-px.h-40-px(src="@/assets/imgs/home/service@2x.png")
       span.ml-2.text-base.font-medium 专属在线客服
     img.w-96-px.h-28-px(src="@/assets/imgs/home/online@2x.png" @click="onService")
-  div.w-full.bottom.text-white.flex.flex-col.pt-5.px-4.pb-8
+  //div.w-full.bottom.text-white.flex.flex-col.pt-5.px-4.pb-8
     h1.w-295-px.h-32-px.mx-auto.text-center 
       span.text-2xl iOS安装教程
     p.mt-5.text-sm 需在同一网络环境下下载安装和注册，勿切换网络若无法正常下载，请使用手机自带浏览器打开（Chrome谷歌浏览器、Safari浏览器）
@@ -43,7 +43,7 @@ div#home
 
 <script setup lang="ts">
 import JqDownloadHeader from '@/components/jq-download-header/index.vue' 
-import { SERVICE_URL, OFFICIAL_URL } from '@/config/system.conf'
+import { SERVICE_URL, OFFICIAL_URL, APP_NAME } from '@/config/system.conf'
 // const getImageUrl = (name: string) => {
 //     return new URL(`../../${name}`, import.meta.url).href;
 // }
