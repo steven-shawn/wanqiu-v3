@@ -83,3 +83,4 @@ npm i vuex -D
 npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p
 ```
+
