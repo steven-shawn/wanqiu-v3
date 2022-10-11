@@ -52,8 +52,9 @@ mv ./src/assets/logo@2x.jq.png ./src/assets/logo@2x.png
 echo "文件还原完成"
 
 # 推送到git
+time=$(date "+%Y%m%d-%H%M%S")
 git add .
-git commit -m"auto build"
+git commit -m"auto build ${time}"
 git push origin simple-h5
 
 
