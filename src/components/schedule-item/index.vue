@@ -33,6 +33,7 @@ import { computed } from "@vue/runtime-core"
 import { useRouter } from "vue-router"
 import { Notify } from "vant";
 import { _reserve } from '@/service/modules/schedule.api'
+import { download } from '@/utils'
 const router = useRouter()
 
 const props = defineProps(['item'])
@@ -59,9 +60,10 @@ const onItemClick = async () => {
         return
     }
     if (!isbooking) {
-        await _reserve(matchId)
-        props.item.isbooking = true
-        Notify({type: 'success', message: '预约成功'})
+        download()
+        // await _reserve(matchId)
+        // props.item.isbooking = true
+        // Notify({type: 'success', message: '预约成功'})
     }
 
 

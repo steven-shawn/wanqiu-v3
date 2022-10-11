@@ -12,19 +12,19 @@ div.pb-20.bg-gray-100.h-full.relative.box-border(style="")
         keep-alive
             live-chat.box-border(v-if="active==='a'" :gift-info="state.giftInfo")
     van-tab(title="主播" name="b")
-        keep-alive
+        //keep-alive
             live-archor(v-if="active==='b'" :info="state.info")
     van-tab(title="赛况" name="c" disabled)
         //keep-alive
             live-process(v-if="active==='c'" :info="state.info")
-    van-tab(title="指数" name="d")
-        keep-alive
+    van-tab(title="指数" name="d" disabled)
+        //keep-alive
             live-index(v-if="active==='d' && state.info.matchId" :matchId="state.info.matchId")
     van-tab(title="阵容" name="e" disabled)
         //keep-alive
             live-line(v-if="active==='e' && state.info.matchId" :info="state.info")
-    van-tab(title="相关直播" name="f" disabled)
-        //keep-alive
+    van-tab(title="相关直播" name="f")
+        keep-alive
             live-relate(v-if="active==='f' && state.info.matchId" :matchId="state.info.matchId")
   live-chat-noble.fixed.top-0(v-if="state.showNoble" :archorhName="state.info.nickName")
   live-chat-gift.fixed.bottom-0(v-if="state.showGift" @gift="onGift")
@@ -39,7 +39,7 @@ import JqDownloadHeader from '@/components/jq-download-header/index.vue'
 // import LiveProcess from '@/components/live-process/index.vue'
 // import LiveIndex from '@/components/live-index/index.vue'
 // import LiveLine from '@/components/live-line/index.vue'
-// import LiveRelate from '@/components/live-relate/index.vue'
+import LiveRelate from '@/components/live-relate/index.vue'
 import LiveChatNoble from '@/components/live-chat-noble/index.vue'
 import LiveChatGift from '@/components/live-chat-gift/index.vue'
 import { _getLive } from '@/service/modules/live.api'
@@ -62,7 +62,7 @@ const chatTab = ref()
 
 const onClickTab = (e: any) => {
     const { name } = e
-    if (!['a','b', 'd'].includes(name)) {
+    if (!['a','b', 'f'].includes(name)) {
         download()
     }
 }
