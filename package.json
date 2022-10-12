@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "pack": "./build.sh",
+    "build:prod": "./build.sh",
     "build": "vite build",
     "build1": "vue-tsc --noEmit && vite build",
     "preview": "vite preview"
