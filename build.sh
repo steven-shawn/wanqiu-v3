@@ -4,7 +4,7 @@ rm -f halan-dist.zip
 
 # 编译金球
 npm run build # 编译测试环境
-zip -q -r -m ./jqiu-dist.zip ./dist
+zip -q -r -m ./build/jqiu-dist.zip ./dist
 echo "金球打包完成"
 
 # 编译金橙
@@ -22,7 +22,7 @@ mv ./src/assets/logo@2x.jc.png ./src/assets/logo@2x.png
 
 ## 编译打包
 npm run build
-zip -q -r -m ./jincheng-dist.zip ./dist
+zip -q -r -m ./build/jincheng-dist.zip ./dist
 
 echo "金橙打包完成"
 
@@ -37,7 +37,7 @@ mv ./src/assets/logo@2x.png ./src/assets/logo@2x.jc.png
 mv ./src/assets/logo@2x.hl.png ./src/assets/logo@2x.png
 
 npm run build
-zip -q -r -m ./halan-dist.zip ./dist
+zip -q -r -m ./build/halan-dist.zip ./dist
 echo "哈兰打包完成"
 
 # 还原文件
