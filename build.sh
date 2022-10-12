@@ -56,9 +56,11 @@ mv ./platform/jqiu/logo@2x.png ./src/assets/
 echo "文件还原完成"
 
 # 推送到git
-time=$(date "+%Y%m%d-%H%M%S")
+v=$(cat ./version.txt)
+v=$(($v+1))
+echo "${v}" > ./version.txt
 git add .
-git commit -m"auto build ${time}"
+git commit -m"auto build 0.0.${v}"
 git push origin full-h5
 
 

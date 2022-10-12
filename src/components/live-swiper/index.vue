@@ -14,9 +14,10 @@ div#live-swiper.py-3.box-border
                     div.bg-grey-lighter.rounded.py-2.px-2
                         p.font-10.text-grey-light.text-center {{item.matchTime.split(' ')[0].split('/').slice(1).join('-')}}
                         p.font-1.text-primary.text-center {{item.matchTime.split(' ')[1].split(':').slice(0,2).join(':')}}
-                div.flex.justify-between.mt-3
+                div.flex.justify-between.mt-3.items-center
                     p.text-grey-light(style="font-size: 10px;") {{item.leagueChsShort}}
-                    img.w-12.h-4(:src="`${IMG_URL}${item.liveImg}`")
+                    p.text-grey-ligh.text-xs.bg-primary.rounded.text-white.px-2.py-1(v-download) 预约直播
+                    //img.w-12.h-4(:src="`${IMG_URL}${item.liveImg}`")
 </template>
 
 <script lang="ts" setup>
