@@ -6,11 +6,11 @@ div#live-swiper.py-3.box-border
                 div.flex.justify-between.text-xs.text-primary
                     div.flex.flex-col.justify-between
                         p.flex.items-center
-                            img.w-4.h-3(:src="item.homeLogo")
-                            span.ml-1 {{item.homeChs}}
+                            img.w-4.h-3(:src="item.homeLogo || getImageUrl('default_team-logo.png')")
+                            span.ml-1 {{item.homeChs.length <= 5 ? item.homeChs : (item.homeChs.substr(0,5) + '...')}}
                         p.flex.items-center
-                            img.w-4.h-3(:src="item.awayLogo")
-                            span.ml-1 {{item.awayChs}}    
+                            img.w-4.h-3(:src="item.awayLogo || getImageUrl('default_team-logo.png')")
+                            span.ml-1 {{item.awayChs.length < 5 ? item.awayChs : (item.awayChs.substr(0,5) + '...')}}
                     div.bg-grey-lighter.rounded.py-2.px-2
                         p.font-10.text-grey-light.text-center {{item.matchTime.split(' ')[0].split('/').slice(1).join('-')}}
                         p.font-1.text-primary.text-center {{item.matchTime.split(' ')[1].split(':').slice(0,2).join(':')}}
@@ -27,6 +27,11 @@ import { IMG_URL } from '@/config/system.conf';
 const state = reactive({
     list: []
 })
+
+const getImageUrl = (name: string) => {
+    return new URL(`../../assets/${name}`, import.meta.url).href;
+}
+
 onMounted(() => {
     _focusLive().then(data => {
         state.list = data

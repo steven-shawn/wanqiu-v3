@@ -13,8 +13,8 @@ div.score-item.flex.flex-col.bg-white.px-2.mt-1.text-xs.shadow-md(v-download)
            van-image.w-5.h-5.ml-1(:src="getImageUrl(`icon_collect${scoreInfo.isfocus ? '_active' : ''}@2x.png`)")
         div.flex.justify-center.flex-1.flex-shrink-0
             div.flex-1.flex.justify-end
-                span.bg-red-600.px-1.text-white.rounded-sm.mr-1.h-16-px.block {{scoreInfo.homeRed}}
-                span.bg-yellow-300.px-1.mr-1.text-white.rounded-sm.h-16-px.block {{scoreInfo.homeYellow}}
+                span.bg-red-600.px-1.text-white.rounded-sm.mr-1.h-16-px.block(v-if="scoreInfo.homeRed") {{scoreInfo.homeRed}}
+                span.bg-yellow-300.px-1.mr-1.text-white.rounded-sm.h-16-px.block(v-if="scoreInfo.homeYellow") {{scoreInfo.homeYellow}}
                 span.text-gray-400.mr-1 [{{scoreInfo.homeRankCn}}]
                 strong.font-normal.mr-2 {{scoreInfo.homeChs}}
                 strong.font-medium.text-red {{scoreInfo.homeScore}}
@@ -23,8 +23,8 @@ div.score-item.flex.flex-col.bg-white.px-2.mt-1.text-xs.shadow-md(v-download)
                 strong.font-medium.text-red {{scoreInfo.awayScore}}
                 strong.font-normal.ml-2 {{scoreInfo.awayChs}}
                 span.text-gray-400.ml-1 [{{scoreInfo.awayRankCn}}]
-                span.bg-yellow-300.px-1.ml-1.text-white.rounded-sm.h-16-px.block {{scoreInfo.awayYellow}}
-                span.bg-red-600.px-1.text-white.rounded-sm.ml-1.h-16-px.block {{scoreInfo.awayRed}}
+                span.bg-yellow-300.px-1.ml-1.text-white.rounded-sm.h-16-px.block(v-if="scoreInfo.awayYellow") {{scoreInfo.awayYellow}}
+                span.bg-red-600.px-1.text-white.rounded-sm.ml-1.h-16-px.block(v-if="scoreInfo.awayRed") {{scoreInfo.awayRed}}
         div.flex.items-center.w-6.justify-start
             van-image.w-5.ml-1(:src="getImageUrl(`icon_play@2x.png`)" :class="'h-3.5'" v-if="scoreInfo.ifAnc === 1")
             van-image.w-5.ml-1(:src="getImageUrl(`icon_lineup@2x.png`)" :class="'h-3.5'" v-if="scoreInfo.ifAnc === 0")
@@ -93,7 +93,7 @@ const getStatus = () => {
         case 14:
             return '推迟'
         default:
-            return '未知'
+            return '未'
 
     }
 }

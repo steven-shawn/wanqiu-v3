@@ -18,7 +18,7 @@ div.pb-20.bg-gray-100.h-full
                     strong.text-3xl.font-medium.mx-1.translate-y.text-primary {{store.state.user.userInfo.diamond  || '0'}}
                     span.text-xs.text-primary 个
                 div.flex.items-center.mr-4
-                    button.w-16.h-6.bg-red-600.rounded.text-white.text-xs.charge
+                    button.w-16.h-6.bg-red-600.rounded.text-white.text-xs.charge(v-download)
     ul.flex.bg-white.rounded.my-2.px-4.py-3.justify-between
         li.flex.flex-col.items-center.flex-1(v-for="item in tabList" :key="item.id" v-download @click="onRoute(item)")
             div.w-11.h-9.mb-2.img-bg.flex.justify-center.items-center

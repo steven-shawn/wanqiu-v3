@@ -18,7 +18,7 @@ div.bg-white.w-full.text-primary.rounded-t-xl.shadow-lg.shadow-black
      span.ml-1.text-sm 球钻 {{store.state.user.userInfo.diamond}}
     p
       span.text-sm 充值
-      van-icon.rotate-180.ml-1(name="arrow-left")                
+      van-icon.rotate-180.ml-1(name="arrow-left")
 </template>
 
 <script lang="ts" setup>

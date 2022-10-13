@@ -248,9 +248,8 @@ export const _getDownloadUrl = () => {
                 if (os.isPhone) { // iphone
                     current = data.find(item => item.client === '4')
                 } else { // 其他
-                    current = data.find(item => item.client === '2')
+                    current = data.find(item => item.client === '3')
                 }
-                
                 if (current) {
                     resolve(current.organizeName)
                     sessionStorage.setItem(APP_DOWNLOAD_URL, current.organizeName)
