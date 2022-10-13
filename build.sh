@@ -4,6 +4,12 @@ rm -rf ./build/
 # 重新创建目录
 mkdir build
 
+# 编译测试环境
+npm run build
+zip -q -r -m ./build/jqiu-test-dist.zip ./dist
+
+echo "######### 测试环境打包完成 ##########"
+
 # 编译金球
 mv ./.env.production ./.env.production.dev
 mv ./platform/jqiu/.env.production ./

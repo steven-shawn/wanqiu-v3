@@ -69,7 +69,7 @@ const onService = async () => {
   await store.dispatch('live/SET_SERVICE_LINK')
   const link = store.state.live.serviceLink
   if (link) {
-    location.href = link
+    // location.href = link
   }
 }
 
