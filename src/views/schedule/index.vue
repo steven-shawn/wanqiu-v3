@@ -47,7 +47,7 @@ const getLimitDay = (today:number, days:number) => {
   const newDay = new Date(today + days * 24 * 60 * 60 * 1000)
   const result = [newDay.getFullYear(), newDay.getMonth() + 1, newDay.getDate()]
   // console.log(result)
-  return result
+  return result.join(',')
 }
 const today = new Date().getTime()
 
@@ -102,8 +102,8 @@ const onDateConfirm = e => {
   state.currentDate = new Date(e)
    min = getLimitDay(state.currentDate.getTime(),  -30)
    max = getLimitDay(state.currentDate.getTime(),  30)
-  state.minDate = new Date(min.join(','))
-  state.maxDate = new Date(max.join(','))
+  state.minDate = new Date(min)
+  state.maxDate = new Date(max)
   state.show = false
   // const index = 3
   state.list = []
