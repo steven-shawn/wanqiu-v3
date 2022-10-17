@@ -10,6 +10,7 @@ div#quick-date.flex.box-border.items-center.w-full.h-46-px.bg-white.shadow
 </template>
 
 <script lang="ts" setup>
+import { Notify } from "vant";
 import { computed  } from "vue";
 
 
@@ -44,6 +45,13 @@ const list = computed(() => {
 })
 
 const onItemClick = (index:number) => {
+    const _today: Date = new Date()
+    let today = [_today.getMonth() + 1, _today.getDate()]
+    const clickDay: any = list.value[index].date.split('/')
+    if (clickDay[0] - today[0] < 0 || clickDay[1] - today[1] < 0) { // 月份小于
+        Notify({type: 'warning', message: '时间不能早于当天'})
+        return
+    }
     if (index !== 2) {
         emits('choose', index - 2)
     }

@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0",
     "build:prod": "./build.sh",
     "build": "vite build",
     "build1": "vue-tsc --noEmit && vite build",

@@ -47,11 +47,12 @@ const getLimitDay = (today:number, days:number) => {
   const newDay = new Date(today + days * 24 * 60 * 60 * 1000)
   const result = [newDay.getFullYear(), newDay.getMonth() + 1, newDay.getDate()]
   // console.log(result)
-  return result.join(',')
+  // alert(result)
+  return result.join('/')
 }
 const today = new Date().getTime()
 
-let min = getLimitDay(today,  -30)
+let min = getLimitDay(today,  0) // -30
 let max = getLimitDay(today,  30)
 
 // 数据区
@@ -65,7 +66,7 @@ const state = reactive({
   ],
   active: '1',
   show: false,
-  currentDate: new Date(),
+  currentDate: new Date(), // new Date(),
   minDate: new Date(min),
   maxDate: new Date(max),
   list: [],
@@ -88,7 +89,6 @@ const finished = ref(false)
 /******  方法区 **** */
 
 const onChange = () => {
-  console.log(state.active)
   let index = state.active / 1
   if (state.form.dataType === 'f' && state.active > 0) {
     index = state.active / 1 + 1
@@ -100,8 +100,8 @@ const onChange = () => {
 }
 const onDateConfirm = e => {
   state.currentDate = new Date(e)
-   min = getLimitDay(state.currentDate.getTime(),  -30)
-   max = getLimitDay(state.currentDate.getTime(),  30)
+  //  min = getLimitDay(state.currentDate.getTime(),  -30)
+  //  max = getLimitDay(state.currentDate.getTime(),  30)
   state.minDate = new Date(min)
   state.maxDate = new Date(max)
   state.show = false
@@ -131,6 +131,7 @@ const onBallChange = (item) => { // 足球篮球切换
 
 const onChoose = (index: number) => {
   const newDate =  getLimitDay(new Date(state.currentDate).getTime(),  index)
+  // alert(newDate)
   onDateConfirm(newDate)
 }
 // 下拉刷新

@@ -52,11 +52,11 @@ const getLimitDay = (today:number, days:number) => {
   const newDay = new Date(today + days * 24 * 60 * 60 * 1000)
   const result = [newDay.getFullYear(), newDay.getMonth() + 1, newDay.getDate()]
   // console.log(result)
-  return result
+  return result.join('/')
 }
 
 const today = new Date().getTime()
-let min = getLimitDay(today,  -30)
+let min = getLimitDay(today,  0)
 let max = getLimitDay(today,  30)
 
 /******* 数据区 *****/
@@ -95,10 +95,10 @@ const dataTypes = [ // 顶部tab
 // 选择日期
 const onDateConfirm = e => {
   state.currentDate = new Date(e)
-   min = getLimitDay(state.currentDate.getTime(),  -30)
-   max = getLimitDay(state.currentDate.getTime(),  30)
-  state.minDate = new Date(min.join(','))
-  state.maxDate = new Date(max.join(','))
+  //  min = getLimitDay(state.currentDate.getTime(),  -30)
+  //  max = getLimitDay(state.currentDate.getTime(),  30)
+  state.minDate = new Date(min)
+  state.maxDate = new Date(max)
   state.show = false
   const index = 3
   state.tabList[index].data = []
