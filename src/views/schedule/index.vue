@@ -93,12 +93,13 @@ const onChange = () => {
   if (state.form.dataType === 'f' && state.active > 0) {
     index = state.active / 1 + 1
   }
-  console.log(index, state.tabList[index])
+  // console.log(index, state.tabList[index])
   state.form.matchStateStr = state.tabList[index].param
   state.form.isHot = state.tabList[index].isHot
   onRefresh()
 }
 const onDateConfirm = e => {
+  console.log(e)
   state.currentDate = new Date(e)
   //  min = getLimitDay(state.currentDate.getTime(),  -30)
   //  max = getLimitDay(state.currentDate.getTime(),  30)
@@ -131,6 +132,7 @@ const onBallChange = (item) => { // 足球篮球切换
 
 const onChoose = (index: number) => {
   const newDate =  getLimitDay(new Date(state.currentDate).getTime(),  index)
+  // const newDate =  getLimitDay(new Date(state.currentDate).getTime(),  index)
   // alert(newDate)
   onDateConfirm(newDate)
 }

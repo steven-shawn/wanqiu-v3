@@ -43,7 +43,7 @@ const showQuick = async () => {
   if (!state.list.length) {
     const data = await _quickSpeak()
     state.list = data
-    console.log(data)
+    // console.log(data)
   }
   state.show = !state.show
 }

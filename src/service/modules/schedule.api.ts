@@ -11,7 +11,7 @@ import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'
  export const _getScoreList = (form = {}) => {
     let day = new Date(form.queryDate)
     day = [day.getFullYear(), (day.getMonth() + 1 + '').padStart(2, '0'), (day.getDate() + '').padStart(2, '0')]
-    console.log(form)
+    // console.log(form)
     return new Promise((resolve, reject) => {
         return request({
             url: '/pc/score/pageSchedulDTOList',
@@ -29,7 +29,7 @@ import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'
                 size: form.size
             }
         }).then(data => {
-            console.log(data)
+            // console.log(data)
             if (data) {
                 const { records = [] } = data
                 resolve(records)
