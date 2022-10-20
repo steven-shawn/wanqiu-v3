@@ -42,7 +42,7 @@ onMounted(async () => {
   _hotList(1,PAGE_LEN, true).then(data => {
      const { total, records } = data
      state.hotLoading = false
-     state.hotList = [] //records
+     state.hotList = records
      state.hotTotal = total
   })
 
