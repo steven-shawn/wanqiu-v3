@@ -3,12 +3,12 @@ div.pb-16
   van-sticky
     jq-download-header
   live-swiper
-  div.hot.px-2.mt-2(style="min-height: 192px;")
+  div.hot.px-2.mt-2(style="min-height: 100px;")
     video-list-title(:count="state.hotTotal" title="热门直播")
     div.flex.flex-wrap.justify-between
       video-list-item(v-for="item in state.hotList" :key="item.matchId" :item="item")
     van-loading.text-center.pt-12(type="spinner" v-if="state.hotLoading")
-    van-empty(description="暂无直播" v-if="!state.hotLoading && !state.hotList?.length")
+    van-empty(description="暂无热门直播" image-size="0" v-if="!state.hotLoading && !state.hotList?.length")
   div.now.px-2.mt-2(style="min-height: 192px;")
     video-list-title(type="now")
     div.flex.flex-wrap.justify-between
@@ -42,7 +42,7 @@ onMounted(async () => {
   _hotList(1,PAGE_LEN, true).then(data => {
      const { total, records } = data
      state.hotLoading = false
-     state.hotList = records
+     state.hotList = [] //records
      state.hotTotal = total
   })
 

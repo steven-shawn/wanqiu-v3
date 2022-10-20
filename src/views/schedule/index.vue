@@ -1,8 +1,8 @@
 <template lang="pug">
 div.pb-20.bg-gray-100.h-full.relative
   van-popup.w-full(v-model:show="state.show" position="bottom")
-    van-datetime-picker.w-full(v-model="state.currentDate" type="date"
-      title="选择年月日" :min-date="state.minDate" :max-date="state.maxDate" @confirm="onDateConfirm" @cancel="state.show = false")
+    van-datetime-picker.w-full(v-model="state.pickerDate" type="date"
+      title="选择年月日" :min-date="state.minDate" :max-date="state.maxDate" @confirm="onDateConfirm" @cancel="state.show = false" @change="() => {}")
   van-sticky
     div.flex.bg-white.text-sm.px-4.box-border.justify-center.items-center
     jq-download-header
@@ -70,6 +70,7 @@ const state = reactive({
   minDate: new Date(min),
   maxDate: new Date(max),
   list: [],
+  pickerDate: new Date(), 
   form: {
     dataType: 'f',
     matchStateStr: '', // 比赛状态 0 进行中、1 未开始、2 已完成、3 异常,
@@ -98,19 +99,17 @@ const onChange = () => {
   state.form.isHot = state.tabList[index].isHot
   onRefresh()
 }
-const onDateConfirm = e => {
-  console.log(e)
-  state.currentDate = new Date(e)
-  //  min = getLimitDay(state.currentDate.getTime(),  -30)
-  //  max = getLimitDay(state.currentDate.getTime(),  30)
-  state.minDate = new Date(min)
-  state.maxDate = new Date(max)
+const onDateConfirm = (date: Date, flag = true) => {
+  if (flag) {
+    state.currentDate = new Date(date)
+    state.pickerDate = state.currentDate
+  }
   state.show = false
-  // const index = 3
   state.list = []
   finished.value = false
   loading.value = true
-  state.form.queryDate = state.currentDate
+  // state.form.queryDate = state.currentDate
+  state.form.queryDate = new Date(date)
   state.form.current = 1
   onLoad()
 }
@@ -132,9 +131,8 @@ const onBallChange = (item) => { // 足球篮球切换
 
 const onChoose = (index: number) => {
   const newDate =  getLimitDay(new Date(state.currentDate).getTime(),  index)
-  // const newDate =  getLimitDay(new Date(state.currentDate).getTime(),  index)
-  // alert(newDate)
-  onDateConfirm(newDate)
+  // console.log('onChoose', newDate)
+  onDateConfirm(newDate, false)
 }
 // 下拉刷新
 const onRefresh = () => {
