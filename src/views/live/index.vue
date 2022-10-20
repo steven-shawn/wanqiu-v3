@@ -8,7 +8,7 @@ div.pb-16
     div.flex.flex-wrap.justify-between
       video-list-item(v-for="item in state.hotList" :key="item.matchId" :item="item")
     van-loading.text-center.pt-12(type="spinner" v-if="state.hotLoading")
-    van-empty(description="暂无热门直播" image-size="0" v-if="!state.hotLoading && !state.hotList?.length")
+    van-empty(description="暂无热门直播" image-size="0" v-if="!state.hotLoading && !state.hotList?.length" style="padding-top: 10px;")
   div.now.px-2.mt-2(style="min-height: 192px;")
     video-list-title(type="now")
     div.flex.flex-wrap.justify-between
