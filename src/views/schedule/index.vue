@@ -1,8 +1,8 @@
 <template lang="pug">
 div.pb-20.bg-gray-100.h-full.relative
   van-popup.w-full(v-model:show="state.show" position="bottom")
-    van-datetime-picker.w-full(v-model="state.currentDate" type="date"
-      title="选择年月日" :min-date="state.minDate" :max-date="state.maxDate" @confirm="onDateConfirm" @cancel="state.show = false")
+    van-datetime-picker.w-full(v-model="state.pickerDate" type="date"
+      title="选择年月日" :min-date="state.minDate" :max-date="state.maxDate" @confirm="onDateConfirm" @cancel="state.show = false" @change="() => {}")
   van-sticky
     div.flex.bg-white.text-sm.px-4.box-border.justify-center.items-center
     jq-download-header
@@ -47,11 +47,12 @@ const getLimitDay = (today:number, days:number) => {
   const newDay = new Date(today + days * 24 * 60 * 60 * 1000)
   const result = [newDay.getFullYear(), newDay.getMonth() + 1, newDay.getDate()]
   // console.log(result)
-  return result.join(',')
+  // alert(result)
+  return result.join('/')
 }
 const today = new Date().getTime()
 
-let min = getLimitDay(today,  -30)
+let min = getLimitDay(today,  0) // -30
 let max = getLimitDay(today,  30)
 
 // 数据区
@@ -65,10 +66,11 @@ const state = reactive({
   ],
   active: '1',
   show: false,
-  currentDate: new Date(),
+  currentDate: new Date(), // new Date(),
   minDate: new Date(min),
   maxDate: new Date(max),
   list: [],
+  pickerDate: new Date(), 
   form: {
     dataType: 'f',
     matchStateStr: '', // 比赛状态 0 进行中、1 未开始、2 已完成、3 异常,
@@ -88,28 +90,26 @@ const finished = ref(false)
 /******  方法区 **** */
 
 const onChange = () => {
-  console.log(state.active)
   let index = state.active / 1
   if (state.form.dataType === 'f' && state.active > 0) {
     index = state.active / 1 + 1
   }
-  console.log(index, state.tabList[index])
+  // console.log(index, state.tabList[index])
   state.form.matchStateStr = state.tabList[index].param
   state.form.isHot = state.tabList[index].isHot
   onRefresh()
 }
-const onDateConfirm = e => {
-  state.currentDate = new Date(e)
-   min = getLimitDay(state.currentDate.getTime(),  -30)
-   max = getLimitDay(state.currentDate.getTime(),  30)
-  state.minDate = new Date(min)
-  state.maxDate = new Date(max)
+const onDateConfirm = (date: Date, flag = true) => {
+  if (flag) {
+    state.currentDate = new Date(date)
+    state.pickerDate = state.currentDate
+  }
   state.show = false
-  // const index = 3
   state.list = []
   finished.value = false
   loading.value = true
-  state.form.queryDate = state.currentDate
+  // state.form.queryDate = state.currentDate
+  state.form.queryDate = new Date(date)
   state.form.current = 1
   onLoad()
 }
@@ -131,7 +131,8 @@ const onBallChange = (item) => { // 足球篮球切换
 
 const onChoose = (index: number) => {
   const newDate =  getLimitDay(new Date(state.currentDate).getTime(),  index)
-  onDateConfirm(newDate)
+  // console.log('onChoose', newDate)
+  onDateConfirm(newDate, false)
 }
 // 下拉刷新
 const onRefresh = () => {

@@ -1,6 +1,6 @@
 <template lang="pug">
 div.pb-20.bg-gray-100.h-full.relative.box-border(style="")
-  jq-header.fixed 正在直播
+  jq-header.fixed(leftIcon="arrow-left" @e-left-click="onLeftClick") 正在直播
   //van-sticky
       jq-download-header
   live-player(:url="state.info.pullUrl" :img="state.info.liveImg" v-if="state.info.pullUrl")
@@ -49,6 +49,7 @@ import { download } from '@/utils'
 import { onMounted, provide, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
+import router from '../../router'
 
 const store = useStore()
 // 状态传递器
@@ -80,6 +81,11 @@ onMounted(() => {
         state.info = data
     })
 })
+
+const onLeftClick = () => { // 返回的问题
+    // console.log(111)
+    router.push('/live/index')
+}
 
 // 礼物
 const onGift = (evt: Event) => {

@@ -22,7 +22,7 @@ div.pb-24.bg-grey.h-full.text-primary
     van-tab(v-for="(item, index) in state.tabList" :title="item.text" :disabled="index===4")
       div.overflow-y-auto.mt-1.h-full.border(style="min-height: 70vh")
         van-sticky(:offset-top="50" v-if="index === 3")
-          score-quick-date(@showCalendar="state.show = true" :chooseDay="state.currentDate" @choose="onChoose")
+          score-quick-date(@showCalendar="state.show = true" :chooseDay="state.pickerDate" @choose="onChoose")
         van-pull-refresh(v-model="item.refreshing" @refresh="onRefresh(index)")
           van-list(v-model:loading="item.loading" :finished="item.finished" finished-text="没有更多了" @load="onLoad(index)")
             score-item(v-for="(_item,_index) in item.data" :key="_index" :score-info="_item")
@@ -52,11 +52,11 @@ const getLimitDay = (today:number, days:number) => {
   const newDay = new Date(today + days * 24 * 60 * 60 * 1000)
   const result = [newDay.getFullYear(), newDay.getMonth() + 1, newDay.getDate()]
   // console.log(result)
-  return result
+  return result.join('/')
 }
 
 const today = new Date().getTime()
-let min = getLimitDay(today,  -30)
+let min = getLimitDay(today,  0)
 let max = getLimitDay(today,  30)
 
 /******* 数据区 *****/
@@ -70,6 +70,7 @@ const state = reactive({
   ],
   active: 0, // 当前tab
   currentDate: new Date(),
+  pickerDate: new Date(),
   minDate: new Date(min),
   maxDate: new Date(max),
   // chooseDay: today, // 选择的那一天
@@ -93,12 +94,16 @@ const dataTypes = [ // 顶部tab
 
 
 // 选择日期
-const onDateConfirm = e => {
-  state.currentDate = new Date(e)
-   min = getLimitDay(state.currentDate.getTime(),  -30)
-   max = getLimitDay(state.currentDate.getTime(),  30)
-  state.minDate = new Date(min.join(','))
-  state.maxDate = new Date(max.join(','))
+const onDateConfirm = (date:Date,flag = true) => {
+  if (flag) {
+    state.currentDate = new Date(date)
+    state.pickerDate = state.currentDate
+  }
+  
+  //  min = getLimitDay(state.currentDate.getTime(),  -30)
+  //  max = getLimitDay(state.currentDate.getTime(),  30)
+  state.minDate = new Date(min)
+  state.maxDate = new Date(max)
   state.show = false
   const index = 3
   state.tabList[index].data = []
@@ -110,7 +115,7 @@ const onDateConfirm = e => {
 // date
 const onChoose = (index: number) => {
   const newDate =  getLimitDay(new Date(state.currentDate).getTime(),  index)
-  onDateConfirm(newDate)
+  onDateConfirm(newDate, false)
 }
 
 const onBallChange = (item:IDataType) => { // 足球和篮球切换

@@ -1,5 +1,5 @@
 <template lang="pug">
-div.pb-20.bg-gray-100.h-full
+div.pb-20.bg-gray-100.h-full.overflow-scroll
   van-sticky
     jq-download-header
   // jq-header.fixed(leftIcon="setting" rightIcon="chat-o" @e-left-click="onLeftClick" @e-right-click="onRightClick" v-download) 我的
