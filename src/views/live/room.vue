@@ -48,6 +48,7 @@ import { download } from '@/utils'
 
 import { onMounted, provide, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 
 const store = useStore()
 // 状态传递器
@@ -57,6 +58,8 @@ const state = reactive({
     info: {},
     giftInfo: {}, // 发送的礼物信息
 })
+
+const route = useRoute()
 
 const chatTab = ref()
 
@@ -68,6 +71,10 @@ const onClickTab = (e: any) => {
 }
 
 onMounted(() => {
+    const id = route.query.id
+    if (id) {
+        store.commit('live/SET_ROOM_ID', id)
+    }
     const room_id = store.state.live.room_id
     _getLive(room_id).then(data => {
         state.info = data
