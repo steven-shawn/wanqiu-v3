@@ -55,9 +55,12 @@ const liveStore = {
         async [SET_SERVICE_LINK] ({ commit, state}) {
             if (!state.serviceLink) {
                 const data = await _getServiceLink()
-                const current = data.find(item =>  item.linkType / 1 === 2)
-                if (current) {
-                    commit(SET_SERVICE_LINK, current.linkAddress)
+                // const current = data.find(item =>  item.linkType / 1 === 2)
+                // if (current) {
+                //     commit(SET_SERVICE_LINK, current.linkAddress)
+                // }
+                if (data) {
+                    commit(SET_SERVICE_LINK, data.linkAddress)
                 }
             }
         }

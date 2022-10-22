@@ -441,7 +441,8 @@ export const _lineInfo = (matchId: string) => {
  */
 export const _getServiceLink = () => {
     return request({
-        url: '/pc/syslink/list',
+        // url: '/pc/syslink/list',
+        url: '/pc/syslink/getSysLink',
         method: 'GET'
     })
 }
