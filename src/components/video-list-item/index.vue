@@ -15,11 +15,12 @@ div.flex.flex-col.w-l(@click="onItemClick")
             span.text-grey-light.text-xs {{item.nickName}}
             span
                 van-image(:src="getImageUrl('fire@2x.png')" class="w-2.5 h-2.5")
-                i.ml-1.not-italic {{item.heatValue}}
+                i.ml-1.not-italic {{filterHeat(item.heatValue)}}
 </template>
 
 <script setup lang="ts">
 import { IMG_URL } from '@/config/system.conf';
+import { computed } from '@vue/reactivity';
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex';
 
@@ -39,6 +40,16 @@ const props = defineProps({
       type: '', // ?
       memIdentityId: ''// 直播间id
     }
+  }
+})
+
+// 格式化热度值
+const filterHeat = computed(() => {
+  return (value:any) => {
+    if (value >= 10000) {
+      props.item.heatValue = (value / 10000).toFixed(2) + 'w'
+    }
+    return props.item.heatValue
   }
 })
 
