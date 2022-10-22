@@ -16,12 +16,14 @@ onMounted(() => {
     const url_1080 = url.indexOf('_480hp') > -1 ? url.replace('_480hp', '_1080hp') : url.replace('.m3u8', '_1080hp.m3u8')
     const dp = new DPlayer({
         container: document.getElementById('dplayer'),
-        screenshot: true,
+        // screenshot: true,
         autoplay: true,
         preload: 'auto',
         live: true,
         lang: 'zh-cn',
         // logo: Logo,
+        mutex:true,
+        loop: false,
         video: {
             url,
             // pic: IMG_URL + props.img,
@@ -54,6 +56,13 @@ onMounted(() => {
         //     id: 'demo',
         //     api: 'https://api.prprpr.me/dplayer/',
         // },
+    })
+    // 消失的控制框
+    dp.on('play', () => {
+        setTimeout(() => {
+            const curtion = document.getElementsByClassName('dplayer-video')[0]
+            curtion.click()
+        }, 1000)
     })
 })
 

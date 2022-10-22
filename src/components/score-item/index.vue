@@ -17,10 +17,10 @@ div.score-item.flex.flex-col.bg-white.px-2.mt-1.text-xs.shadow-md(v-download)
                 span.bg-yellow-300.px-1.mr-1.text-white.rounded-sm.h-16-px.block(v-if="scoreInfo.homeYellow") {{scoreInfo.homeYellow}}
                 span.text-gray-400.mr-1 [{{scoreInfo.homeRankCn}}]
                 strong.font-normal.mr-2 {{scoreInfo.homeChs}}
-                strong.font-medium.text-red {{scoreInfo.homeScore}}
-            div.text-red :
+                strong.font-medium.text-red {{getStatus() === '未' ? '' : scoreInfo.homeScore}}
+            div.text-red {{getStatus() === '未' ? 'VS' : ':'}}
             div.flex.flex-1.justify-start.flex-shirnk-0
-                strong.font-medium.text-red {{scoreInfo.awayScore}}
+                strong.font-medium.text-red {{getStatus() === '未' ? '' : scoreInfo.awayScore}}
                 strong.font-normal.ml-2 {{scoreInfo.awayChs}}
                 span.text-gray-400.ml-1 [{{scoreInfo.awayRankCn}}]
                 span.bg-yellow-300.px-1.ml-1.text-white.rounded-sm.h-16-px.block(v-if="scoreInfo.awayYellow") {{scoreInfo.awayYellow}}
