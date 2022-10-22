@@ -66,10 +66,10 @@ const levels = computed(() => {
 })
 
 const onService = async () => {
-  await store.dispatch('live/SET_SERVICE_LINK')
+  await store.dispatch('live/SET_SERVICE_LINK', ROOM_ID)
   const link = store.state.live.serviceLink
   if (link) {
-    location.href = link
+    // location.href = link
   }
 }
 

@@ -439,10 +439,13 @@ export const _lineInfo = (matchId: string) => {
  * 获取客服链接
  * @returns 
  */
-export const _getServiceLink = () => {
+export const _getServiceLink = (id: number) => {
     return request({
         // url: '/pc/syslink/list',
         url: '/pc/syslink/getSysLink',
-        method: 'GET'
+        method: 'GET',
+        params: {
+            memIdentityId: id
+        }
     })
 }
