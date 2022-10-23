@@ -49,14 +49,25 @@ npm run build
 zip -q -r -m ./build/halan-dist.zip ./dist
 echo "########## 哈兰打包完成 ###########"
 
-# 还原文件
-
-## 移动哈兰的东西
+## 编译星球
 mv ./.env.production ./platform/halan/
 mv ./index.html ./platform/halan/
 mv ./src/assets/logo@2x.png ./platform/halan/
 
-## 添加金球的东西
+mv ./platform/xqiu/index.html ./
+mv ./platform/xqiu/.env.production ./
+mv ./platform/xqiu/logo@2x.png ./src/assets/
+
+npm run build
+zip -q -r -m ./build/xqiu-dist.zip ./dist
+
+echo "########## 星球打包完成 ##########"
+
+# 还原文件
+mv ./.env.production ./platform/xqiu/
+mv ./index.html ./platform/xqiu/
+mv ./src/assets/logo@2x.png ./platform/xqiu/
+
 mv ./platform/jqiu/index.html ./
 mv ./.env.production.dev ./.env.production
 mv ./platform/jqiu/logo@2x.png ./src/assets/
@@ -70,5 +81,7 @@ echo "${v}" > ./version.txt
 git add .
 git commit -m"auto build 0.0.${v}"
 git push origin full-h5
+
+echo "@@@@@@@ Done ${v} @@@@@@@@@@@"
 
 
