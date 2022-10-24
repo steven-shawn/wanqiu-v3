@@ -20,8 +20,8 @@ div.pb-24.bg-grey.h-full.text-primary
       img(src="@/assets/imgs/icon_set@2x.png" class="w-18-px h-18px" @click="route('/score/setting')")
   van-tabs(color="#072b48" sticky offset-top="68" animated v-model:active="state.active")
     van-tab(v-for="(item, index) in state.tabList" :title="item.text" :disabled="index===4")
-      div.overflow-y-auto.mt-1.h-full.border(style="min-height: 70vh")
-        van-sticky(:offset-top="50" v-if="index === 3")
+      div.overflow-y-auto.mt-1.h-full.border(style="min-height: 70vh; max-height: calc(100vh - 112px);")
+        van-sticky(:offset-top="0" v-if="index === 3")
           score-quick-date(@showCalendar="state.show = true" :chooseDay="state.pickerDate" @choose="onChoose")
         van-pull-refresh(v-model="item.refreshing" @refresh="onRefresh(index)")
           van-list(v-model:loading="item.loading" :finished="item.finished" finished-text="没有更多了" @load="onLoad(index)")
@@ -76,7 +76,7 @@ const state = reactive({
   // chooseDay: today, // 选择的那一天
   show: false,
   form: {
-    startTime: '',
+    startTime: new Date(),
     leagueIds: [],
     dataType: 'f' // 'f' - 足球 'b' - 篮球
   }
@@ -109,6 +109,7 @@ const onDateConfirm = (date:Date,flag = true) => {
   state.tabList[index].data = []
   state.tabList[index].finished = false
   state.tabList[index].loading = true
+  state.form.startTime = new Date(date)
   onLoad(index)
 }
 
@@ -139,7 +140,7 @@ const onLoad = (index: number) => {
     state.form.leagueIds = store.state.score.checked
     let data = {matchStateStr: state.tabList[index].param, ...state.form}
     if (index === 3) {
-      data.startTime = state.currentDate
+      // data.startTime = state.currentDate
     } else {
       data.startTime = ''
     }

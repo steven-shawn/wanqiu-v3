@@ -13,7 +13,7 @@ div.schedule-item.flex.bg-white.mb-1.justify-between.text-xs.p-2.rounded.shadow-
             span.text-xs.text-black-light {{item.awayChs}}
     div.flex.flex-col.justify-center.mr-2
         //- span
-        span.text-red-light {{item.homeScore}}:{{item.awayScore}}
+        span.text-red-light {{item.state / 1=== 0 ? 'VS' : (`${item.homeScore}:${item.awayScore}`)}}
     div.flex.flex-col.justify-between.items-center.mr-2
         span.text-grey-light.text-center.font-10 {{item.matchTime.split(' ')[1].split(':').slice(0,2).join(':')}}
         button.rounded.text-white.text-xs.mb-3(:class="status" @click="onItemClick")

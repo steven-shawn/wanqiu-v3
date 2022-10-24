@@ -1,5 +1,5 @@
 <template lang="pug">
-div.pb-20.bg-gray-100.h-full.relative.box-border(style="")
+div.pb-20.bg-gray-100.h-full.relative.box-border(:key="store.state.live.room_id")
   jq-header.fixed(leftIcon="arrow-left" @e-left-click="onLeftClick") 正在直播
   //van-sticky
       jq-download-header
@@ -12,7 +12,7 @@ div.pb-20.bg-gray-100.h-full.relative.box-border(style="")
         keep-alive
             live-chat.box-border(v-if="active==='a'" :gift-info="state.giftInfo")
     van-tab(title="主播" name="b")
-        //keep-alive
+        keep-alive
             live-archor(v-if="active==='b'" :info="state.info")
     van-tab(title="赛况" name="c" disabled)
         //keep-alive
@@ -46,7 +46,7 @@ import { _getLive } from '@/service/modules/live.api'
 import { download } from '@/utils'
 // import { popCtrlType } from '@/types/live.type'
 
-import { onMounted, provide, reactive, ref } from 'vue'
+import { onMounted, provide, reactive, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import router from '../../router'
@@ -70,6 +70,11 @@ const onClickTab = (e: any) => {
         download()
     }
 }
+
+watch(route, (val)=> {
+    // console.log(val.query.id)
+    store.commit('live/SET_ROOM_ID', val.query.id)
+})
 
 onMounted(() => {
     const id = route.query.id

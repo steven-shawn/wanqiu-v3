@@ -12,10 +12,10 @@ import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'
         let startTime:any = ''
         if (data.startTime) {
             startTime = new Date(data.startTime)
-            startTime = [startTime.getFullYear(), startTime.getMonth() + 1, startTime.getDate()].join('-')
+            startTime = [startTime.getFullYear(), startTime.getMonth() + 1, startTime.getDate()].join('/')
         }
         return request({
-            url: '/pc/score/queryScoreInfoList',
+            url: data.startTime ? '/pc/score/pageScheduleList' : '/pc/score/queryScoreInfoList',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -26,10 +26,14 @@ import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'
                 dataType: data.dataType || 'f', // 球类
                 matchStateStr: data.matchStateStr, // 状态
                 startTime, // 日期
+                queryDate: startTime,
+                size: 1000,
+                current: 1,
+                // queryStr: '',
                 uuid: new Date().getTime() + Math.floor(Math.random() * 1000000)
             }
         }).then(data => {
-            resolve(data || [])
+            resolve(data.records || data || [])
         })
     })
 }

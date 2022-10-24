@@ -2,7 +2,7 @@
 div.score-item.flex.flex-col.bg-white.px-2.mt-1.text-xs.shadow-md(v-download)
     div.flex.justify-between.w-full.text-xs.my-2.pb-1
         div.flex.flex-1
-            span(:style="{color: scoreInfo.color}") {{scoreInfo.leagueChsShort}}
+            span(:style="{color: scoreInfo.color || '#000'}") {{scoreInfo.leagueChsShort}}
             span.text-gray-400.ml-2 {{formatTime(scoreInfo.matchTime)}}
         div.flex-1.flex.justify-center.flex-shrink-0.text-red-600 {{getStatus()}}
         div.flex-1.flex.justify-end

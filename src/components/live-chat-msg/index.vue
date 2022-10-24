@@ -47,7 +47,6 @@ const levels = computed(() => {
   return store.state.user.levels
 })
 
-
 // const giftObj = computed(() => {
 //     return store.state.live.giftObj
 // })

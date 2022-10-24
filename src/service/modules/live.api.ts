@@ -10,7 +10,8 @@ export const _focusLive = () => {
             url: '/pc/league/pageFocusLeagueInfo',
             method: 'GET',
             params: {
-                size: 5
+                pages: 20,
+                // size: 20
             }
         }).then(data => {
             const { records = []} = data
