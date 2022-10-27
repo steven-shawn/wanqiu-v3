@@ -12,7 +12,9 @@ echo "######### 测试环境打包完成 ##########"
 
 # 编译金球
 mv ./.env.production ./.env.production.dev
+mv ./index.html ./index.dev.html
 mv ./platform/jqiu/.env.production ./
+mv ./platform/jqiu/index.html ./
 npm run build # 编译测试环境
 zip -q -r -m ./build/jqiu-dist.zip ./dist
 echo "########## 金球打包完成 ##########"
@@ -68,7 +70,8 @@ mv ./.env.production ./platform/xqiu/
 mv ./index.html ./platform/xqiu/
 mv ./src/assets/logo@2x.png ./platform/xqiu/
 
-mv ./platform/jqiu/index.html ./
+#mv ./platform/jqiu/index.html ./
+mv ./index.dev.html ./index.html
 mv ./.env.production.dev ./.env.production
 mv ./platform/jqiu/logo@2x.png ./src/assets/
 
