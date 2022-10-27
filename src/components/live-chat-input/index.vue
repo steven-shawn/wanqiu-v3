@@ -5,10 +5,10 @@ div.h-11.flex.bg-white.w-screen.justify-between.items-center.px-3.fixed.bottom-0
         p.flex.flex-1.items-center
           div.border.border-primary.p-1.rounded-full.mx-2(style="padding: 1px;" @click="showQuick")
             p.w-full.text-xs.bg-black.rounded-full.text-white.px-2 快速发言
-          p.text-blue.text-xs(v-download) 下载APP
-          input.block.w-4.h-4.bg-transparent.flex-1.h-9.text-xs.pl-1(placeholder="发弹幕,参与互动" v-model="state.value" disabled)
+          //p.text-blue.text-xs(v-download) 下载APP
+          input.block.w-4.h-4.bg-transparent.flex-1.h-9.text-xs.pl-1(placeholder="发弹幕,参与互动" v-model="state.value")
           span.block.w-4.h-4.bg-blue-600.ml-2
-        //span.block.w-6.h-6.mx-2(@click="onSend")
+        span.block.w-6.h-6.mx-2(@click="onSend(state.value)")
           img(src="./send@2x.png")
     div.w-8.h-8.rounded-full.mr-2(@click="onShowNoble" v-download)
       img(src="./icon_noble@2x.png" v-download)
@@ -43,7 +43,7 @@ const showQuick = async () => {
   if (!state.list.length) {
     const data = await _quickSpeak()
     state.list = data
-    // console.log(data)
+    console.log(data)
   }
   state.show = !state.show
 }
@@ -68,7 +68,7 @@ const onSend = (value: string) => {
   emits('send', value)
   state.show = false
   // emits('send', state.value)
-  // state.value = ''
+  state.value = ''
   // console.log(state.value)
 }
 

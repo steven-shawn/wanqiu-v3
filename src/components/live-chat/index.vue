@@ -26,6 +26,7 @@ import { WS_URL, IMG_URL} from '@/config/system.conf'
 import { computed, ref } from '@vue/reactivity'
 import { nextTick, watch } from 'vue'
 import { Notify } from 'vant'
+import { _getNotice } from '@/service/modules/live.api'
 
 const route = useRoute()
 const store = useStore()
@@ -151,7 +152,7 @@ const onscroll = (e: Event) => {
     const { scrollHeight, scrollTop, offsetHeight } = e.target || {}
     console.log(scrollHeight, scrollTop, offsetHeight)
     // console.log(e, scrollTop, scrollHeight, clientHeight)
-    state.atBottom = scrollTop === scrollHeight - offsetHeight //
+    state.atBottom = Math.abs(scrollTop - (scrollHeight - offsetHeight)) <= 10 //
   }, 50)
 }
 
@@ -172,7 +173,16 @@ const keepAlive = () => {
   }, TIME_BREAK)
 }
 
+const getNotice = () => {
+_getNotice().then(data => {
+    data.map(item => {
+      state.announcement += (item.content + ' ')
+    })
+  })
+}
+
 onMounted(async () => {
+  getNotice()
   const { query: { id }} = route
   if(id) {
     store.commit('live/SET_ROOM_ID', id)
@@ -277,7 +287,7 @@ onMounted(async () => {
               }
               const { msgType = '', contentType = '' } = data || {}
               if (msg === 'system') { // 公告
-                state.announcement = data
+                // state.announcement = data
                 chatListItem.type = msg
                 chatListItem.content = data
               } else {

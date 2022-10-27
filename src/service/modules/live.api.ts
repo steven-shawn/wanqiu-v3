@@ -450,3 +450,14 @@ export const _getServiceLink = (id: number) => {
         }
     })
 }
+
+/**
+ * 公告
+ */
+
+export const _getNotice = () => {
+    return request({
+        url: '/pc/platformpublic/getPlatformAnnouncement',
+        method: 'GET'
+    })
+}
