@@ -35,7 +35,7 @@ app.directive('download', {
                 title: '',
                 cancelButtonText: '关闭',
                 // showCancelButton: false,
-                message: `赶紧下载${APP_NAME}体育APP\n更多精彩内容体验`,
+                message: `下载${APP_NAME}体育APP\n更多精彩内容体验`,
                 beforeClose: (action) => {
                     if (action === 'confirm') { // 确定
                         _getDownloadUrl().then(url => {

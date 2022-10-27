@@ -1,26 +1,28 @@
 <template lang="pug">
-div.m-4.p-4.bg-black.h-240.rounded-lg.text-white.flex.flex-col.justify-between
-  div.flex.items-center
+div.m-4.p-4.bg-white.h-200.rounded-lg.text-white.flex.flex-col.justify-between
+  div.flex.items-center.text-primary
     div.h-14.w-14.rounded-full.mr-4.overflow-hidden
       img(:src="`${IMG_URL}${state.info.memImg}`")
     div.flex.flex-col
       p.text-base.mb-1.font-bold {{state.info.nickName}}
       p.flex.mt-1.items-center 
-        span.block.w-12.h-4
+        //span.block.w-12.h-4
           img(:src="getImageUrl(`${state.info.gradeName}.png`)")
         span.text-xs.mx-1 正在直播
-        // span.block.w-3.h-3.bg-red-600
-        button.text-xs.ml-2(v-download @click="onFollow") {{info.ifFocusStu ? '已关注' : '关注主播'}}
-  div.relative.sign.-top-8
+        //- span.block.w-3.h-3.bg-red-600
+        // button.text-xs.ml-2(v-download @click="onFollow") {{info.ifFocusStu ? '已关注' : '关注主播'}}
+      p.flex.text-xs.mt-1.pl-1 {{state.info.anchorSign}}
+
+  //div.relative.sign.-top-8
     p.w-4.h-12.bg-yellow-600.rounded-l-md.absolute.right-0.-top-1
     p.absolute.right-0.h-10.w-auto.bg-white.rounded.text-black.text-xs.pr-4.pl-1.flex.items-center {{state.info.anchorSign}}
     p.absolute.w-3.h-8.bg-yellow-600.rounded-l-md.right-0.top-1
-  div.text-xs
+  div.text-xs.text-primary.mt-8.pt-8.border-t-2.border-slate-100
     div.flex.justify-between
       span.mb-1
         span
         span 关注: {{state.info.fansNum || 0}}
-      span.text-yellow-400 专业主播
+      span 专业主播
     div
       span
       span 热度: {{state.info.heatValue}} 

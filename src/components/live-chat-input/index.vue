@@ -17,7 +17,7 @@ div.h-11.flex.bg-white.w-screen.justify-between.items-center.px-3.fixed.bottom-0
     div.w-8.h-8.rounded-full.ml-2(@click="onShowGift" v-download)
       img(src="./icon_gift@2x.png")
     ul.absolute.left-0.bottom-10.bg-white.shadow.rounded(v-if="state.show" style="min-width: 80%;")
-      li.text-primary.text-xs.bg-white.p-2.flex.items-center(v-for="(item, index) in state.list" :key="item" 
+      li.text-primary.text-xs.bg-white.p-1.flex.items-center(v-for="(item, index) in state.list" :key="item" 
         :class="{'bg-grey': index % 2}" @click.stop="onSend(item.content)")
         img.w-6.h-6.mr-1(:src="getImageUrl((index + 1) + '@2x.png')" v-if="index < 3")
         span.inline-block.w-6.h-6.flex.items-center.justify-center(v-else) {{index}}.

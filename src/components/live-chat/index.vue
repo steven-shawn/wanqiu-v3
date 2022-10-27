@@ -126,13 +126,16 @@ const onSendMsg = (e: Event) => {
 
 /// 滚动到底部
 const scrollToBottom = (flag: boolean) => {
-  if (chat.value.scrollHeight - chat.value.clientHeight <= 0) { // 内容不够的时候
+  if (chat.value.scrollHeight - chat.value.offsetHeight <= 0) { // 内容不够的时候
     state.atBottom = true
   }
   if (state.atBottom || flag) {
     nextTick(() => {
       // console.log(chat.value.scrollHeight, chat.value.clientHeight, chat.value.scrollHeight - chat.value.clientHeight)
-      chat.value.scrollTo(chat.value.scrollHeight - chat.value.clientHeight, 300) //
+      // chat.value.scrollTo(chat.value.offsetHeight - chat.value.scrollHeight, 300) //
+      const scrollTop = chat.value.scrollHeight - chat.value.offsetHeight
+      // console.log('scrollTop', scrollTop)
+      chat.value.scrollTop = scrollTop
       // chat.value.scrollTo(10000, 300)
     })
   }
@@ -145,10 +148,10 @@ const onscroll = (e: Event) => {
     clearTimeout(scrollTimeout)
   }
   scrollTimeout = setTimeout(() => {
-    const { scrollHeight, scrollTop, clientHeight } = e.target || {}
+    const { scrollHeight, scrollTop, offsetHeight } = e.target || {}
+    console.log(scrollHeight, scrollTop, offsetHeight)
     // console.log(e, scrollTop, scrollHeight, clientHeight)
-    state.atBottom = scrollTop === scrollHeight - clientHeight //
-    // console.log('atBottom', state.atBottom)
+    state.atBottom = scrollTop === scrollHeight - offsetHeight //
   }, 50)
 }
 
