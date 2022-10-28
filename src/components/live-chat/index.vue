@@ -1,5 +1,5 @@
 <template lang="pug">
-div.live-chat.h-screen.overflow-y-auto.pb-11.bg-white(ref="chat" @scroll="onscroll")
+div.live-chat.h-screen.overflow-y-auto.pb-20.bg-white(ref="chat" @scroll="onscroll")
   div.px-2.flex.bg-grey-lighter.items-center
     img.w-3.h-3(src="./icon_notify@2x.png")
     //- marquee.h-8.leading-8.text-primary.text-xs 这里是公告内容这里是公告内容这里是公告内容这里是公告内容 
@@ -9,10 +9,10 @@ div.live-chat.h-screen.overflow-y-auto.pb-11.bg-white(ref="chat" @scroll="onscro
   live-chat-msg(type="msg" v-for="(item,index) in state.chatList" :key="index" :item="item" 
     v-if="Object.keys(nobles).length && Object.keys(levels).length") 
   live-chat-input(@send="onSendMsg")
-  div.fixed.bottom-16(style="left: 7%" @click.stop="scrollToBottom(true)" v-if="!state.atBottom")
+  div.fixed.bottom-24(style="left: 7%" @click.stop="scrollToBottom(true)" v-if="!state.atBottom")
     span.text-xs.text-red-light 更多消息
     van-icon.text-red-light(name="arrow-down")
-  div.w-16.h-16.fixed.left-2.bottom-16.z-10(@click.stop="onService" style="left: 13.5%")
+  div.w-16.h-16.fixed.left-2.bottom-24.z-10(@click.stop="onService" style="left: 13.5%")
     img(src="./helper.png")
 </template>
 
@@ -123,6 +123,9 @@ const onSendMsg = (e: Event) => {
     return
   }
   send('2013', e)
+  nextTick(() => {
+    scrollToBottom(true)
+  })
 }
 
 /// 滚动到底部
