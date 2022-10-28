@@ -12,7 +12,7 @@ import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'
         let startTime:any = ''
         if (data.startTime) {
             startTime = new Date(data.startTime)
-            startTime = [startTime.getFullYear(), startTime.getMonth() + 1, startTime.getDate()].join('/')
+            startTime = [startTime.getFullYear(), (startTime.getMonth() + 1 + '').padStart(2,'0'), (startTime.getDate() + '').padStart(2,'0')].join('/')
         }
         return request({
             url: data.startTime ? '/pc/score/pageScheduleList' : '/pc/score/queryScoreInfoList',
