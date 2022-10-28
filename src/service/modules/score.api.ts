@@ -27,7 +27,7 @@ import { DEFAULT_PAGE_SIZE } from '@/config/system.conf'
                 matchStateStr: data.matchStateStr, // 状态
                 startTime, // 日期
                 queryDate: startTime,
-                size: 1000,
+                size: 10,
                 current: 1,
                 // queryStr: '',
                 uuid: new Date().getTime() + Math.floor(Math.random() * 1000000)

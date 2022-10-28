@@ -32,7 +32,7 @@ export const _focusLive = () => {
             params: {
                 leagueType: '',
                 current,
-                size: 1000
+                size: 100
             }
         }).then(data=> {
             const { records = [], total = 0 } = data
@@ -83,9 +83,9 @@ export const _focusLive = () => {
  * @param id 直播间id
  * @returns 
  */
-export const _getAnchor = (id: number) => {
+export const _getAnchor = (id: number) => { // /pc/stustudio/stuAnchor/
     return request({
-        url: `/pc/stustudio/stuAnchor/${id}`,
+        url: `/pc/stustudio/${id}`,
         method: 'POST',
     })
 }

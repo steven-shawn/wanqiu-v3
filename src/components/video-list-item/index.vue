@@ -59,6 +59,7 @@ const getImageUrl = (name: string) => {
 
 // 点击进入直播间
 const onItemClick = () => {
+  console.log(props.item.memIdentityId)
   store.commit('live/SET_ROOM_ID', props.item.memIdentityId)
   router.push(`/live/room?id=${props.item.memIdentityId}`)
 }

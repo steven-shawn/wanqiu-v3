@@ -1,5 +1,5 @@
 <template lang="pug">
-div.pb-20.bg-gray-100.h-full.relative.box-border(:key="store.state.live.room_id")
+div.pb-20.bg-gray-100.h-full.relative.box-border
   jq-header.fixed(leftIcon="arrow-left" @e-left-click="onLeftClick") 正在直播
   //van-sticky
       jq-download-header
