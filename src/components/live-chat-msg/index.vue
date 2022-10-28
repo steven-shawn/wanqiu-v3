@@ -1,6 +1,6 @@
 <template lang="pug">
 div.flex.text-sm.shadow
-    p.py-1.px-4.bg-white(v-if="item.type === 'system'" :class="textColor ? 'text-red' : 'text-grey-light'") 系统公告：{{item.content}}
+    p.py-1.px-4(v-if="item.type === 'system'" :class="textColor ? 'text-red' : 'text-grey-light'") {{item.content}}
     div.px-4.inline-block.mt-1.w-full.py-1(:style="{background: (!item.userInfo.nickName || item.userInfo.nickName.startsWith('游客')) ? '#FFF' :'#f1efff'}" v-else)
       // button.w_30.h_30.mr-1.bg-no-repeat.bg-contain(v-if="item.userInfo.nobleGradeNum"
         :style="{'backgroundImage': `url(${getImageUrl('live-chat-noble/level1@2x.png')})`}")

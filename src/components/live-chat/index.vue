@@ -210,7 +210,8 @@ onMounted(async () => {
     try { // 是对象
       res = JSON.parse(res[1]) // {code:xxx,data: {}, msg: ''}
     } catch { // 是字符串
-      res = { code: 100, data: res[1], msg: 'system'}
+      // res = { code: 100, data: res[1], msg: 'system'}
+      return
     }
     const chatListItem = {} // 消息单体
     let { code , data, msg } = res
@@ -288,8 +289,8 @@ onMounted(async () => {
               const { msgType = '', contentType = '' } = data || {}
               if (msg === 'system') { // 公告
                 // state.announcement = data
-                chatListItem.type = msg
-                chatListItem.content = data
+                // chatListItem.type = msg
+                // chatListItem.content = data
               } else {
                 chatListItem.type = msgType
                 chatListItem.content = data.content
@@ -302,6 +303,14 @@ onMounted(async () => {
                   chatListItem.content = '送出' + gift.count + '个' // + giftObj.giftName
                   chatListItem.gift = Object.keys(store.state.live.giftObj).length ? `${IMG_URL}${store.state.live.giftObj[gift.giftName]['pictureUrl']}` : null
                   // chatListItem.content = `<span>送出${gift.count}个<img style="width: 20px; height: 20px;" src="" /></span>`
+                }
+                if (contentType === 'SystemBulletin') {
+                  chatListItem.type = 'system'
+                  chatListItem.content = '系统公告：' + data.content
+                }
+                if (contentType === 'ActivityBulletin') {
+                  chatListItem.type = 'system'
+                  chatListItem.content = '活动公告：' + data.content
                 }
               }
               state.chatList.push(chatListItem)
