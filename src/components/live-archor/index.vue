@@ -9,6 +9,7 @@ div.m-4.p-4.bg-white.h-200.rounded-lg.text-white.flex.flex-col.justify-between
         //span.block.w-12.h-4
           img(:src="getImageUrl(`${state.info.gradeName}.png`)")
         span.text-xs.mx-1 正在直播
+        img(src="@/components/live-archor/living.png" class="w-3 h-3 ml-2") 
         //- span.block.w-3.h-3.bg-red-600
         // button.text-xs.ml-2(v-download @click="onFollow") {{info.ifFocusStu ? '已关注' : '关注主播'}}
       p.flex.text-xs.mt-1.pl-1 {{state.info.anchorSign}}
@@ -19,12 +20,14 @@ div.m-4.p-4.bg-white.h-200.rounded-lg.text-white.flex.flex-col.justify-between
     p.absolute.w-3.h-8.bg-yellow-600.rounded-l-md.right-0.top-1
   div.text-xs.text-primary.mt-8.pt-8.border-t-2.border-slate-100
     div.flex.justify-between
-      span.mb-1
-        span
+      span.mb-1.flex.items-center
+        //- span
+        img(src="@/components/live-archor/user.png" class="w-3 h-3 mr-1")
         span 关注: {{state.info.fansNum || 0}}
       span 专业主播
-    div
-      span
+    div.flex.items-center
+      //- span
+      img(src="@/components/live-archor/hot.png" class="w-3 h-3 mr-1")
       span 热度: {{state.info.heatValue}} 
 </template>
 
