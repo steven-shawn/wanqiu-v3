@@ -140,9 +140,9 @@ export const _getLive = (id: number) => {
 
 /**
  * 快速发言
- * @returns 
+ * @returns
  */
-export const _quickSpeak = (teamType: number = 1) => { // 1足球，2 篮球，3其他
+export const _quickSpeak = (teamType: string = '1') => { // 1足球，2 篮球，3其他
     return request({
         url: '/pc/platformpublic/findOpeSpeakQuickly',
         method: 'GET',

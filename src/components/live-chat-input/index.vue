@@ -39,13 +39,15 @@ const state = reactive({
   show: false
 })
 
+const props =  defineProps(['teamType'])
+
 const getImageUrl = (name: string) => {
     return new URL(`./${name}`, import.meta.url).href;
 }
 
 const showQuick = async () => {
   if (!state.list.length) {
-    const data = await _quickSpeak()
+    const data = await _quickSpeak(props.teamType)
     state.list = data
   }
   state.show = !state.show

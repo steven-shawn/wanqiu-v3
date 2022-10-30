@@ -8,7 +8,7 @@ div.live-chat.h-screen.overflow-y-auto.pb-20.bg-white(ref="chat" @scroll="onscro
   //- live-chat-msg(text-color="#d46666") 
   live-chat-msg(type="msg" v-for="(item,index) in state.chatList" :key="index" :item="item" 
     v-if="Object.keys(nobles).length && Object.keys(levels).length") 
-  live-chat-input(@send="onSendMsg")
+  live-chat-input(@send="onSendMsg" :teamType="props.teamType")
   div.fixed.bottom-24(style="left: 7%" @click.stop="scrollToBottom(true)" v-if="!state.atBottom")
     span.text-xs.text-red-light 更多消息
     van-icon.text-red-light(name="arrow-down")
@@ -32,7 +32,7 @@ const route = useRoute()
 const store = useStore()
 const chat = ref() // $ref
 
-const props = defineProps(['giftInfo'])
+const props = defineProps(['giftInfo', 'teamType'])
 
 watch(() => props.giftInfo, (newVal, oldVal) => {
   // console.log(newVal)
