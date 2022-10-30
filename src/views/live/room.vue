@@ -10,7 +10,7 @@ div.pb-20.bg-gray-100.h-full.relative.box-border
     color="#667885" title-active-color="#072b48" title-inactive-color="#072b48")
     van-tab.box-border.px-45-px(title="聊天" name="a")
         keep-alive
-            live-chat.box-border(v-if="active==='a'" :gift-info="state.giftInfo" :teamType="state.info && state.info.leagueType")
+            live-chat.box-border(v-if="active==='a'" :gift-info="state.giftInfo" :teamType="state.info && state.info.matchType")
     van-tab(title="主播" name="b")
         keep-alive
             live-archor(v-if="active==='b'" :info="state.info")

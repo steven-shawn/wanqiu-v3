@@ -5,9 +5,9 @@ div.flex.flex-col.w-l(@click="onItemClick")
     span.absolute.w-5.block.top-0.h-5
       van-image(:src="getImageUrl('live@2x.png')" fit="cover")
     span.absolute.right-1.bottom-1.text-xs.block.w-8.h-4
-      van-image(:src="getImageUrl('football-label@2x.png')" fit="cover" v-if="item.leagueType == 1")
-      van-image(:src="getImageUrl('basket-label@2x.png')" fit="cover" v-if="item.leagueType == 2")
-      span.text-xs.bg-primary.p-1.rounded-full(v-else) 其他
+      van-image(:src="getImageUrl('football-label@2x.png')" fit="cover" v-if="item.matchType == 0")
+      van-image(:src="getImageUrl('basket-label@2x.png')" fit="cover" v-if="item.matchType == 1")
+      span.text-xs.bg-primary.px-1.rounded-full(v-else) 其他
   div.flex.mt-2.mb-4.items-center.w-l
     div.w-8.h-8.rounded-2xl.bg-black.mr-1.flex-shrink-0.overflow-hidden
       van-image.w-8.h-8(:src="IMG_URL+item.memImg" fit="cover" round)
