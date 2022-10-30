@@ -1,5 +1,5 @@
 <template lang="pug">
-div.live-chat.h-screen.overflow-y-auto.pb-20.bg-white(ref="chat" @scroll="onscroll")
+div.live-chat.h-full.overflow-y-auto.pb-20.bg-white(ref="chat" @scroll="onscroll")
   div.px-2.flex.bg-grey-lighter.items-center
     img.w-3.h-3(src="./icon_notify@2x.png")
     //- marquee.h-8.leading-8.text-primary.text-xs 这里是公告内容这里是公告内容这里是公告内容这里是公告内容 
@@ -193,8 +193,10 @@ onMounted(async () => {
   }
   await store.dispatch('live/SET_NOBLE')
   await store.dispatch('user/SET_LEVEL')
+  chat.value.style.height = (window.innerHeight - 68 - 44 - 208 - 44) + 'px'
   // console.log('levels',levels.value[1]['effectUrl'])
   socket = new WebSocket(WS_URL)
+
 
   // 打开链接
   socket.onopen = (e) => {
@@ -527,6 +529,6 @@ onBeforeUnmount(() => {
 
 <style scoped lang="sass">
 .live-chat
-    margin-top: -364px
-    padding-top: 364px
+    // margin-top: -364px
+    // padding-top: 364px
 </style>

@@ -28,6 +28,8 @@ watch(route, (val) => { // t监视tab页面
 
 const isReady = ref(false) // 页面加载完全才显示
 onMounted(() => {
+  document.body.height = window.innerHeight + 'px'
+  document.getElementById('app').style.height = window.innerHeight + 'px'
   isReady.value = true
 })
 </script>
