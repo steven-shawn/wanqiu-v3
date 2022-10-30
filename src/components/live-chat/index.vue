@@ -185,6 +185,7 @@ _getNotice().then(data => {
 }
 
 onMounted(async () => {
+  chat.value.style.height = (window.innerHeight - 68 - 44 - 208 - 44) + 'px'
   getNotice()
   const { query: { id }} = route
   if(id) {
@@ -193,7 +194,6 @@ onMounted(async () => {
   }
   await store.dispatch('live/SET_NOBLE')
   await store.dispatch('user/SET_LEVEL')
-  chat.value.style.height = (window.innerHeight - 68 - 44 - 208 - 44) + 'px'
   // console.log('levels',levels.value[1]['effectUrl'])
   socket = new WebSocket(WS_URL)
 
